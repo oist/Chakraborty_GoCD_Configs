@@ -31,13 +31,6 @@ class BuildType(Enum):
   PATCH = 2
   BUILD = 3
 
-# Defines the configuration repository, along with the rules for when it is considered updated
-configRepo = {
-  "type": "configrepo",
-  "destination": "PPL_Builder",
-  "includes": ["LabVIEW_PPL-Pipelines.gocd.yaml"]
-}
-
 dir_job = {
   "tasks": [
     {"exec": {
@@ -212,7 +205,42 @@ gcli_build_task = { "exec": {
   ]
 }}
 
+# Names defined in the Zip_PPL_Builder config file
+zipPipelineName = "Zip_PPL_Builder"
+zipPipelineStageName = "Zip"
+zipPipelineJobName = "Zip"
+
+fetch_builder_task = { "fetch" : {
+  "run_if": "passed",
+  "pipeline": zipPipelineName,
+  "stage": zipPipelineStageName,
+  "job": zipPipelineJobName,
+  "source": "PPL_Builder/PPL_Builder.zip",
+  "destination": "PPL_Builder.zip",
+  "is_file": "yes"
+}}
+
+expand_builder_task = { "exec": {
+  "run_if": "passed",
+  "command": "powershell",
+  "arguments": [
+    "-Command",
+    "Expand-Archive",
+    "-Path",
+    "PPL_Builder.zip",
+    "-DestinationPath",
+    "PPL_Builder"
+  ]
+}}
+
+builderMaterial = {
+  "pipeline": zipPipelineName,
+  "stage": zipPipelineStageName
+}
+
 PPLJobTasks_NoDeps = [
+  fetch_builder_task,
+  expand_builder_task,
   ls_task,
   gcli_echo_task,
   gcli_build_task
@@ -282,7 +310,7 @@ def generatePPLJobTasksWithDeps(dependencies, targetName):
       "artifact_id": packageId,
       "configuration": fetch_ppl_configuration
     }})
-  return [ create_ppl_dir ] + fetchTasks + [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_echo_task, gcli_build_task ]
+  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_echo_task, gcli_build_task ]
 
 def generatePPLJobList(packageRootName, dependencies):
   ppl_job_list = {}
@@ -333,7 +361,7 @@ def generatePPLStages(packageRootName, dependencies):
 def generateMaterials(gitUrl, dependencies):
   topDir = directoryFromGitRepo(gitUrl, None)
   materials = {
-    "config": configRepo,
+    "builder": builderMaterial,
     topDir: {
       "git": gitUrl,
       "destination": topDir,
