@@ -101,20 +101,6 @@ ls_currentDir_task = { "exec": {
   "arguments": [ "PPLs\\\\Current" ]
 }}
 
-gcli_echo_task = { "exec": {
-  "run_if": "passed",
-  "command": "g-cli",
-  "arguments": [
-    "--lv-ver",
-    lv_ver,
-    "%BITNESS_FLAG%",
-    "Echo.vi",
-    "--",
-    # This might need adjusting for quotes...
-    '"This is testing the launch!!"'
-  ]
-}}
-
 via_job = {
   "environment_variables": {
       "PROJECT_TITLE": "#{PPL_Name}"
@@ -242,7 +228,6 @@ PPLJobTasks_NoDeps = [
   fetch_builder_task,
   expand_builder_task,
   ls_task,
-  gcli_echo_task,
   gcli_build_task
 ]
 
@@ -310,7 +295,7 @@ def generatePPLJobTasksWithDeps(dependencies, targetName):
       "artifact_id": packageId,
       "configuration": fetch_ppl_configuration
     }})
-  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_echo_task, gcli_build_task ]
+  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_build_task ]
 
 nipkgConfigOptions = {
   "options": {
@@ -390,13 +375,10 @@ def getCommonSection():
     "via_plugin_version": via_plugin_version,
     "dir_job": dir_job,
     "via_job": via_job,
-    # "ppl_stages": ppl_stages,
     "PPL_Job": PPLJobTasks_NoDeps
   }
   for k, v in mklink_tasks.items():
     commonSection["mklink_task_" + k] = v
-  # for k, v in ppl_tasks_dict.items():
-  #   commonSection["PPL_Job_" + k] = v
   return commonSection
 
 def getPackageRootName(pipelineName):
