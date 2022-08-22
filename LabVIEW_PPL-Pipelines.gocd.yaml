@@ -82,7 +82,7 @@ common:
       - --lv-ver
       - '2019'
       - '%BITNESS_FLAG%'
-      - PPL_Builder/Call_Builder_Wiresmith2.vi
+      - PPL_Builder\Call_Builder_Wiresmith2.vi
       - --
       - '#{PPL_LIB_PATH}'
       - PPLs/Current

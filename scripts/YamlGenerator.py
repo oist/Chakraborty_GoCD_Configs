@@ -179,7 +179,7 @@ gcli_build_task = { "exec": {
     "--lv-ver",
     lv_ver,
     '%BITNESS_FLAG%',
-    "PPL_Builder/Call_Builder_Wiresmith2.vi",
+    "PPL_Builder\\Call_Builder_Wiresmith2.vi", # This must be a backward slash
     "--",
     # Quotes here might also be an issue
     "#{PPL_LIB_PATH}",
