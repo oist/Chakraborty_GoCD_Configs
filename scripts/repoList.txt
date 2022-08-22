@@ -1,0 +1,58 @@
+Actor+Framework_REPO := oist/Chakraborty_NI_ActorFramework
+AF_Messages-PPL_REPO := oist/Chakraborty_NI_ActorFramework
+SubpanelEnabledActor_REPO := oist/Chakraborty_SubpanelEnabledActor
+Cooler_REPO := oist/Chakraborty_CoolerUnit
+# Cooling+Unit+Actor_REPO := oist/Chakraborty_CoolerUnit
+# RSAI_REPO := oist/Chakraborty_
+NS_ServerClient_REPO := oist/Chakraborty_NetworkStreams
+ADC_StreamDatatypes_REPO := oist/Chakraborty_StreamDatatypes
+MResDatatype_REPO := oist/Chakraborty_StreamDatatypes
+PowerSupplies-Arduino_REPO := oist/Chakraborty_PowerSupplies
+PowerSupplies-Serial_REPO := oist/Chakraborty_PowerSupplies
+Measurements_REPO := oist/Chakraborty_MeasurementActor
+Measurement+Results_REPO := oist/Chakraborty_MeasurementResult
+Result+Graph_REPO := oist/Chakraborty_MResGraph
+DataStore_REPO := oist/Chakraborty_MResGraph
+DiskLogger_REPO := oist/Chakraborty_DiskLogger
+Simple+Logger_REPO := oist/Chakraborty_LabVIEW-Reuse
+SPI+Communicator_REPO := oist/Chakraborty_LTC2983
+SPI+Functions_REPO := oist/Chakraborty_LTC2983
+X-Series+SPI+Comms_REPO := oist/Chakraborty_LTC2983
+LTC2983_Lib_REPO := oist/Chakraborty_LTC2983
+Serial+Communication_REPO := oist/Chakraborty_CoolerUnit
+ISEL_TranslationStage_REPO := oist/Chakraborty_ISEL-TranslationStage
+FakeStage_REPO := oist/Chakraborty_ISEL-TranslationStage
+TranslationStage_REPO := oist/Chakraborty_TranslationStage
+#ReleaseTesting_REPO := oist/Chakraborty_ReleaseTestingRepo
+ProjectUtilities_REPO := oist/Chakraborty_LabVIEW-Reuse
+Hot+Wire+Temperature+Correction_REPO := oist/OIST-TC_Tools
+OIST_Error_REPO := oist/Chakraborty_Errors
+ErrorHandling_REPO := oist/Chakraborty_ErrorHandlers
+String+Logging_REPO := oist/Chakraborty_StringLogging
+Request+for+Connection_REPO := oist/Chakraborty_ReqForConnection
+Communication+Server_REPO := oist/Chakraborty_CommServer
+Fake+Comm+Server_REPO := oist/Chakraborty_FakeCommServer
+Fanuc+Interface_REPO := oist/Chakraborty_Fanuc_Interface
+Fanuc_TCP_REPO := oist/Chakraborty_Fanuc_TCP
+Fanuc_FOCAS_REPO := oist/Chakraborty_Fanuc_FOCAS2
+Fanuc+Proxy_REPO := oist/Chakraborty_FanucProxy
+Fanuc_NSProxy_REPO := oist/Chakraborty_FanucNSProxy
+Fanuc_TCPProxy_REPO := oist/Chakraborty_Fanuc_TCPProxy
+Motor+Activity+Logging_REPO := oist/Chakraborty_FanucWithLogging
+Motor+Controller_REPO := oist/Chakraborty_FanucController
+Motor+Ramping+Calculations_REPO := oist/Chakraborty_FanucController
+ADG+Requests_REPO := oist/Chakraborty_ADG_SwitchUpdateRequests
+HW+Probes_REPO := oist/Chakraborty_HotWire_LabVIEW
+Laser+Interface_REPO := oist/Chakraborty_LaserSystem
+Innova+Laser_REPO := oist/Chakraborty_LaserSystem
+Dantec+Processor+Interface_REPO := oist/Chakraborty_DantecBSAProcessor
+Dantec+LDV+Processor_REPO := oist/Chakraborty_DantecBSAProcessor
+Mean+Value+Plotting_REPO := oist/Chakraborty_MeanValuePlotting
+SQLite_REPO := oist/Chakraborty_JDP_SQLite
+
+# Change these:
+# Name of MeasurementActor repo?
+# Results (MeasurementActor)
+# DataStore (MResGraph)
+# SPI Communicator (LTC)?
+# Serial Communication (CoolerUnit)
