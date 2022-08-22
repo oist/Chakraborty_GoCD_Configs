@@ -55,7 +55,7 @@ common:
       stage: Zip
       job: Zip
       source: PPL_Builder/PPL_Builder.zip
-      destination: PPL_Builder.zip
+      destination: .
       is_file: 'yes'
   - &id002
     exec:

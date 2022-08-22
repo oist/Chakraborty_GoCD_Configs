@@ -216,7 +216,7 @@ fetch_builder_task = { "fetch" : {
   "stage": zipPipelineStageName,
   "job": zipPipelineJobName,
   "source": "PPL_Builder/PPL_Builder.zip",
-  "destination": "PPL_Builder.zip",
+  "destination": ".",
   "is_file": "yes"
 }}
 
