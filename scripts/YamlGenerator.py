@@ -318,23 +318,27 @@ nipkgConfigOptions = {
   }
 }
 
+environmentVariables = {}
+for target in Target.__members__:
+  targetT = Target[target]
+  is64Bit = targetT in [Target.Windows_64_Debug, Target.Windows_64_Release]
+  environmentVariables[targetT] = {
+    "TARGET_NAME": target,
+    "BUILD_TYPE": "BUILD", # Probably set this elsewhere
+    "TARGET_SYSTEM": "Windows" if targetT.value < 4 else "cRIO",
+    "IS_DEBUG_BUILD": targetT.value % 2,
+    "BITNESS_FLAG": "--x64 -v" if is64Bit else "-v"
+  }
+
 def generatePPLJobList(packageRootName, dependencies):
   ppl_job_list = {}
   for target in Target.__members__:
     targetT = Target[target]
     packageId = f"{packageRootName}_{target}_nipkg"
-    is64Bit = targetT in [Target.Windows_64_Debug, Target.Windows_64_Release]
     ppl_job_list[target] = {
       "timeout": 15,
       "elastic_profile_id": profileId[targetT],
-      "environment_variables": {
-        # Use these to set and target
-        "TARGET_NAME": target,
-        "BUILD_TYPE": "BUILD",
-        "TARGET_SYSTEM": "Windows" if targetT.value < 4 else "cRIO",
-        "IS_DEBUG_BUILD": targetT.value % 2,
-        "BITNESS_FLAG": "--x64 -v" if is64Bit else "-v" # Dummy arg for 32-bit
-      },
+      "environment_variables": environmentVariables[targetT],
       "artifacts": [
         ppl_build_artifact,
         nipkg_build_artifact,

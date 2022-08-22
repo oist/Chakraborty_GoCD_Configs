@@ -47,7 +47,7 @@ common:
           SourceCheckstyleFile: '#{GIT_DIR}/viaResultsCheckstyle.xml'
           DestinationFile: CheckstyleReport.html
           AddEmpty: false
-  PPL_Job: &id019
+  PPL_Job: &id020
   - &id001
     fetch:
       run_if: passed
@@ -214,7 +214,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
+            environment_variables: &id019
               TARGET_NAME: Windows_32_Release
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: Windows
@@ -279,7 +279,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
+            environment_variables: &id021
               TARGET_NAME: Windows_32_Debug
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: Windows
@@ -312,7 +312,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
+            environment_variables: &id022
               TARGET_NAME: Windows_64_Release
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: Windows
@@ -345,7 +345,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
+            environment_variables: &id023
               TARGET_NAME: Windows_64_Debug
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: Windows
@@ -378,7 +378,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
+            environment_variables: &id024
               TARGET_NAME: cRIO_Release
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: cRIO
@@ -411,7 +411,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
+            environment_variables: &id025
               TARGET_NAME: cRIO_Debug
               BUILD_TYPE: BUILD
               TARGET_SYSTEM: cRIO
@@ -464,12 +464,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -477,16 +472,11 @@ pipelines:
                 id: ADG-Requests_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -494,16 +484,11 @@ pipelines:
                 id: ADG-Requests_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -511,16 +496,11 @@ pipelines:
                 id: ADG-Requests_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -528,16 +508,11 @@ pipelines:
                 id: ADG-Requests_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -545,16 +520,11 @@ pipelines:
                 id: ADG-Requests_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -562,7 +532,7 @@ pipelines:
                 id: ADG-Requests_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   AF_Messages-PPL.lvlibp:
     group: PPLs
     parameters:
@@ -589,12 +559,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -622,12 +587,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -655,12 +615,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -688,12 +643,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -721,12 +671,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -754,12 +699,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -807,12 +747,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -820,16 +755,11 @@ pipelines:
                 id: Actor-Framework_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -837,16 +767,11 @@ pipelines:
                 id: Actor-Framework_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -854,16 +779,11 @@ pipelines:
                 id: Actor-Framework_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -871,16 +791,11 @@ pipelines:
                 id: Actor-Framework_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -888,16 +803,11 @@ pipelines:
                 id: Actor-Framework_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -905,7 +815,7 @@ pipelines:
                 id: Actor-Framework_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Communication-Server.lvlibp:
     group: PPLs
     parameters:
@@ -939,12 +849,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -988,12 +893,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -1037,12 +937,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -1086,12 +981,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -1135,12 +1025,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -1184,12 +1069,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -1256,12 +1136,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -1289,12 +1164,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -1322,12 +1192,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -1355,12 +1220,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -1388,12 +1248,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -1421,12 +1276,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -1480,12 +1330,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -1521,12 +1366,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -1562,12 +1402,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -1603,12 +1438,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -1644,12 +1474,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -1685,12 +1510,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -1747,12 +1567,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -1760,16 +1575,11 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -1777,16 +1587,11 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -1794,16 +1599,11 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -1811,16 +1611,11 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -1828,16 +1623,11 @@ pipelines:
                 id: Dantec-Processor-Interface_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -1845,7 +1635,7 @@ pipelines:
                 id: Dantec-Processor-Interface_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   DataStore.lvlibp:
     group: PPLs
     parameters:
@@ -1872,12 +1662,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -1905,12 +1690,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -1938,12 +1718,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -1971,12 +1746,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -2004,12 +1774,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -2037,12 +1802,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -2093,12 +1853,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -2126,12 +1881,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -2159,12 +1909,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -2192,12 +1937,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -2225,12 +1965,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -2258,12 +1993,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -2314,12 +2044,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -2347,12 +2072,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -2380,12 +2100,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -2413,12 +2128,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -2446,12 +2156,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -2479,12 +2184,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -2548,12 +2248,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -2613,12 +2308,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -2678,12 +2368,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -2743,12 +2428,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -2808,12 +2488,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -2873,12 +2548,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -2961,12 +2631,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -2994,12 +2659,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -3027,12 +2687,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -3060,12 +2715,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -3093,12 +2743,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -3126,12 +2771,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -3182,12 +2822,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -3215,12 +2850,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -3248,12 +2878,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -3281,12 +2906,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -3314,12 +2934,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -3347,12 +2962,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -3403,12 +3013,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -3436,12 +3041,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -3469,12 +3069,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -3502,12 +3097,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -3535,12 +3125,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -3568,12 +3153,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -3624,12 +3204,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -3657,12 +3232,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -3690,12 +3260,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -3723,12 +3288,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -3756,12 +3316,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -3789,12 +3344,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -3851,12 +3401,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -3900,12 +3445,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -3949,12 +3489,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -3998,12 +3533,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -4047,12 +3577,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -4096,12 +3621,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -4168,12 +3688,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -4201,12 +3716,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -4234,12 +3744,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -4267,12 +3772,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -4300,12 +3800,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -4333,12 +3828,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -4392,12 +3882,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -4433,12 +3918,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -4474,12 +3954,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -4515,12 +3990,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -4556,12 +4026,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -4597,12 +4062,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -4658,12 +4118,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -4671,16 +4126,11 @@ pipelines:
                 id: HW-Probes_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -4688,16 +4138,11 @@ pipelines:
                 id: HW-Probes_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -4705,16 +4150,11 @@ pipelines:
                 id: HW-Probes_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -4722,16 +4162,11 @@ pipelines:
                 id: HW-Probes_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -4739,16 +4174,11 @@ pipelines:
                 id: HW-Probes_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -4756,7 +4186,7 @@ pipelines:
                 id: HW-Probes_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Hot-Wire-Temperature-Correction.lvlibp:
     group: PPLs
     parameters:
@@ -4780,12 +4210,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -4793,16 +4218,11 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -4810,16 +4230,11 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -4827,16 +4242,11 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -4844,16 +4254,11 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -4861,16 +4266,11 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -4878,7 +4278,7 @@ pipelines:
                 id: Hot-Wire-Temperature-Correction_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   ISEL_TranslationStage.lvlibp:
     group: PPLs
     parameters:
@@ -4905,12 +4305,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -4938,12 +4333,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -4971,12 +4361,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -5004,12 +4389,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -5037,12 +4417,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -5070,12 +4445,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -5129,12 +4499,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -5170,12 +4535,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -5211,12 +4571,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -5252,12 +4607,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -5293,12 +4643,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -5334,12 +4679,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -5414,12 +4754,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -5487,12 +4822,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -5560,12 +4890,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -5633,12 +4958,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -5706,12 +5026,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -5779,12 +5094,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -5872,12 +5182,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -5885,16 +5190,11 @@ pipelines:
                 id: Laser-Interface_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -5902,16 +5202,11 @@ pipelines:
                 id: Laser-Interface_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -5919,16 +5214,11 @@ pipelines:
                 id: Laser-Interface_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -5936,16 +5226,11 @@ pipelines:
                 id: Laser-Interface_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -5953,16 +5238,11 @@ pipelines:
                 id: Laser-Interface_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -5970,7 +5250,7 @@ pipelines:
                 id: Laser-Interface_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   MResDatatype.lvlibp:
     group: PPLs
     parameters:
@@ -6000,12 +5280,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -6041,12 +5316,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -6082,12 +5352,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -6123,12 +5388,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -6164,12 +5424,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -6205,12 +5460,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -6272,12 +5522,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -6313,12 +5558,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -6354,12 +5594,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -6395,12 +5630,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -6436,12 +5666,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -6477,12 +5702,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -6538,12 +5758,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -6551,16 +5766,11 @@ pipelines:
                 id: Measurement-Results_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -6568,16 +5778,11 @@ pipelines:
                 id: Measurement-Results_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -6585,16 +5790,11 @@ pipelines:
                 id: Measurement-Results_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -6602,16 +5802,11 @@ pipelines:
                 id: Measurement-Results_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -6619,16 +5814,11 @@ pipelines:
                 id: Measurement-Results_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -6636,7 +5826,7 @@ pipelines:
                 id: Measurement-Results_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Measurements.lvlibp:
     group: PPLs
     parameters:
@@ -6670,12 +5860,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -6719,12 +5904,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -6768,12 +5948,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -6817,12 +5992,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -6866,12 +6036,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -6915,12 +6080,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -6997,12 +6157,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -7054,12 +6209,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -7111,12 +6261,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -7168,12 +6313,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -7225,12 +6365,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -7282,12 +6417,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -7369,12 +6499,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -7418,12 +6543,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -7467,12 +6587,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -7516,12 +6631,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -7565,12 +6675,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -7614,12 +6719,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -7684,12 +6784,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -7697,16 +6792,11 @@ pipelines:
                 id: Motor-Ramping-Calculations_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -7714,16 +6804,11 @@ pipelines:
                 id: Motor-Ramping-Calculations_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -7731,16 +6816,11 @@ pipelines:
                 id: Motor-Ramping-Calculations_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -7748,16 +6828,11 @@ pipelines:
                 id: Motor-Ramping-Calculations_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -7765,16 +6840,11 @@ pipelines:
                 id: Motor-Ramping-Calculations_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -7782,7 +6852,7 @@ pipelines:
                 id: Motor-Ramping-Calculations_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   NS_ServerClient.lvlibp:
     group: PPLs
     parameters:
@@ -7816,12 +6886,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -7865,12 +6930,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -7914,12 +6974,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -7963,12 +7018,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8012,12 +7062,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8061,12 +7106,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8130,12 +7170,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -8143,16 +7178,11 @@ pipelines:
                 id: OIST_Error_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -8160,16 +7190,11 @@ pipelines:
                 id: OIST_Error_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -8177,16 +7202,11 @@ pipelines:
                 id: OIST_Error_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8194,16 +7214,11 @@ pipelines:
                 id: OIST_Error_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8211,16 +7226,11 @@ pipelines:
                 id: OIST_Error_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8228,7 +7238,7 @@ pipelines:
                 id: OIST_Error_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   PowerSupplies-Arduino.lvlibp:
     group: PPLs
     parameters:
@@ -8252,12 +7262,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -8265,16 +7270,11 @@ pipelines:
                 id: PowerSupplies-Arduino_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -8282,16 +7282,11 @@ pipelines:
                 id: PowerSupplies-Arduino_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -8299,16 +7294,11 @@ pipelines:
                 id: PowerSupplies-Arduino_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8316,16 +7306,11 @@ pipelines:
                 id: PowerSupplies-Arduino_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8333,16 +7318,11 @@ pipelines:
                 id: PowerSupplies-Arduino_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8350,7 +7330,7 @@ pipelines:
                 id: PowerSupplies-Arduino_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   PowerSupplies-Serial.lvlibp:
     group: PPLs
     parameters:
@@ -8377,12 +7357,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -8410,12 +7385,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -8443,12 +7413,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -8476,12 +7441,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8509,12 +7469,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8542,12 +7497,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8595,12 +7545,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -8608,16 +7553,11 @@ pipelines:
                 id: ProjectUtilities_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -8625,16 +7565,11 @@ pipelines:
                 id: ProjectUtilities_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -8642,16 +7577,11 @@ pipelines:
                 id: ProjectUtilities_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8659,16 +7589,11 @@ pipelines:
                 id: ProjectUtilities_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8676,16 +7601,11 @@ pipelines:
                 id: ProjectUtilities_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8693,7 +7613,7 @@ pipelines:
                 id: ProjectUtilities_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Request-for-Connection.lvlibp:
     group: PPLs
     parameters:
@@ -8720,12 +7640,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -8753,12 +7668,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -8786,12 +7696,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -8819,12 +7724,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -8852,12 +7752,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -8885,12 +7780,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -8951,12 +7841,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9008,12 +7893,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9065,12 +7945,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9122,12 +7997,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9179,12 +8049,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9236,12 +8101,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9313,12 +8173,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9326,16 +8181,11 @@ pipelines:
                 id: SPI-Communicator_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9343,16 +8193,11 @@ pipelines:
                 id: SPI-Communicator_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9360,16 +8205,11 @@ pipelines:
                 id: SPI-Communicator_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9377,16 +8217,11 @@ pipelines:
                 id: SPI-Communicator_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9394,16 +8229,11 @@ pipelines:
                 id: SPI-Communicator_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9411,7 +8241,7 @@ pipelines:
                 id: SPI-Communicator_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   SPI-Functions.lvlibp:
     group: PPLs
     parameters:
@@ -9435,12 +8265,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9448,16 +8273,11 @@ pipelines:
                 id: SPI-Functions_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9465,16 +8285,11 @@ pipelines:
                 id: SPI-Functions_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9482,16 +8297,11 @@ pipelines:
                 id: SPI-Functions_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9499,16 +8309,11 @@ pipelines:
                 id: SPI-Functions_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9516,16 +8321,11 @@ pipelines:
                 id: SPI-Functions_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9533,7 +8333,7 @@ pipelines:
                 id: SPI-Functions_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   SQLite.lvlibp:
     group: PPLs
     parameters:
@@ -9557,12 +8357,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9570,16 +8365,11 @@ pipelines:
                 id: SQLite_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9587,16 +8377,11 @@ pipelines:
                 id: SQLite_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9604,16 +8389,11 @@ pipelines:
                 id: SQLite_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9621,16 +8401,11 @@ pipelines:
                 id: SQLite_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9638,16 +8413,11 @@ pipelines:
                 id: SQLite_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9655,7 +8425,7 @@ pipelines:
                 id: SQLite_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Serial-Communication.lvlibp:
     group: PPLs
     parameters:
@@ -9679,12 +8449,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9692,16 +8457,11 @@ pipelines:
                 id: Serial-Communication_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9709,16 +8469,11 @@ pipelines:
                 id: Serial-Communication_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9726,16 +8481,11 @@ pipelines:
                 id: Serial-Communication_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9743,16 +8493,11 @@ pipelines:
                 id: Serial-Communication_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9760,16 +8505,11 @@ pipelines:
                 id: Serial-Communication_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9777,7 +8517,7 @@ pipelines:
                 id: Serial-Communication_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   Simple-Logger.lvlibp:
     group: PPLs
     parameters:
@@ -9801,12 +8541,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9814,16 +8549,11 @@ pipelines:
                 id: Simple-Logger_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9831,16 +8561,11 @@ pipelines:
                 id: Simple-Logger_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9848,16 +8573,11 @@ pipelines:
                 id: Simple-Logger_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9865,16 +8585,11 @@ pipelines:
                 id: Simple-Logger_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -9882,16 +8597,11 @@ pipelines:
                 id: Simple-Logger_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -9899,7 +8609,7 @@ pipelines:
                 id: Simple-Logger_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   String-Logging.lvlibp:
     group: PPLs
     parameters:
@@ -9923,12 +8633,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -9936,16 +8641,11 @@ pipelines:
                 id: String-Logging_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -9953,16 +8653,11 @@ pipelines:
                 id: String-Logging_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -9970,16 +8665,11 @@ pipelines:
                 id: String-Logging_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -9987,16 +8677,11 @@ pipelines:
                 id: String-Logging_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -10004,16 +8689,11 @@ pipelines:
                 id: String-Logging_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -10021,7 +8701,7 @@ pipelines:
                 id: String-Logging_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   SubpanelEnabledActor.lvlibp:
     group: PPLs
     parameters:
@@ -10048,12 +8728,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -10081,12 +8756,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -10114,12 +8784,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -10147,12 +8812,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -10180,12 +8840,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -10213,12 +8868,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -10266,12 +8916,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -10279,16 +8924,11 @@ pipelines:
                 id: TranslationStage_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -10296,16 +8936,11 @@ pipelines:
                 id: TranslationStage_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -10313,16 +8948,11 @@ pipelines:
                 id: TranslationStage_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -10330,16 +8960,11 @@ pipelines:
                 id: TranslationStage_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -10347,16 +8972,11 @@ pipelines:
                 id: TranslationStage_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
@@ -10364,7 +8984,7 @@ pipelines:
                 id: TranslationStage_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id009
-            tasks: *id019
+            tasks: *id020
   X-Series-SPI-Comms.lvlibp:
     group: PPLs
     parameters:
@@ -10395,12 +9015,7 @@ pipelines:
           Windows_32_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id019
             artifacts:
             - *id007
             - *id008
@@ -10436,12 +9051,7 @@ pipelines:
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
-            environment_variables:
-              TARGET_NAME: Windows_32_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id021
             artifacts:
             - *id007
             - *id008
@@ -10477,12 +9087,7 @@ pipelines:
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id022
             artifacts:
             - *id007
             - *id008
@@ -10518,12 +9123,7 @@ pipelines:
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
-            environment_variables:
-              TARGET_NAME: Windows_64_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: Windows
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: --x64 -v
+            environment_variables: *id023
             artifacts:
             - *id007
             - *id008
@@ -10559,12 +9159,7 @@ pipelines:
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Release
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 0
-              BITNESS_FLAG: -v
+            environment_variables: *id024
             artifacts:
             - *id007
             - *id008
@@ -10600,12 +9195,7 @@ pipelines:
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
-            environment_variables:
-              TARGET_NAME: cRIO_Debug
-              BUILD_TYPE: BUILD
-              TARGET_SYSTEM: cRIO
-              IS_DEBUG_BUILD: 1
-              BITNESS_FLAG: -v
+            environment_variables: *id025
             artifacts:
             - *id007
             - *id008
