@@ -88,7 +88,7 @@ def handleUrl(gitUrl, libNames, baseDir):
   gitDir = directoryFromGitRepo(gitUrl, None)
   # print(f"{gitUrl}: {libNames}, baseDir: {baseDir}")
   forceUpdate=False
-  # cloneResponse = cloneRepo(gitUrl, outputDir, forceUpdate)
+  cloneResponse = cloneRepo(gitUrl, outputDir, forceUpdate)
   retVals = []
   for libName in libNames:
     libPath = os.path.join(gitDir, find_file(libName, outputDir, False)).replace(os.sep, "/")
@@ -160,7 +160,7 @@ if __name__ == '__main__':
   yamlObject = buildYamlObject(pipelineDict)
   # print(yaml.dump(yamlObject, sort_keys=False))
 
-  outputFilePath = "./test.gocd.yaml"
+  outputFilePath = "./LabVIEW_PPL-Pipelines.gocd.yaml"
   with open(outputFilePath, 'w') as outputFile: 
     yaml.dump(yamlObject, outputFile, sort_keys=False)
   print(str(os.path.getsize(outputFilePath)) + " bytes")
