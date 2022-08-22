@@ -312,6 +312,12 @@ def generatePPLJobTasksWithDeps(dependencies, targetName):
     }})
   return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_echo_task, gcli_build_task ]
 
+nipkgConfigOptions = {
+  "options": {
+    "PackagePath": "NIPKGs/*.nipkg"
+  }
+}
+
 def generatePPLJobList(packageRootName, dependencies):
   ppl_job_list = {}
   for target in Target.__members__:
@@ -337,11 +343,7 @@ def generatePPLJobList(packageRootName, dependencies):
           # Actually, this might not allow parameter usage...
             "id": packageId,
             "store_id": "local-host",
-            "configuration": {
-              "options": {
-                "PackagePath": "NIPKGs/*.nipkg"
-              }
-            }
+            "configuration": nipkgConfigOptions
         }}
       ],
       "tasks": PPLJobTasks_NoDeps if dependencies is None else generatePPLJobTasksWithDeps(dependencies, target)
