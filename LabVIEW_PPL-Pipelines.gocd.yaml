@@ -67,7 +67,7 @@ common:
       - -Path
       - PPL_Builder.zip
       - -DestinationPath
-      - PPL_Builder
+      - .
   - &id004
     exec:
       run_if: passed

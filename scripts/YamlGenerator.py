@@ -229,7 +229,7 @@ expand_builder_task = { "exec": {
     "-Path",
     "PPL_Builder.zip",
     "-DestinationPath",
-    "PPL_Builder"
+    "."
   ]
 }}
 
