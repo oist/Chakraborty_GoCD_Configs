@@ -190,7 +190,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_StreamDatatypes
         destination: Chakraborty_StreamDatatypes
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial:
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
@@ -437,7 +437,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_ADG_SwitchUpdateRequests
         destination: Chakraborty_ADG_SwitchUpdateRequests
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -529,7 +529,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_NI_ActorFramework
         destination: Chakraborty_NI_ActorFramework
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -714,7 +714,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_NI_ActorFramework
         destination: Chakraborty_NI_ActorFramework
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -807,7 +807,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_CommServer
         destination: Chakraborty_CommServer
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial:
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
@@ -1094,7 +1094,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_CoolerUnit
         destination: Chakraborty_CoolerUnit
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Serial-Communication.lvlibp_pipelineMaterial:
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
@@ -1279,7 +1279,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_DantecBSAProcessor
         destination: Chakraborty_DantecBSAProcessor
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Dantec-Processor-Interface.lvlibp_pipelineMaterial:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
@@ -1516,7 +1516,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_DantecBSAProcessor
         destination: Chakraborty_DantecBSAProcessor
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1608,7 +1608,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_MResGraph
         destination: Chakraborty_MResGraph
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial:
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
@@ -1793,7 +1793,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_DiskLogger
         destination: Chakraborty_DiskLogger
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial:
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
@@ -1978,7 +1978,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_ErrorHandlers
         destination: Chakraborty_ErrorHandlers
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       OIST_Error.lvlibp_pipelineMaterial:
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
@@ -2164,7 +2164,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FakeCommServer
         destination: Chakraborty_FakeCommServer
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Communication-Server.lvlibp_pipelineMaterial:
         pipeline: Communication-Server.lvlibp
         stage: build_ppls
@@ -2553,7 +2553,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_ISEL-TranslationStage
         destination: Chakraborty_ISEL-TranslationStage
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       ISEL_TranslationStage.lvlibp_pipelineMaterial:
         pipeline: ISEL_TranslationStage.lvlibp
         stage: build_ppls
@@ -2738,7 +2738,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_Fanuc_Interface
         destination: Chakraborty_Fanuc_Interface
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       OIST_Error.lvlibp_pipelineMaterial:
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
@@ -2923,7 +2923,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FanucProxy
         destination: Chakraborty_FanucProxy
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -3108,7 +3108,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_Fanuc_FOCAS2
         destination: Chakraborty_Fanuc_FOCAS2
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -3293,7 +3293,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FanucNSProxy
         destination: Chakraborty_FanucNSProxy
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -3580,7 +3580,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_Fanuc_TCP
         destination: Chakraborty_Fanuc_TCP
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -3765,7 +3765,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_Fanuc_TCPProxy
         destination: Chakraborty_Fanuc_TCPProxy
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -4001,7 +4001,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_HotWire_LabVIEW
         destination: Chakraborty_HotWire_LabVIEW
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4093,7 +4093,7 @@ pipelines:
         git: git@github.com:oist/OIST-TC_Tools
         destination: OIST-TC_Tools
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4185,7 +4185,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_ISEL-TranslationStage
         destination: Chakraborty_ISEL-TranslationStage
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -4370,7 +4370,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LaserSystem
         destination: Chakraborty_LaserSystem
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Laser-Interface.lvlibp_pipelineMaterial:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
@@ -4607,7 +4607,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -5047,7 +5047,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LaserSystem
         destination: Chakraborty_LaserSystem
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5139,7 +5139,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_StreamDatatypes
         destination: Chakraborty_StreamDatatypes
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial:
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
@@ -5375,7 +5375,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_MeanValuePlotting
         destination: Chakraborty_MeanValuePlotting
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -5611,7 +5611,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_MeasurementResult
         destination: Chakraborty_MeasurementResult
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5704,7 +5704,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_MeasurementActor
         destination: Chakraborty_MeasurementActor
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -5992,7 +5992,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FanucWithLogging
         destination: Chakraborty_FanucWithLogging
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -6331,7 +6331,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FanucController
         destination: Chakraborty_FanucController
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial:
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
@@ -6619,7 +6619,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_FanucController
         destination: Chakraborty_FanucController
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6712,7 +6712,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_NetworkStreams
         destination: Chakraborty_NetworkStreams
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -6999,7 +6999,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_Errors
         destination: Chakraborty_Errors
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7091,7 +7091,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_PowerSupplies
         destination: Chakraborty_PowerSupplies
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7183,7 +7183,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_PowerSupplies
         destination: Chakraborty_PowerSupplies
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Serial-Communication.lvlibp_pipelineMaterial:
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
@@ -7368,7 +7368,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LabVIEW-Reuse
         destination: Chakraborty_LabVIEW-Reuse
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7460,7 +7460,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_ReqForConnection
         destination: Chakraborty_ReqForConnection
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial:
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
@@ -7646,7 +7646,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_MResGraph
         destination: Chakraborty_MResGraph
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -7984,7 +7984,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8076,7 +8076,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8168,7 +8168,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_JDP_SQLite
         destination: Chakraborty_JDP_SQLite
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8260,7 +8260,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_CoolerUnit
         destination: Chakraborty_CoolerUnit
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8352,7 +8352,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LabVIEW-Reuse
         destination: Chakraborty_LabVIEW-Reuse
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8444,7 +8444,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_StringLogging
         destination: Chakraborty_StringLogging
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8536,7 +8536,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_SubpanelEnabledActor
         destination: Chakraborty_SubpanelEnabledActor
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial:
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
@@ -8721,7 +8721,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_TranslationStage
         destination: Chakraborty_TranslationStage
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8814,7 +8814,7 @@ pipelines:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
         auto_update: true
-        shallow_clone: true
+        shallow_clone: false
       SPI-Communicator.lvlibp_pipelineMaterial:
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls

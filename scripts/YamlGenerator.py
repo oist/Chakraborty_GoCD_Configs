@@ -357,7 +357,7 @@ def generateMaterials(gitUrl, dependencies):
       "git": gitUrl,
       "destination": topDir,
       "auto_update": True,
-      "shallow_clone": True
+      "shallow_clone": False
     }
   }
   if dependencies is not None:
