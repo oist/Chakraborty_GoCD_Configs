@@ -65,8 +65,16 @@ def directoryFromGitRepo(gitRepo, output_dir = None):
 	return dest
 
 def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames):
-  artifactId = pipelineName + "_nipkg"
-  return {pipelineName: {"artifactId": artifactId, "gitUrl": gitUrl, "libPath": libPath, "PPL_Name": PPL_Name, "Dependencies": Dependencies, "Dependency PPL Names": DependencyPPLNames}}
+  return {
+    pipelineName: {
+      "artifactId": pipelineName + "_nipkg",
+      "gitUrl": gitUrl,
+      "libPath": libPath,
+      "PPL_Name": PPL_Name,
+      "Dependencies": Dependencies,
+      "Dependency PPL Names": DependencyPPLNames
+    }
+  }
 
 def parseMkFile(mkFilePath, libName):
   depVarName = libName.replace(' ',r'\+').replace('.lvlib','_Deps')
@@ -75,8 +83,10 @@ def parseMkFile(mkFilePath, libName):
   content = f.readlines() # Read all lines (not just first)
   depsList = []
   for line in content:
+    # Match <libraryname>_Deps := (.*)
     matchedDeps = re.match(depVarName+r'[ ]?:=[ ]?(.*)$', line.strip())
     if matchedDeps:
+      # Split the group on unescaped spaces
       listDeps = matchedDeps.group(1).replace(r'\ ','+').split(' ')
       depsList = [elem.replace('+', ' ') for elem in listDeps]
       return depsList
@@ -130,29 +140,17 @@ if __name__ == '__main__':
   toc_end = time.perf_counter()
   print(f"Cloned all repositories in {toc_end-tic_start:0.2f} seconds")
   list_dicts = [item for sublist in results for item in sublist]
-  # print(results)
-  # print(list_dicts)
   flat_dict = {k: v for d in list_dicts for k, v in d.items()}
   # printFlatDict(flat_dict)
   # print("------")
   no_deps_entries = {k: v for k, v in flat_dict.items() if v['Dependencies'] == None}
   deps_entries = {k: v for k, v in flat_dict.items() if v['Dependencies'] != None}
-  # printFlatDict(no_deps_entries)
-  pipelineDefinitionContent = []
-  k1 = None
-  v1 = None
-  # for k, v in no_deps_entries.items():
-  for k, v in flat_dict.items():
-    # pipelineDefinitionContent.append(generatePipelineDefinition(k ,v))
-    pipelineDefinitionContent.append({k: PipelineDefinition(k, v)})
-    k2 = k1
-    v2 = v1
-    k1 = k
-    v1 = v
-  # print(yaml.dump(pipelineDefinitionContent))
-  # print(k1, v1, k2, v2)
 
-  # pipelineDict = {k1: PipelineDefinition(k1, v1), k2: PipelineDefinition(k2, v2)}
+  pipelineDefinitionContent = []
+  for k, v in flat_dict.items():
+    pipelineDefinitionContent.append({k: PipelineDefinition(k, v)})
+  # Sort to ensure the same order on repeated execution
+  # This also helps reduce git diffs
   pipelineDict = dict(sorted(flatten_dict(pipelineDefinitionContent).items()))
 
   # The behaviour of the sort might depend on Python version - 
@@ -164,10 +162,3 @@ if __name__ == '__main__':
   with open(outputFilePath, 'w') as outputFile: 
     yaml.dump(yamlObject, outputFile, sort_keys=False)
   print(str(os.path.getsize(outputFilePath)) + " bytes")
-
-  # print(yaml.dump(flat_dict))
-  # print(flat_dict['ADG-Requests.lvlib'])
-  # print(flat_dict['AF_Messages-PPL.lvlib'])
-  
-  # for pipelinename, libraryEntry in entries.items():
-    # cloneRepo(libraryEntry)

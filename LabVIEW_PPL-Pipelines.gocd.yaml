@@ -191,7 +191,7 @@ pipelines:
         destination: Chakraborty_StreamDatatypes
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial:
+      NS_ServerClient.lvlibp_pipelineMaterial: &id025
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
     stages:
@@ -254,7 +254,7 @@ pipelines:
                     AllowDowngrade: true
                     AllowUninstallation: false
                     InstallRecommended: false
-                    InstallRootDir: 0
+                    InstallRootDir: null
             - *id003
             - *id004
             - &id012
@@ -530,7 +530,7 @@ pipelines:
         destination: Chakraborty_NI_ActorFramework
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
+      Actor-Framework.lvlibp_pipelineMaterial: &id028
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
     stages:
@@ -808,13 +808,11 @@ pipelines:
         destination: Chakraborty_CommServer
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial:
-        pipeline: NS_ServerClient.lvlibp
-        stage: build_ppls
+      NS_ServerClient.lvlibp_pipelineMaterial: *id025
       Request-for-Connection.lvlibp_pipelineMaterial:
         pipeline: Request-for-Connection.lvlibp
         stage: build_ppls
-      MResDatatype.lvlibp_pipelineMaterial:
+      MResDatatype.lvlibp_pipelineMaterial: &id027
         pipeline: MResDatatype.lvlibp
         stage: build_ppls
     stages:
@@ -1095,7 +1093,7 @@ pipelines:
         destination: Chakraborty_CoolerUnit
         auto_update: true
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial:
+      Serial-Communication.lvlibp_pipelineMaterial: &id032
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
     stages:
@@ -1283,7 +1281,7 @@ pipelines:
       Dantec-Processor-Interface.lvlibp_pipelineMaterial:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial:
+      Measurement-Results.lvlibp_pipelineMaterial: &id026
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
     stages:
@@ -1609,9 +1607,7 @@ pipelines:
         destination: Chakraborty_MResGraph
         auto_update: true
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1794,9 +1790,7 @@ pipelines:
         destination: Chakraborty_DiskLogger
         auto_update: true
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1979,7 +1973,7 @@ pipelines:
         destination: Chakraborty_ErrorHandlers
         auto_update: true
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial:
+      OIST_Error.lvlibp_pipelineMaterial: &id029
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
     stages:
@@ -2168,16 +2162,12 @@ pipelines:
       Communication-Server.lvlibp_pipelineMaterial:
         pipeline: Communication-Server.lvlibp
         stage: build_ppls
-      MResDatatype.lvlibp_pipelineMaterial:
-        pipeline: MResDatatype.lvlibp
-        stage: build_ppls
-      AF_Messages-PPL.lvlibp_pipelineMaterial:
+      MResDatatype.lvlibp_pipelineMaterial: *id027
+      AF_Messages-PPL.lvlibp_pipelineMaterial: &id033
         pipeline: AF_Messages-PPL.lvlibp
         stage: build_ppls
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      Simple-Logger.lvlibp_pipelineMaterial:
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Simple-Logger.lvlibp_pipelineMaterial: &id035
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
     stages:
@@ -2739,9 +2729,7 @@ pipelines:
         destination: Chakraborty_Fanuc_Interface
         auto_update: true
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial:
-        pipeline: OIST_Error.lvlibp
-        stage: build_ppls
+      OIST_Error.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2924,7 +2912,7 @@ pipelines:
         destination: Chakraborty_FanucProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
+      Fanuc-Interface.lvlibp_pipelineMaterial: &id030
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
     stages:
@@ -3109,9 +3097,7 @@ pipelines:
         destination: Chakraborty_Fanuc_FOCAS2
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3294,15 +3280,11 @@ pipelines:
         destination: Chakraborty_FanucNSProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
-      Fanuc-Proxy.lvlibp_pipelineMaterial:
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Fanuc-Proxy.lvlibp_pipelineMaterial: &id031
         pipeline: Fanuc-Proxy.lvlibp
         stage: build_ppls
-      NS_ServerClient.lvlibp_pipelineMaterial:
-        pipeline: NS_ServerClient.lvlibp
-        stage: build_ppls
+      NS_ServerClient.lvlibp_pipelineMaterial: *id025
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3581,9 +3563,7 @@ pipelines:
         destination: Chakraborty_Fanuc_TCP
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3766,12 +3746,8 @@ pipelines:
         destination: Chakraborty_Fanuc_TCPProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
-      Fanuc-Proxy.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Proxy.lvlibp
-        stage: build_ppls
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Fanuc-Proxy.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4186,9 +4162,7 @@ pipelines:
         destination: Chakraborty_ISEL-TranslationStage
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4374,9 +4348,7 @@ pipelines:
       Laser-Interface.lvlibp_pipelineMaterial:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
-      Serial-Communication.lvlibp_pipelineMaterial:
-        pipeline: Serial-Communication.lvlibp
-        stage: build_ppls
+      Serial-Communication.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4608,22 +4580,18 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      AF_Messages-PPL.lvlibp_pipelineMaterial:
-        pipeline: AF_Messages-PPL.lvlibp
-        stage: build_ppls
-      SPI-Communicator.lvlibp_pipelineMaterial:
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
+      SPI-Communicator.lvlibp_pipelineMaterial: &id036
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
-      SPI-Functions.lvlibp_pipelineMaterial:
+      SPI-Functions.lvlibp_pipelineMaterial: &id037
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
       X-Series-SPI-Comms.lvlibp_pipelineMaterial:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
-      SubpanelEnabledActor.lvlibp_pipelineMaterial:
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id034
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
     stages:
@@ -5140,12 +5108,8 @@ pipelines:
         destination: Chakraborty_StreamDatatypes
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial:
-        pipeline: NS_ServerClient.lvlibp
-        stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
+      NS_ServerClient.lvlibp_pipelineMaterial: *id025
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5376,12 +5340,8 @@ pipelines:
         destination: Chakraborty_MeanValuePlotting
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5705,15 +5665,9 @@ pipelines:
         destination: Chakraborty_MeasurementActor
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
-      SubpanelEnabledActor.lvlibp_pipelineMaterial:
-        pipeline: SubpanelEnabledActor.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id034
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5993,15 +5947,9 @@ pipelines:
         destination: Chakraborty_FanucWithLogging
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      AF_Messages-PPL.lvlibp_pipelineMaterial:
-        pipeline: AF_Messages-PPL.lvlibp
-        stage: build_ppls
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
       SQLite.lvlibp_pipelineMaterial:
         pipeline: SQLite.lvlibp
         stage: build_ppls
@@ -6332,15 +6280,11 @@ pipelines:
         destination: Chakraborty_FanucController
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial:
-        pipeline: Fanuc-Interface.lvlibp
-        stage: build_ppls
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
       Motor-Ramping-Calculations.lvlibp_pipelineMaterial:
         pipeline: Motor-Ramping-Calculations.lvlibp
         stage: build_ppls
-      OIST_Error.lvlibp_pipelineMaterial:
-        pipeline: OIST_Error.lvlibp
-        stage: build_ppls
+      OIST_Error.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6713,15 +6657,9 @@ pipelines:
         destination: Chakraborty_NetworkStreams
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      AF_Messages-PPL.lvlibp_pipelineMaterial:
-        pipeline: AF_Messages-PPL.lvlibp
-        stage: build_ppls
-      Simple-Logger.lvlibp_pipelineMaterial:
-        pipeline: Simple-Logger.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
+      Simple-Logger.lvlibp_pipelineMaterial: *id035
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7184,9 +7122,7 @@ pipelines:
         destination: Chakraborty_PowerSupplies
         auto_update: true
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial:
-        pipeline: Serial-Communication.lvlibp
-        stage: build_ppls
+      Serial-Communication.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7461,9 +7397,7 @@ pipelines:
         destination: Chakraborty_ReqForConnection
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial:
-        pipeline: NS_ServerClient.lvlibp
-        stage: build_ppls
+      NS_ServerClient.lvlibp_pipelineMaterial: *id025
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7647,15 +7581,9 @@ pipelines:
         destination: Chakraborty_MResGraph
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial:
-        pipeline: Measurement-Results.lvlibp
-        stage: build_ppls
-      SubpanelEnabledActor.lvlibp_pipelineMaterial:
-        pipeline: SubpanelEnabledActor.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id034
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
@@ -8537,9 +8465,7 @@ pipelines:
         destination: Chakraborty_SubpanelEnabledActor
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial:
-        pipeline: Actor-Framework.lvlibp
-        stage: build_ppls
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8815,12 +8741,8 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: true
         shallow_clone: false
-      SPI-Communicator.lvlibp_pipelineMaterial:
-        pipeline: SPI-Communicator.lvlibp
-        stage: build_ppls
-      SPI-Functions.lvlibp_pipelineMaterial:
-        pipeline: SPI-Functions.lvlibp
-        stage: build_ppls
+      SPI-Communicator.lvlibp_pipelineMaterial: *id036
+      SPI-Functions.lvlibp_pipelineMaterial: *id037
     stages:
     - build_ppls:
         fetch_materials: 'yes'
