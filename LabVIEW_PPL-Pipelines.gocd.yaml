@@ -8087,7 +8087,7 @@ pipelines:
     group: PPLs
     parameters:
       PPL_Name: SQLite.lvlibp
-      PPL_LIB_PATH: Chakraborty_JDP_SQLite/SQLite.lvlib
+      PPL_LIB_PATH: Chakraborty_JDP_SQLite/SQLite/SQLite.lvlib
       GIT_DIR: Chakraborty_JDP_SQLite
       Dependency_PPL_Names: ''
     materials:
