@@ -32,7 +32,7 @@ of course, LabVIEW).
 
 The YAML generated here provides a list of `pipeline` entries, containing
 `stages`, `jobs` and `tasks`. A pipeline is used here for each separate library
-that should be build into a PPL, and each pipeline has only one stage.\
+that should be built into a PPL, and each pipeline has only one stage.\
 That stage contains a set of 6 (almost identical) jobs, one for each target.
 
 In GoCD, `jobs` are run in parallel, and so the configuration here sets
@@ -71,12 +71,12 @@ to provide a Username and Password for your Git repository.
 
 If you select the "Fetch updates to this repository only on webhook or manual trigger"
 then you can manually trigger using the refresh-icon from the same page:
-![](./gocd-configrepo-refresh-screenshot.png)
+<img src="./gocd-configrepo-refresh-screenshot.png" id="config-repo-name"/>
 
 ## Comments on the YamlGenerator.py, Constants.py and Generate_PPL_Pipelines.py files
 
-Within the `YamlGenerator.py` and `Constants.py` files, there are many 
-variables defined for the purpose of generating
+Within the [YamlGenerator.py](./scripts/YamlGenerator.py) and [Constants.py](./scripts/Constants.py) files,
+there are many variables defined for the purpose of generating
 [YAML aliases](https://github.com/tomzo/gocd-yaml-config-plugin#yaml-aliases),
 in order to reduce the output file size.\
 This sometimes makes the code seem excessively fragmented, when a function
@@ -87,8 +87,9 @@ aliases are not created (comparison is by reference/id, not content).\
 Hopefully splitting the majority of the constants into a separate file eases
 the reading of the YamlGenerator.py file.
 
-`Generate_PPL_Pipelines.py` is the file which should be executed using Python
-to generate the `LabVIEW_PPL-Pipelines.gocd.yaml` file.\
+[Generate_PPL_Pipelines.py](./scripts/Generate_PPL_Pipelines.py) is the file
+which should be executed using Python to generate the
+[LabVIEW_PPL-Pipelines.gocd.yaml](./LabVIEW_PPL-Pipelines.gocd.yaml) file.\
 It clones a list of repositories (in `repoList.txt`) and then searches for
 the libraries named in that file within the repository that is cloned.\
 It also parses a `<libraryName>.mk` file to build a list of dependencies.
@@ -112,9 +113,10 @@ Since I had some difficulty setting this up (especially on a Windows machine), a
 set of additional notes is provided below for those who want to try and use this
 with their own config-repository files.
 
-The steps below assume that you're starting in your home directory, however this
-is not a requirement - if you want to place files elsewhere, adapt your PATH as
-needed. It also assumes that the GoCD Server is running locally for testing - if
+The steps below assume that you're starting in your home (WSL) directory,
+however this is not a requirement - if you want to place files elsewhere,
+adapt your PATH as needed.
+It also assumes that the GoCD Server is running locally for testing - if
 you have a remote GoCD server, change the server-url as appropriate.
 
 Changes to your PATH and updates to the gocd server-url can be placed in your
@@ -171,8 +173,8 @@ many instances (one per pipeline) of:
 ```
 In that case, you can pass the existing configuration repository name
 (set in GoCD Server), where file1.gocd.yaml and file2.gocd.yaml are
-files to check, and "PPL_Builder" is the name given in the GoCD Server
-configuration
+files to check, and "PPL_Builder" is the name given in the [GoCD Server
+configuration](#config-repo-name)
 ```
 gocd configrepo --yaml preflight -r "PPL_Builder" file1.gocd.yaml file2.gocd.yaml
 ```
