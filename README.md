@@ -63,7 +63,7 @@ Configuration repositories can be added via the web interface to a GoCD server v
 ADMIN > Config Repositories page (/go/admin/config_repos).
 
 Adding a new config repository brings up a dialog like this one
-![](./gocd-configrepo-config-screenshot.png)
+![](./readme-resources/gocd-configrepo-config-screenshot.png)
 
 The "Config repository name" (indicated) is also important for use with testing (see below).
 If you are using SSH keys to access your config repository, then you don't need
@@ -71,7 +71,7 @@ to provide a Username and Password for your Git repository.
 
 If you select the "Fetch updates to this repository only on webhook or manual trigger"
 then you can manually trigger using the refresh-icon from the same page:
-<img src="./gocd-configrepo-refresh-screenshot.png" id="config-repo-name"/>
+<img src="./readme-resources/gocd-configrepo-refresh-screenshot.png" id="config-repo-name"/>
 
 ## Comments on the YamlGenerator.py, Constants.py and Generate_PPL_Pipelines.py files
 
