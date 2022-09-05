@@ -45,7 +45,7 @@ targets.
 
 Each job contains a series of `tasks`, where tasks are executed in series.
 The tasks begin by 'downloading' and unzipping a copy of the 
-[PPL_Builder](https://github.com/oist/Chakraborty_PPL-Builder) repository,
+[PPL_Builder](https://github.com/oist/PPL_Builder) repository,
 which is done to reduce the number of git operations and the size of the
 resulting folder.
 

@@ -7,10 +7,10 @@ pipelines:
     display_order: -1
     materials:
       source_repo:
-        git: git@github.com:oist/Chakraborty_PPL-Builder
+        git: git@github.com:oist/PPL_Builder
         shallow_clone: true
         auto_update: false
-        branch: NIPKG_Builds
+        branch: main
         destination: PPL_Builder
     stages:
     - Zip:
