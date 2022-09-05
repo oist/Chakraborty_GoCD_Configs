@@ -1,5 +1,5 @@
 # Ignore the pycache
-scripts/__pycache__
+**/__pycache__
 # Ignore the directories checked out to build the configs.
 # This allows processing/testing in place.
 Chakraborty_*/
