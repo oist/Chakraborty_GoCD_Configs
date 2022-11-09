@@ -3970,7 +3970,7 @@ pipelines:
       PPL_Name: GX_Balance.lvlibp
       PPL_LIB_PATH: Chakraborty_GX-Balance/GX_Balance.lvlib
       GIT_DIR: Chakraborty_GX-Balance
-      Dependency_PPL_Names: ''
+      Dependency_PPL_Names: '"Measurement Results.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_GX-Balance:
@@ -3978,6 +3978,7 @@ pipelines:
         destination: Chakraborty_GX-Balance
         auto_update: true
         shallow_clone: false
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3995,7 +3996,22 @@ pipelines:
                 id: GX_Balance_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Measurement-Results_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id004
+            - *id012
+            - *id005
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4007,7 +4023,22 @@ pipelines:
                 id: GX_Balance_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Measurement-Results_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4019,7 +4050,22 @@ pipelines:
                 id: GX_Balance_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Measurement-Results_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4031,7 +4077,22 @@ pipelines:
                 id: GX_Balance_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Measurement-Results_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id004
+            - *id012
+            - *id005
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4043,7 +4104,22 @@ pipelines:
                 id: GX_Balance_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Measurement-Results_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id004
+            - *id012
+            - *id005
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4055,7 +4131,22 @@ pipelines:
                 id: GX_Balance_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Measurement-Results_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id004
+            - *id012
+            - *id005
   HW-Probes.lvlibp:
     group: PPLs
     parameters:
@@ -5424,7 +5515,8 @@ pipelines:
       PPL_Name: MSE LDV.lvlibp
       PPL_LIB_PATH: Chakraborty_MSE_LDV/MSE LDV.lvlib
       GIT_DIR: Chakraborty_MSE_LDV
-      Dependency_PPL_Names: ''
+      Dependency_PPL_Names: '"Actor Framework.lvlibp" "DiskLogger.lvlibp" "Measurement
+        Results.lvlibp" "OIST_Error.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_MSE_LDV:
@@ -5432,6 +5524,12 @@ pipelines:
         destination: Chakraborty_MSE_LDV
         auto_update: true
         shallow_clone: false
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      DiskLogger.lvlibp_pipelineMaterial:
+        pipeline: DiskLogger.lvlibp
+        stage: build_ppls
+      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      OIST_Error.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5449,7 +5547,46 @@ pipelines:
                 id: MSE-LDV_Windows_32_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Actor-Framework_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: DiskLogger_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Measurement-Results_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id004
+            - *id012
+            - *id005
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -5461,7 +5598,46 @@ pipelines:
                 id: MSE-LDV_Windows_32_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Actor-Framework_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: DiskLogger_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Measurement-Results_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5473,7 +5649,46 @@ pipelines:
                 id: MSE-LDV_Windows_64_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Actor-Framework_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: DiskLogger_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Measurement-Results_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5485,7 +5700,46 @@ pipelines:
                 id: MSE-LDV_Windows_64_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Actor-Framework_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: DiskLogger_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Measurement-Results_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id004
+            - *id012
+            - *id005
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5497,7 +5751,46 @@ pipelines:
                 id: MSE-LDV_cRIO_Release_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Actor-Framework_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: DiskLogger_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Measurement-Results_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id004
+            - *id012
+            - *id005
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5509,7 +5802,46 @@ pipelines:
                 id: MSE-LDV_cRIO_Debug_nipkg
                 store_id: local-host
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Actor-Framework_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: DiskLogger_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Measurement-Results_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id004
+            - *id012
+            - *id005
   Mean-Value-Plotting.lvlibp:
     group: PPLs
     parameters:
