@@ -101,7 +101,10 @@ def handleUrl(gitUrl, libNames, baseDir):
   cloneResponse = cloneRepo(gitUrl, outputDir, forceUpdate)
   retVals = []
   for libName in libNames:
-    libPath = os.path.join(gitDir, find_file(libName, outputDir, False)).replace(os.sep, "/")
+    libPathPartial = find_file(libName, outputDir, False)
+    if not libPathPartial:
+      raise FileNotFoundError('Could not find ' + libName + ' in ' + str(baseDir))
+    libPath = os.path.join(gitDir, libPathPartial).replace(os.sep, "/")
     mkFilePath = find_file(libName.replace('.lvlib', '.mk'), outputDir)
     pipelineName = getSanitizedName(libName) + "p"
     PPL_Name = libName + "p"
