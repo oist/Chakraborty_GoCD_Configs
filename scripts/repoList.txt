@@ -49,6 +49,8 @@ Dantec+Processor+Interface_REPO := oist/Chakraborty_DantecBSAProcessor
 Dantec+LDV+Processor_REPO := oist/Chakraborty_DantecBSAProcessor
 Mean+Value+Plotting_REPO := oist/Chakraborty_MeanValuePlotting
 SQLite_REPO := oist/Chakraborty_JDP_SQLite
+MSE+LDV_REPO := oist/Chakraborty_MSE_LDV
+GX_Balance_REPO := oist/Chakraborty_GX-Balance
 
 # Change these:
 # Name of MeasurementActor repo?
