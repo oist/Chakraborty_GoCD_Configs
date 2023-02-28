@@ -51,6 +51,7 @@ Mean+Value+Plotting_REPO := oist/Chakraborty_MeanValuePlotting
 SQLite_REPO := oist/Chakraborty_JDP_SQLite
 MSE+LDV_REPO := oist/Chakraborty_MSE_LDV
 GX_Balance_REPO := oist/Chakraborty_GX-Balance
+PowerSupplyInterface_REPO := oist/Chakraborty_PSU-Interface
 
 # Change these:
 # Name of MeasurementActor repo?
