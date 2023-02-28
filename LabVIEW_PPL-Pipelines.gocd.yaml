@@ -220,7 +220,7 @@ pipelines:
                 destination: '#{PPL_Name}'
             - external:
                 id: ADC_StreamDatatypes_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: &id008
                   options:
                     PackagePath: NIPKGs/*.nipkg
@@ -278,7 +278,7 @@ pipelines:
             - *id007
             - external:
                 id: ADC_StreamDatatypes_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -310,7 +310,7 @@ pipelines:
             - *id007
             - external:
                 id: ADC_StreamDatatypes_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -342,7 +342,7 @@ pipelines:
             - *id007
             - external:
                 id: ADC_StreamDatatypes_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -374,7 +374,7 @@ pipelines:
             - *id007
             - external:
                 id: ADC_StreamDatatypes_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -406,7 +406,7 @@ pipelines:
             - *id007
             - external:
                 id: ADC_StreamDatatypes_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -453,7 +453,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -465,7 +465,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -477,7 +477,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -489,7 +489,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -501,7 +501,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -513,7 +513,7 @@ pipelines:
             - *id007
             - external:
                 id: ADG-Requests_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   AF_Messages-PPL.lvlibp:
@@ -548,7 +548,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -575,7 +575,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -602,7 +602,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -629,7 +629,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -656,7 +656,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -683,7 +683,7 @@ pipelines:
             - *id007
             - external:
                 id: AF_Messages-PPL_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -730,7 +730,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -742,7 +742,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -754,7 +754,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -766,7 +766,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -778,7 +778,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -790,7 +790,7 @@ pipelines:
             - *id007
             - external:
                 id: Actor-Framework_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Communication-Server.lvlibp:
@@ -830,7 +830,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -873,7 +873,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -916,7 +916,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -959,7 +959,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1002,7 +1002,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1045,7 +1045,7 @@ pipelines:
             - *id007
             - external:
                 id: Communication-Server_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1111,7 +1111,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1138,7 +1138,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1165,7 +1165,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1192,7 +1192,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1219,7 +1219,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1246,7 +1246,7 @@ pipelines:
             - *id007
             - external:
                 id: Cooler_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1299,7 +1299,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1334,7 +1334,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1369,7 +1369,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1404,7 +1404,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1439,7 +1439,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1474,7 +1474,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-LDV-Processor_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1530,7 +1530,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -1542,7 +1542,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -1554,7 +1554,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -1566,7 +1566,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -1578,7 +1578,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -1590,7 +1590,7 @@ pipelines:
             - *id007
             - external:
                 id: Dantec-Processor-Interface_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   DataStore.lvlibp:
@@ -1623,7 +1623,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1650,7 +1650,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1677,7 +1677,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1704,7 +1704,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1731,7 +1731,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1758,7 +1758,7 @@ pipelines:
             - *id007
             - external:
                 id: DataStore_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1806,7 +1806,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1833,7 +1833,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1860,7 +1860,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1887,7 +1887,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1914,7 +1914,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1941,7 +1941,7 @@ pipelines:
             - *id007
             - external:
                 id: DiskLogger_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -1991,7 +1991,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2018,7 +2018,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2045,7 +2045,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2072,7 +2072,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2099,7 +2099,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2126,7 +2126,7 @@ pipelines:
             - *id007
             - external:
                 id: ErrorHandling_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2185,7 +2185,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2244,7 +2244,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2303,7 +2303,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2362,7 +2362,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2421,7 +2421,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2480,7 +2480,7 @@ pipelines:
             - *id007
             - external:
                 id: Fake-Comm-Server_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2562,7 +2562,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2589,7 +2589,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2616,7 +2616,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2643,7 +2643,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2670,7 +2670,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2697,7 +2697,7 @@ pipelines:
             - *id007
             - external:
                 id: FakeStage_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2745,7 +2745,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2772,7 +2772,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2799,7 +2799,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2826,7 +2826,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2853,7 +2853,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2880,7 +2880,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Interface_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2930,7 +2930,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2957,7 +2957,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -2984,7 +2984,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3011,7 +3011,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3038,7 +3038,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3065,7 +3065,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc-Proxy_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3113,7 +3113,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3140,7 +3140,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3167,7 +3167,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3194,7 +3194,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3221,7 +3221,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3248,7 +3248,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_FOCAS_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3300,7 +3300,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3343,7 +3343,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3386,7 +3386,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3429,7 +3429,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3472,7 +3472,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3515,7 +3515,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_NSProxy_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3579,7 +3579,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3606,7 +3606,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3633,7 +3633,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3660,7 +3660,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3687,7 +3687,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3714,7 +3714,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCP_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3763,7 +3763,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3798,7 +3798,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3833,7 +3833,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3868,7 +3868,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3903,7 +3903,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3938,7 +3938,7 @@ pipelines:
             - *id007
             - external:
                 id: Fanuc_TCPProxy_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -3994,7 +3994,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4021,7 +4021,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4048,7 +4048,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4075,7 +4075,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4102,7 +4102,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4129,7 +4129,7 @@ pipelines:
             - *id007
             - external:
                 id: GX_Balance_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4176,7 +4176,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -4188,7 +4188,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -4200,7 +4200,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -4212,7 +4212,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -4224,7 +4224,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -4236,7 +4236,7 @@ pipelines:
             - *id007
             - external:
                 id: HW-Probes_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Hot-Wire-Temperature-Correction.lvlibp:
@@ -4268,7 +4268,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -4280,7 +4280,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -4292,7 +4292,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -4304,7 +4304,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -4316,7 +4316,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -4328,7 +4328,7 @@ pipelines:
             - *id007
             - external:
                 id: Hot-Wire-Temperature-Correction_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   ISEL_TranslationStage.lvlibp:
@@ -4361,7 +4361,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4388,7 +4388,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4415,7 +4415,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4442,7 +4442,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4469,7 +4469,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4496,7 +4496,7 @@ pipelines:
             - *id007
             - external:
                 id: ISEL_TranslationStage_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4547,7 +4547,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4582,7 +4582,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4617,7 +4617,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4652,7 +4652,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4687,7 +4687,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4722,7 +4722,7 @@ pipelines:
             - *id007
             - external:
                 id: Innova-Laser_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4792,7 +4792,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4859,7 +4859,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4926,7 +4926,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -4993,7 +4993,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5060,7 +5060,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5127,7 +5127,7 @@ pipelines:
             - *id007
             - external:
                 id: LTC2983_Lib_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5214,7 +5214,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -5226,7 +5226,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -5238,7 +5238,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -5250,7 +5250,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -5262,7 +5262,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -5274,7 +5274,7 @@ pipelines:
             - *id007
             - external:
                 id: Laser-Interface_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   MResDatatype.lvlibp:
@@ -5308,7 +5308,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5343,7 +5343,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5378,7 +5378,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5413,7 +5413,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5448,7 +5448,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5483,7 +5483,7 @@ pipelines:
             - *id007
             - external:
                 id: MResDatatype_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5545,7 +5545,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5596,7 +5596,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5647,7 +5647,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5698,7 +5698,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5749,7 +5749,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5800,7 +5800,7 @@ pipelines:
             - *id007
             - external:
                 id: MSE-LDV_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5873,7 +5873,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5908,7 +5908,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5943,7 +5943,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -5978,7 +5978,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6013,7 +6013,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6048,7 +6048,7 @@ pipelines:
             - *id007
             - external:
                 id: Mean-Value-Plotting_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6103,7 +6103,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -6115,7 +6115,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -6127,7 +6127,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -6139,7 +6139,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -6151,7 +6151,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -6163,7 +6163,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurement-Results_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Measurements.lvlibp:
@@ -6199,7 +6199,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6242,7 +6242,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6285,7 +6285,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6328,7 +6328,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6371,7 +6371,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6414,7 +6414,7 @@ pipelines:
             - *id007
             - external:
                 id: Measurements_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6484,7 +6484,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6535,7 +6535,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6586,7 +6586,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6637,7 +6637,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6688,7 +6688,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6739,7 +6739,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Activity-Logging_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6816,7 +6816,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6859,7 +6859,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6902,7 +6902,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6945,7 +6945,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -6988,7 +6988,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7031,7 +7031,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Controller_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7095,7 +7095,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -7107,7 +7107,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -7119,7 +7119,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -7131,7 +7131,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -7143,7 +7143,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -7155,7 +7155,7 @@ pipelines:
             - *id007
             - external:
                 id: Motor-Ramping-Calculations_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   NS_ServerClient.lvlibp:
@@ -7191,7 +7191,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7234,7 +7234,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7277,7 +7277,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7320,7 +7320,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7363,7 +7363,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7406,7 +7406,7 @@ pipelines:
             - *id007
             - external:
                 id: NS_ServerClient_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7469,7 +7469,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -7481,7 +7481,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -7493,7 +7493,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -7505,7 +7505,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -7517,7 +7517,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -7529,7 +7529,7 @@ pipelines:
             - *id007
             - external:
                 id: OIST_Error_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   PowerSupplies-Arduino.lvlibp:
@@ -7561,7 +7561,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -7573,7 +7573,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -7585,7 +7585,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -7597,7 +7597,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -7609,7 +7609,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -7621,7 +7621,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Arduino_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   PowerSupplies-Serial.lvlibp:
@@ -7654,7 +7654,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7681,7 +7681,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7708,7 +7708,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7735,7 +7735,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7762,7 +7762,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7789,7 +7789,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplies-Serial_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7837,7 +7837,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7864,7 +7864,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7891,7 +7891,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7918,7 +7918,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7945,7 +7945,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -7972,7 +7972,7 @@ pipelines:
             - *id007
             - external:
                 id: PowerSupplyInterface_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8019,7 +8019,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -8031,7 +8031,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -8043,7 +8043,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -8055,7 +8055,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -8067,7 +8067,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -8079,7 +8079,7 @@ pipelines:
             - *id007
             - external:
                 id: ProjectUtilities_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Request-for-Connection.lvlibp:
@@ -8112,7 +8112,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8139,7 +8139,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8166,7 +8166,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8193,7 +8193,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8220,7 +8220,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8247,7 +8247,7 @@ pipelines:
             - *id007
             - external:
                 id: Request-for-Connection_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8301,7 +8301,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8352,7 +8352,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8403,7 +8403,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8454,7 +8454,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8505,7 +8505,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8556,7 +8556,7 @@ pipelines:
             - *id007
             - external:
                 id: Result-Graph_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -8627,7 +8627,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -8639,7 +8639,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -8651,7 +8651,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -8663,7 +8663,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -8675,7 +8675,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -8687,7 +8687,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Communicator_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   SPI-Functions.lvlibp:
@@ -8719,7 +8719,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -8731,7 +8731,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -8743,7 +8743,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -8755,7 +8755,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -8767,7 +8767,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -8779,7 +8779,7 @@ pipelines:
             - *id007
             - external:
                 id: SPI-Functions_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   SQLite.lvlibp:
@@ -8811,7 +8811,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -8823,7 +8823,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -8835,7 +8835,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -8847,7 +8847,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -8859,7 +8859,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -8871,7 +8871,7 @@ pipelines:
             - *id007
             - external:
                 id: SQLite_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Serial-Communication.lvlibp:
@@ -8903,7 +8903,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -8915,7 +8915,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -8927,7 +8927,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -8939,7 +8939,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -8951,7 +8951,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -8963,7 +8963,7 @@ pipelines:
             - *id007
             - external:
                 id: Serial-Communication_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   Simple-Logger.lvlibp:
@@ -8995,7 +8995,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -9007,7 +9007,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -9019,7 +9019,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -9031,7 +9031,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -9043,7 +9043,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -9055,7 +9055,7 @@ pipelines:
             - *id007
             - external:
                 id: Simple-Logger_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   String-Logging.lvlibp:
@@ -9087,7 +9087,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -9099,7 +9099,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -9111,7 +9111,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -9123,7 +9123,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -9135,7 +9135,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -9147,7 +9147,7 @@ pipelines:
             - *id007
             - external:
                 id: String-Logging_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   SubpanelEnabledActor.lvlibp:
@@ -9180,7 +9180,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9207,7 +9207,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9234,7 +9234,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9261,7 +9261,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9288,7 +9288,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9315,7 +9315,7 @@ pipelines:
             - *id007
             - external:
                 id: SubpanelEnabledActor_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9362,7 +9362,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_32_Debug:
@@ -9374,7 +9374,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Release:
@@ -9386,7 +9386,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           Windows_64_Debug:
@@ -9398,7 +9398,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Release:
@@ -9410,7 +9410,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
           cRIO_Debug:
@@ -9422,7 +9422,7 @@ pipelines:
             - *id007
             - external:
                 id: TranslationStage_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks: *id019
   X-Series-SPI-Comms.lvlibp:
@@ -9457,7 +9457,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_Windows_32_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9492,7 +9492,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_Windows_32_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9527,7 +9527,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_Windows_64_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9562,7 +9562,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_Windows_64_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9597,7 +9597,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_cRIO_Release_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001
@@ -9632,7 +9632,7 @@ pipelines:
             - *id007
             - external:
                 id: X-Series-SPI-Comms_cRIO_Debug_nipkg
-                store_id: local-host
+                store_id: cicwin
                 configuration: *id008
             tasks:
             - *id001

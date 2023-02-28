@@ -140,7 +140,7 @@ def generatePPLJobList(packageRootName, dependencies):
           # This id-value changes per PPL, but could be made into a set of 6 aliases (one per target)
           # Actually, this might not allow parameter usage...
             "id": packageId,
-            "store_id": "local-host",
+            "store_id": "cicwin",
             "configuration": nipkgConfigOptions
         }}
       ],
