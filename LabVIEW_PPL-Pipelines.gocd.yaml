@@ -209,6 +209,7 @@ pipelines:
               TARGET_SYSTEM: Windows
               IS_DEBUG_BUILD: 0
               BITNESS_FLAG: -v
+              RELEASE_NOTES: ''
             artifacts:
             - &id006
               build:
@@ -273,6 +274,7 @@ pipelines:
               TARGET_SYSTEM: Windows
               IS_DEBUG_BUILD: 1
               BITNESS_FLAG: -v
+              RELEASE_NOTES: ''
             artifacts:
             - *id006
             - *id007
@@ -305,6 +307,7 @@ pipelines:
               TARGET_SYSTEM: Windows
               IS_DEBUG_BUILD: 0
               BITNESS_FLAG: --x64 -v
+              RELEASE_NOTES: ''
             artifacts:
             - *id006
             - *id007
@@ -337,6 +340,7 @@ pipelines:
               TARGET_SYSTEM: Windows
               IS_DEBUG_BUILD: 1
               BITNESS_FLAG: --x64 -v
+              RELEASE_NOTES: ''
             artifacts:
             - *id006
             - *id007
@@ -369,6 +373,7 @@ pipelines:
               TARGET_SYSTEM: cRIO
               IS_DEBUG_BUILD: 0
               BITNESS_FLAG: -v
+              RELEASE_NOTES: ''
             artifacts:
             - *id006
             - *id007
@@ -401,6 +406,7 @@ pipelines:
               TARGET_SYSTEM: cRIO
               IS_DEBUG_BUILD: 1
               BITNESS_FLAG: -v
+              RELEASE_NOTES: ''
             artifacts:
             - *id006
             - *id007
@@ -7905,7 +7911,7 @@ pipelines:
       PPL_Name: PowerSupplyInterface.lvlibp
       PPL_LIB_PATH: Chakraborty_PSU-Interface/PowerSupplyInterface.lvlib
       GIT_DIR: Chakraborty_PSU-Interface
-      Dependency_PPL_Names: ''
+      Dependency_PPL_Names: '"OIST_Error.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_PSU-Interface:
@@ -7913,6 +7919,7 @@ pipelines:
         destination: Chakraborty_PSU-Interface
         auto_update: true
         shallow_clone: false
+      OIST_Error.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7930,7 +7937,22 @@ pipelines:
                 id: PowerSupplyInterface_Windows_32_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id004
+            - *id012
+            - *id005
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -7942,7 +7964,22 @@ pipelines:
                 id: PowerSupplyInterface_Windows_32_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7954,7 +7991,22 @@ pipelines:
                 id: PowerSupplyInterface_Windows_64_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7966,7 +8018,22 @@ pipelines:
                 id: PowerSupplyInterface_Windows_64_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id004
+            - *id012
+            - *id005
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7978,7 +8045,22 @@ pipelines:
                 id: PowerSupplyInterface_cRIO_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id004
+            - *id012
+            - *id005
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7990,7 +8072,22 @@ pipelines:
                 id: PowerSupplyInterface_cRIO_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id004
+            - *id012
+            - *id005
   ProjectUtilities.lvlibp:
     group: PPLs
     parameters:

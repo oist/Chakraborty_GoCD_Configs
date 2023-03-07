@@ -121,7 +121,8 @@ for target in Target.__members__:
     "BUILD_TYPE": "BUILD", # Probably set this elsewhere
     "TARGET_SYSTEM": "Windows" if targetT.value < 4 else "cRIO",
     "IS_DEBUG_BUILD": targetT.value % 2,
-    "BITNESS_FLAG": "--x64 -v" if is64Bit else "-v"
+    "BITNESS_FLAG": "--x64 -v" if is64Bit else "-v",
+    "RELEASE_NOTES": ""
   }
 
 def generatePPLJobList(packageRootName, dependencies):
