@@ -52,6 +52,7 @@ SQLite_REPO := oist/Chakraborty_JDP_SQLite
 MSE+LDV_REPO := oist/Chakraborty_MSE_LDV
 GX_Balance_REPO := oist/Chakraborty_GX-Balance
 PowerSupplyInterface_REPO := oist/Chakraborty_PSU-Interface
+PMX32-2QU_REPO := oist/Chakraborty_PMX32
 
 # Change these:
 # Name of MeasurementActor repo?
