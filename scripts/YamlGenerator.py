@@ -153,7 +153,7 @@ def generatePPLStages(packageRootName, dependencies):
     {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
-      "approval": "success",
+      "approval": "manual",
       "jobs": generatePPLJobList(packageRootName, dependencies)
     }}
   ]
