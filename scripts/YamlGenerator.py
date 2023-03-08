@@ -149,15 +149,13 @@ def generatePPLJobList(packageRootName, dependencies):
     }
   return ppl_job_list
 
-def generatePPLStages(packageRootName, dependencies):
-  return [
-    {"build_ppls": {
+def generatePPLStage(packageRootName, dependencies):
+  return {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
       "approval": "manual",
       "jobs": generatePPLJobList(packageRootName, dependencies)
-    }}
-  ]
+  }}
 
 dependencyMaterials = {}
 def generateMaterials(gitUrl, dependencies):
@@ -224,7 +222,9 @@ class PipelineDefinition(yaml.YAMLObject):
         "Dependency_PPL_Names": dependencyQuotedList
       },
       "materials": materials,
-      "stages": generatePPLStages(getPackageRootName(self.name), self.dependencies)
+      "stages": [
+        generatePPLStage(getPackageRootName(self.name), self.dependencies),
+      ]
     }
 
   @classmethod
