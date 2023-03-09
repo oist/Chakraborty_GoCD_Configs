@@ -191,7 +191,7 @@ pipelines:
         destination: Chakraborty_StreamDatatypes
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial: &id025
+      NS_ServerClient.lvlibp_pipelineMaterial: &id026
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
     stages:
@@ -430,6 +430,69 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - &id025
+      git_tag:
+        approval: success
+        fetch_materials: 'yes'
+        environment_variables:
+          GITHUB_RELEASE_TOKEN: '{{SECRET:[secrets.json][github_publishing_token]}}'
+        tasks:
+        - *id001
+        - *id002
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: Windows_32_Release
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/Windows_32_Release
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: Windows_32_Debug
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/Windows_32_Debug
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: Windows_64_Release
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/Windows_64_Release
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: Windows_64_Debug
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/Windows_64_Debug
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: cRIO_Release
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/cRIO_Release
+        - fetch:
+            run_if: passed
+            stage: build_ppls
+            job: cRIO_Debug
+            is_file: false
+            source: '#{PPL_Name}'
+            destination: artifacts/cRIO_Debug
+        - exec:
+            run_if: passed
+            command: dir
+            arguments:
+            - '*'
+        - exec:
+            run_if: passed
+            command: py
+            arguments:
+            - '-3'
+            - -u
+            - PPL_Builder/publish_github.py
   ADG-Requests.lvlibp:
     group: PPLs
     parameters:
@@ -522,6 +585,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   AF_Messages-PPL.lvlibp:
     group: PPLs
     parameters:
@@ -536,7 +600,7 @@ pipelines:
         destination: Chakraborty_NI_ActorFramework
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: &id028
+      Actor-Framework.lvlibp_pipelineMaterial: &id029
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
     stages:
@@ -707,6 +771,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Actor-Framework.lvlibp:
     group: PPLs
     parameters:
@@ -799,6 +864,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Communication-Server.lvlibp:
     group: PPLs
     parameters:
@@ -814,11 +880,11 @@ pipelines:
         destination: Chakraborty_CommServer
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial: *id025
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
       Request-for-Connection.lvlibp_pipelineMaterial:
         pipeline: Request-for-Connection.lvlibp
         stage: build_ppls
-      MResDatatype.lvlibp_pipelineMaterial: &id027
+      MResDatatype.lvlibp_pipelineMaterial: &id028
         pipeline: MResDatatype.lvlibp
         stage: build_ppls
     stages:
@@ -1085,6 +1151,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Cooler.lvlibp:
     group: PPLs
     parameters:
@@ -1099,7 +1166,7 @@ pipelines:
         destination: Chakraborty_CoolerUnit
         auto_update: true
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: &id032
+      Serial-Communication.lvlibp_pipelineMaterial: &id033
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
     stages:
@@ -1270,6 +1337,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Dantec-LDV-Processor.lvlibp:
     group: PPLs
     parameters:
@@ -1287,7 +1355,7 @@ pipelines:
       Dantec-Processor-Interface.lvlibp_pipelineMaterial:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial: &id026
+      Measurement-Results.lvlibp_pipelineMaterial: &id027
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
     stages:
@@ -1506,6 +1574,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Dantec-Processor-Interface.lvlibp:
     group: PPLs
     parameters:
@@ -1599,6 +1668,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   DataStore.lvlibp:
     group: PPLs
     parameters:
@@ -1613,7 +1683,7 @@ pipelines:
         destination: Chakraborty_MResGraph
         auto_update: true
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1782,6 +1852,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   DiskLogger.lvlibp:
     group: PPLs
     parameters:
@@ -1796,7 +1867,7 @@ pipelines:
         destination: Chakraborty_DiskLogger
         auto_update: true
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1965,6 +2036,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   ErrorHandling.lvlibp:
     group: PPLs
     parameters:
@@ -1979,7 +2051,7 @@ pipelines:
         destination: Chakraborty_ErrorHandlers
         auto_update: true
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: &id029
+      OIST_Error.lvlibp_pipelineMaterial: &id030
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
     stages:
@@ -2150,6 +2222,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fake-Comm-Server.lvlibp:
     group: PPLs
     parameters:
@@ -2168,12 +2241,12 @@ pipelines:
       Communication-Server.lvlibp_pipelineMaterial:
         pipeline: Communication-Server.lvlibp
         stage: build_ppls
-      MResDatatype.lvlibp_pipelineMaterial: *id027
-      AF_Messages-PPL.lvlibp_pipelineMaterial: &id033
+      MResDatatype.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: &id034
         pipeline: AF_Messages-PPL.lvlibp
         stage: build_ppls
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Simple-Logger.lvlibp_pipelineMaterial: &id035
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      Simple-Logger.lvlibp_pipelineMaterial: &id036
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
     stages:
@@ -2536,6 +2609,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   FakeStage.lvlibp:
     group: PPLs
     parameters:
@@ -2721,6 +2795,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc-Interface.lvlibp:
     group: PPLs
     parameters:
@@ -2735,7 +2810,7 @@ pipelines:
         destination: Chakraborty_Fanuc_Interface
         auto_update: true
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id029
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2904,6 +2979,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc-Proxy.lvlibp:
     group: PPLs
     parameters:
@@ -2918,7 +2994,7 @@ pipelines:
         destination: Chakraborty_FanucProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: &id030
+      Fanuc-Interface.lvlibp_pipelineMaterial: &id031
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
     stages:
@@ -3089,6 +3165,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc_FOCAS.lvlibp:
     group: PPLs
     parameters:
@@ -3103,7 +3180,7 @@ pipelines:
         destination: Chakraborty_Fanuc_FOCAS2
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3272,6 +3349,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc_NSProxy.lvlibp:
     group: PPLs
     parameters:
@@ -3286,11 +3364,11 @@ pipelines:
         destination: Chakraborty_FanucNSProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
-      Fanuc-Proxy.lvlibp_pipelineMaterial: &id031
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
+      Fanuc-Proxy.lvlibp_pipelineMaterial: &id032
         pipeline: Fanuc-Proxy.lvlibp
         stage: build_ppls
-      NS_ServerClient.lvlibp_pipelineMaterial: *id025
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3555,6 +3633,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc_TCP.lvlibp:
     group: PPLs
     parameters:
@@ -3569,7 +3648,7 @@ pipelines:
         destination: Chakraborty_Fanuc_TCP
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3738,6 +3817,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Fanuc_TCPProxy.lvlibp:
     group: PPLs
     parameters:
@@ -3752,8 +3832,8 @@ pipelines:
         destination: Chakraborty_Fanuc_TCPProxy
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
-      Fanuc-Proxy.lvlibp_pipelineMaterial: *id031
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
+      Fanuc-Proxy.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3970,6 +4050,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   GX_Balance.lvlibp:
     group: PPLs
     parameters:
@@ -3984,7 +4065,7 @@ pipelines:
         destination: Chakraborty_GX-Balance
         auto_update: true
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4153,6 +4234,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   HW-Probes.lvlibp:
     group: PPLs
     parameters:
@@ -4245,6 +4327,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Hot-Wire-Temperature-Correction.lvlibp:
     group: PPLs
     parameters:
@@ -4337,6 +4420,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   ISEL_TranslationStage.lvlibp:
     group: PPLs
     parameters:
@@ -4351,7 +4435,7 @@ pipelines:
         destination: Chakraborty_ISEL-TranslationStage
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4520,6 +4604,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Innova-Laser.lvlibp:
     group: PPLs
     parameters:
@@ -4537,7 +4622,7 @@ pipelines:
       Laser-Interface.lvlibp_pipelineMaterial:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
-      Serial-Communication.lvlibp_pipelineMaterial: *id032
+      Serial-Communication.lvlibp_pipelineMaterial: *id033
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4754,6 +4839,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   LTC2983_Lib.lvlibp:
     group: PPLs
     parameters:
@@ -4769,18 +4855,18 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
-      SPI-Communicator.lvlibp_pipelineMaterial: &id036
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
+      SPI-Communicator.lvlibp_pipelineMaterial: &id037
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
-      SPI-Functions.lvlibp_pipelineMaterial: &id037
+      SPI-Functions.lvlibp_pipelineMaterial: &id038
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
       X-Series-SPI-Comms.lvlibp_pipelineMaterial:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id034
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id035
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
     stages:
@@ -5191,6 +5277,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Laser-Interface.lvlibp:
     group: PPLs
     parameters:
@@ -5283,6 +5370,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   MResDatatype.lvlibp:
     group: PPLs
     parameters:
@@ -5297,8 +5385,8 @@ pipelines:
         destination: Chakraborty_StreamDatatypes
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial: *id025
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5515,6 +5603,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   MSE-LDV.lvlibp:
     group: PPLs
     parameters:
@@ -5530,12 +5619,12 @@ pipelines:
         destination: Chakraborty_MSE_LDV
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
       DiskLogger.lvlibp_pipelineMaterial:
         pipeline: DiskLogger.lvlibp
         stage: build_ppls
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
-      OIST_Error.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5848,6 +5937,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Mean-Value-Plotting.lvlibp:
     group: PPLs
     parameters:
@@ -5862,8 +5952,8 @@ pipelines:
         destination: Chakraborty_MeanValuePlotting
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6080,6 +6170,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Measurement-Results.lvlibp:
     group: PPLs
     parameters:
@@ -6172,6 +6263,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Measurements.lvlibp:
     group: PPLs
     parameters:
@@ -6187,9 +6279,9 @@ pipelines:
         destination: Chakraborty_MeasurementActor
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id034
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6454,6 +6546,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Motor-Activity-Logging.lvlibp:
     group: PPLs
     parameters:
@@ -6469,9 +6562,9 @@ pipelines:
         destination: Chakraborty_FanucWithLogging
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
       SQLite.lvlibp_pipelineMaterial:
         pipeline: SQLite.lvlibp
         stage: build_ppls
@@ -6787,6 +6880,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Motor-Controller.lvlibp:
     group: PPLs
     parameters:
@@ -6802,11 +6896,11 @@ pipelines:
         destination: Chakraborty_FanucController
         auto_update: true
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id030
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id031
       Motor-Ramping-Calculations.lvlibp_pipelineMaterial:
         pipeline: Motor-Ramping-Calculations.lvlibp
         stage: build_ppls
-      OIST_Error.lvlibp_pipelineMaterial: *id029
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7071,6 +7165,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Motor-Ramping-Calculations.lvlibp:
     group: PPLs
     parameters:
@@ -7164,6 +7259,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   NS_ServerClient.lvlibp:
     group: PPLs
     parameters:
@@ -7179,9 +7275,9 @@ pipelines:
         destination: Chakraborty_NetworkStreams
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id033
-      Simple-Logger.lvlibp_pipelineMaterial: *id035
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
+      Simple-Logger.lvlibp_pipelineMaterial: *id036
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7446,6 +7542,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   OIST_Error.lvlibp:
     group: PPLs
     parameters:
@@ -7538,6 +7635,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   PMX32-2QU.lvlibp:
     group: PPLs
     parameters:
@@ -7555,7 +7653,7 @@ pipelines:
       PowerSupplyInterface.lvlibp_pipelineMaterial:
         pipeline: PowerSupplyInterface.lvlibp
         stage: build_ppls
-      OIST_Error.lvlibp_pipelineMaterial: *id029
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7772,6 +7870,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   PowerSupplies-Arduino.lvlibp:
     group: PPLs
     parameters:
@@ -7864,6 +7963,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   PowerSupplies-Serial.lvlibp:
     group: PPLs
     parameters:
@@ -7878,7 +7978,7 @@ pipelines:
         destination: Chakraborty_PowerSupplies
         auto_update: true
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: *id032
+      Serial-Communication.lvlibp_pipelineMaterial: *id033
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8047,6 +8147,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   PowerSupplyInterface.lvlibp:
     group: PPLs
     parameters:
@@ -8061,7 +8162,7 @@ pipelines:
         destination: Chakraborty_PSU-Interface
         auto_update: true
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id029
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8230,6 +8331,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   ProjectUtilities.lvlibp:
     group: PPLs
     parameters:
@@ -8322,6 +8424,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Request-for-Connection.lvlibp:
     group: PPLs
     parameters:
@@ -8336,7 +8439,7 @@ pipelines:
         destination: Chakraborty_ReqForConnection
         auto_update: true
         shallow_clone: false
-      NS_ServerClient.lvlibp_pipelineMaterial: *id025
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8505,6 +8608,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   Result-Graph.lvlibp:
     group: PPLs
     parameters:
@@ -8520,9 +8624,9 @@ pipelines:
         destination: Chakraborty_MResGraph
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id026
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id034
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id027
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
@@ -8838,6 +8942,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   SPI-Communicator.lvlibp:
     group: PPLs
     parameters:
@@ -8930,6 +9035,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   SPI-Functions.lvlibp:
     group: PPLs
     parameters:
@@ -9022,6 +9128,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   SQLite.lvlibp:
     group: PPLs
     parameters:
@@ -9114,6 +9221,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Serial-Communication.lvlibp:
     group: PPLs
     parameters:
@@ -9206,6 +9314,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   Simple-Logger.lvlibp:
     group: PPLs
     parameters:
@@ -9298,6 +9407,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   String-Logging.lvlibp:
     group: PPLs
     parameters:
@@ -9390,6 +9500,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   SubpanelEnabledActor.lvlibp:
     group: PPLs
     parameters:
@@ -9404,7 +9515,7 @@ pipelines:
         destination: Chakraborty_SubpanelEnabledActor
         auto_update: true
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9573,6 +9684,7 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025
   TranslationStage.lvlibp:
     group: PPLs
     parameters:
@@ -9665,6 +9777,7 @@ pipelines:
                 store_id: cicwin
                 configuration: *id008
             tasks: *id019
+    - *id025
   X-Series-SPI-Comms.lvlibp:
     group: PPLs
     parameters:
@@ -9680,8 +9793,8 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: true
         shallow_clone: false
-      SPI-Communicator.lvlibp_pipelineMaterial: *id036
-      SPI-Functions.lvlibp_pipelineMaterial: *id037
+      SPI-Communicator.lvlibp_pipelineMaterial: *id037
+      SPI-Functions.lvlibp_pipelineMaterial: *id038
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9898,3 +10011,4 @@ pipelines:
             - *id004
             - *id012
             - *id005
+    - *id025

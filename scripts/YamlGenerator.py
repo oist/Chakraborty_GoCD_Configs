@@ -157,6 +157,47 @@ def generatePPLStage(packageRootName, dependencies):
       "jobs": generatePPLJobList(packageRootName, dependencies)
   }}
 
+def get_fetch_built_ppl_task(target):
+  return {
+    "fetch": {
+      "run_if": "passed",
+      "stage": "build_ppls", # Same as the name given in 'generatePPLStage'
+      "job": target,
+      "is_file": False,
+      "source": "#{PPL_Name}",
+      "destination": f"artifacts/{target}"
+    }
+  }
+
+git_tag_tasks = [fetch_builder_task, expand_builder_task]
+for target in Target._member_names_:
+  git_tag_tasks.append(get_fetch_built_ppl_task(target))
+git_tag_tasks.append({
+  "exec": {
+    "run_if": "passed",
+    "command": "dir",
+    "arguments": [ "*" ]
+  }
+})
+git_tag_tasks.append(
+  { "exec": {
+      "run_if": "passed",
+      "command": "py",
+      "arguments": [ "-3", "-u", "PPL_Builder/publish_github.py"]
+  }}
+)
+
+git_tag_stage = {"git_tag": {
+    "approval": "success",
+    "fetch_materials": "yes",
+    "environment_variables": {
+      "GITHUB_RELEASE_TOKEN": "{{SECRET:[secrets.json][github_publishing_token]}}"
+    },
+    # Single job, so no need for jobs entry
+    "tasks": git_tag_tasks
+  }
+}
+
 dependencyMaterials = {}
 def generateMaterials(gitUrl, dependencies):
   topDir = directoryFromGitRepo(gitUrl, None)
@@ -224,6 +265,7 @@ class PipelineDefinition(yaml.YAMLObject):
       "materials": materials,
       "stages": [
         generatePPLStage(getPackageRootName(self.name), self.dependencies),
+        git_tag_stage
       ]
     }
 
