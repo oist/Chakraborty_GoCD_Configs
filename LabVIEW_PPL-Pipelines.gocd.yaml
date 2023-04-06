@@ -436,6 +436,7 @@ pipelines:
         fetch_materials: 'yes'
         environment_variables:
           GITHUB_RELEASE_TOKEN: '{{SECRET:[secrets.json][github_publishing_token]}}'
+          PPL_NAME: '#{PPL_Name}'
         tasks:
         - *id001
         - *id002
