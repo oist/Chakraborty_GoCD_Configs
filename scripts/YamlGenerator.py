@@ -153,7 +153,8 @@ def generatePPLStage(packageRootName, dependencies):
   return {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
-      "approval": "manual",
+      "approval": "success", # Set to manual to prevent auto-scheduling
+      # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
       "jobs": generatePPLJobList(packageRootName, dependencies)
   }}
 
@@ -207,7 +208,7 @@ def generateMaterials(gitUrl, dependencies):
     topDir: {
       "git": gitUrl,
       "destination": topDir,
-      "auto_update": True,
+      "auto_update": False,
       "shallow_clone": False
     }
   }
@@ -217,7 +218,8 @@ def generateMaterials(gitUrl, dependencies):
       if(not materialName in dependencyMaterials):
         dependencyMaterials[materialName] = {
           "pipeline": dependency,
-          "stage": "build_ppls"
+          "stage": "build_ppls",
+          "ignoreForScheduling": False # Default
         }
       materials[materialName] = dependencyMaterials.get(materialName)
   return materials

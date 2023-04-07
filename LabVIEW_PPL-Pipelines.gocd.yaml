@@ -186,19 +186,21 @@ pipelines:
       builder: &id017
         pipeline: Zip_PPL_Builder
         stage: Zip
+        ignoreForScheduling: true
       Chakraborty_StreamDatatypes:
         git: git@github.com:oist/Chakraborty_StreamDatatypes
         destination: Chakraborty_StreamDatatypes
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: &id026
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -506,13 +508,13 @@ pipelines:
       Chakraborty_ADG_SwitchUpdateRequests:
         git: git@github.com:oist/Chakraborty_ADG_SwitchUpdateRequests
         destination: Chakraborty_ADG_SwitchUpdateRequests
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -599,16 +601,17 @@ pipelines:
       Chakraborty_NI_ActorFramework:
         git: git@github.com:oist/Chakraborty_NI_ActorFramework
         destination: Chakraborty_NI_ActorFramework
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: &id029
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -785,13 +788,13 @@ pipelines:
       Chakraborty_NI_ActorFramework:
         git: git@github.com:oist/Chakraborty_NI_ActorFramework
         destination: Chakraborty_NI_ActorFramework
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -879,20 +882,22 @@ pipelines:
       Chakraborty_CommServer:
         git: git@github.com:oist/Chakraborty_CommServer
         destination: Chakraborty_CommServer
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
       Request-for-Connection.lvlibp_pipelineMaterial:
         pipeline: Request-for-Connection.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       MResDatatype.lvlibp_pipelineMaterial: &id028
         pipeline: MResDatatype.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1165,16 +1170,17 @@ pipelines:
       Chakraborty_CoolerUnit:
         git: git@github.com:oist/Chakraborty_CoolerUnit
         destination: Chakraborty_CoolerUnit
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Serial-Communication.lvlibp_pipelineMaterial: &id033
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1351,19 +1357,21 @@ pipelines:
       Chakraborty_DantecBSAProcessor:
         git: git@github.com:oist/Chakraborty_DantecBSAProcessor
         destination: Chakraborty_DantecBSAProcessor
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Dantec-Processor-Interface.lvlibp_pipelineMaterial:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       Measurement-Results.lvlibp_pipelineMaterial: &id027
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1589,13 +1597,13 @@ pipelines:
       Chakraborty_DantecBSAProcessor:
         git: git@github.com:oist/Chakraborty_DantecBSAProcessor
         destination: Chakraborty_DantecBSAProcessor
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1682,14 +1690,14 @@ pipelines:
       Chakraborty_MResGraph:
         git: git@github.com:oist/Chakraborty_MResGraph
         destination: Chakraborty_MResGraph
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1866,14 +1874,14 @@ pipelines:
       Chakraborty_DiskLogger:
         git: git@github.com:oist/Chakraborty_DiskLogger
         destination: Chakraborty_DiskLogger
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2050,16 +2058,17 @@ pipelines:
       Chakraborty_ErrorHandlers:
         git: git@github.com:oist/Chakraborty_ErrorHandlers
         destination: Chakraborty_ErrorHandlers
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       OIST_Error.lvlibp_pipelineMaterial: &id030
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2237,24 +2246,27 @@ pipelines:
       Chakraborty_FakeCommServer:
         git: git@github.com:oist/Chakraborty_FakeCommServer
         destination: Chakraborty_FakeCommServer
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Communication-Server.lvlibp_pipelineMaterial:
         pipeline: Communication-Server.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       MResDatatype.lvlibp_pipelineMaterial: *id028
       AF_Messages-PPL.lvlibp_pipelineMaterial: &id034
         pipeline: AF_Messages-PPL.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       Simple-Logger.lvlibp_pipelineMaterial: &id036
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2623,16 +2635,17 @@ pipelines:
       Chakraborty_ISEL-TranslationStage:
         git: git@github.com:oist/Chakraborty_ISEL-TranslationStage
         destination: Chakraborty_ISEL-TranslationStage
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       ISEL_TranslationStage.lvlibp_pipelineMaterial:
         pipeline: ISEL_TranslationStage.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2809,14 +2822,14 @@ pipelines:
       Chakraborty_Fanuc_Interface:
         git: git@github.com:oist/Chakraborty_Fanuc_Interface
         destination: Chakraborty_Fanuc_Interface
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2993,16 +3006,17 @@ pipelines:
       Chakraborty_FanucProxy:
         git: git@github.com:oist/Chakraborty_FanucProxy
         destination: Chakraborty_FanucProxy
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: &id031
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3179,14 +3193,14 @@ pipelines:
       Chakraborty_Fanuc_FOCAS2:
         git: git@github.com:oist/Chakraborty_Fanuc_FOCAS2
         destination: Chakraborty_Fanuc_FOCAS2
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3363,18 +3377,19 @@ pipelines:
       Chakraborty_FanucNSProxy:
         git: git@github.com:oist/Chakraborty_FanucNSProxy
         destination: Chakraborty_FanucNSProxy
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
       Fanuc-Proxy.lvlibp_pipelineMaterial: &id032
         pipeline: Fanuc-Proxy.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3647,14 +3662,14 @@ pipelines:
       Chakraborty_Fanuc_TCP:
         git: git@github.com:oist/Chakraborty_Fanuc_TCP
         destination: Chakraborty_Fanuc_TCP
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3831,7 +3846,7 @@ pipelines:
       Chakraborty_Fanuc_TCPProxy:
         git: git@github.com:oist/Chakraborty_Fanuc_TCPProxy
         destination: Chakraborty_Fanuc_TCPProxy
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
       Fanuc-Proxy.lvlibp_pipelineMaterial: *id032
@@ -3839,7 +3854,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4064,14 +4079,14 @@ pipelines:
       Chakraborty_GX-Balance:
         git: git@github.com:oist/Chakraborty_GX-Balance
         destination: Chakraborty_GX-Balance
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial: *id027
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4248,13 +4263,13 @@ pipelines:
       Chakraborty_HotWire_LabVIEW:
         git: git@github.com:oist/Chakraborty_HotWire_LabVIEW
         destination: Chakraborty_HotWire_LabVIEW
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4341,13 +4356,13 @@ pipelines:
       OIST-TC_Tools:
         git: git@github.com:oist/OIST-TC_Tools
         destination: OIST-TC_Tools
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4434,14 +4449,14 @@ pipelines:
       Chakraborty_ISEL-TranslationStage:
         git: git@github.com:oist/Chakraborty_ISEL-TranslationStage
         destination: Chakraborty_ISEL-TranslationStage
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4618,17 +4633,18 @@ pipelines:
       Chakraborty_LaserSystem:
         git: git@github.com:oist/Chakraborty_LaserSystem
         destination: Chakraborty_LaserSystem
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Laser-Interface.lvlibp_pipelineMaterial:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       Serial-Communication.lvlibp_pipelineMaterial: *id033
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4854,27 +4870,31 @@ pipelines:
       Chakraborty_LTC2983:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
       SPI-Communicator.lvlibp_pipelineMaterial: &id038
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       SPI-Functions.lvlibp_pipelineMaterial: &id039
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       X-Series-SPI-Comms.lvlibp_pipelineMaterial:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       SubpanelEnabledActor.lvlibp_pipelineMaterial: &id035
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5291,13 +5311,13 @@ pipelines:
       Chakraborty_LaserSystem:
         git: git@github.com:oist/Chakraborty_LaserSystem
         destination: Chakraborty_LaserSystem
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5384,7 +5404,7 @@ pipelines:
       Chakraborty_StreamDatatypes:
         git: git@github.com:oist/Chakraborty_StreamDatatypes
         destination: Chakraborty_StreamDatatypes
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
       Measurement-Results.lvlibp_pipelineMaterial: *id027
@@ -5392,7 +5412,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5618,19 +5638,20 @@ pipelines:
       Chakraborty_MSE_LDV:
         git: git@github.com:oist/Chakraborty_MSE_LDV
         destination: Chakraborty_MSE_LDV
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       DiskLogger.lvlibp_pipelineMaterial:
         pipeline: DiskLogger.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       Measurement-Results.lvlibp_pipelineMaterial: *id027
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5951,7 +5972,7 @@ pipelines:
       Chakraborty_MeanValuePlotting:
         git: git@github.com:oist/Chakraborty_MeanValuePlotting
         destination: Chakraborty_MeanValuePlotting
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       Measurement-Results.lvlibp_pipelineMaterial: *id027
@@ -5959,7 +5980,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6184,13 +6205,13 @@ pipelines:
       Chakraborty_MeasurementResult:
         git: git@github.com:oist/Chakraborty_MeasurementResult
         destination: Chakraborty_MeasurementResult
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6278,7 +6299,7 @@ pipelines:
       Chakraborty_MeasurementActor:
         git: git@github.com:oist/Chakraborty_MeasurementActor
         destination: Chakraborty_MeasurementActor
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       Measurement-Results.lvlibp_pipelineMaterial: *id027
@@ -6287,7 +6308,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6561,7 +6582,7 @@ pipelines:
       Chakraborty_FanucWithLogging:
         git: git@github.com:oist/Chakraborty_FanucWithLogging
         destination: Chakraborty_FanucWithLogging
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
       Actor-Framework.lvlibp_pipelineMaterial: *id029
@@ -6569,11 +6590,12 @@ pipelines:
       SQLite.lvlibp_pipelineMaterial:
         pipeline: SQLite.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6895,18 +6917,19 @@ pipelines:
       Chakraborty_FanucController:
         git: git@github.com:oist/Chakraborty_FanucController
         destination: Chakraborty_FanucController
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Fanuc-Interface.lvlibp_pipelineMaterial: *id031
       Motor-Ramping-Calculations.lvlibp_pipelineMaterial:
         pipeline: Motor-Ramping-Calculations.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7180,13 +7203,13 @@ pipelines:
       Chakraborty_FanucController:
         git: git@github.com:oist/Chakraborty_FanucController
         destination: Chakraborty_FanucController
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7274,7 +7297,7 @@ pipelines:
       Chakraborty_NetworkStreams:
         git: git@github.com:oist/Chakraborty_NetworkStreams
         destination: Chakraborty_NetworkStreams
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
@@ -7283,7 +7306,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7556,13 +7579,13 @@ pipelines:
       Chakraborty_Errors:
         git: git@github.com:oist/Chakraborty_Errors
         destination: Chakraborty_Errors
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7649,17 +7672,18 @@ pipelines:
       Chakraborty_PMX32:
         git: git@github.com:oist/Chakraborty_PMX32
         destination: Chakraborty_PMX32
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       PowerSupplyInterface.lvlibp_pipelineMaterial: &id037
         pipeline: PowerSupplyInterface.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7884,13 +7908,13 @@ pipelines:
       Chakraborty_PowerSupplies:
         git: git@github.com:oist/Chakraborty_PowerSupplies
         destination: Chakraborty_PowerSupplies
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7977,7 +8001,7 @@ pipelines:
       Chakraborty_PowerSupplies:
         git: git@github.com:oist/Chakraborty_PowerSupplies
         destination: Chakraborty_PowerSupplies
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Serial-Communication.lvlibp_pipelineMaterial: *id033
       OIST_Error.lvlibp_pipelineMaterial: *id030
@@ -7986,7 +8010,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8259,14 +8283,14 @@ pipelines:
       Chakraborty_PSU-Interface:
         git: git@github.com:oist/Chakraborty_PSU-Interface
         destination: Chakraborty_PSU-Interface
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8443,13 +8467,13 @@ pipelines:
       Chakraborty_LabVIEW-Reuse:
         git: git@github.com:oist/Chakraborty_LabVIEW-Reuse
         destination: Chakraborty_LabVIEW-Reuse
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8536,14 +8560,14 @@ pipelines:
       Chakraborty_ReqForConnection:
         git: git@github.com:oist/Chakraborty_ReqForConnection
         destination: Chakraborty_ReqForConnection
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8721,7 +8745,7 @@ pipelines:
       Chakraborty_MResGraph:
         git: git@github.com:oist/Chakraborty_MResGraph
         destination: Chakraborty_MResGraph
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       Measurement-Results.lvlibp_pipelineMaterial: *id027
@@ -8729,11 +8753,12 @@ pipelines:
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
+        ignoreForScheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9054,13 +9079,13 @@ pipelines:
       Chakraborty_LTC2983:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9147,13 +9172,13 @@ pipelines:
       Chakraborty_LTC2983:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9240,13 +9265,13 @@ pipelines:
       Chakraborty_JDP_SQLite:
         git: git@github.com:oist/Chakraborty_JDP_SQLite
         destination: Chakraborty_JDP_SQLite
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9333,13 +9358,13 @@ pipelines:
       Chakraborty_CoolerUnit:
         git: git@github.com:oist/Chakraborty_CoolerUnit
         destination: Chakraborty_CoolerUnit
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9426,13 +9451,13 @@ pipelines:
       Chakraborty_LabVIEW-Reuse:
         git: git@github.com:oist/Chakraborty_LabVIEW-Reuse
         destination: Chakraborty_LabVIEW-Reuse
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9519,13 +9544,13 @@ pipelines:
       Chakraborty_StringLogging:
         git: git@github.com:oist/Chakraborty_StringLogging
         destination: Chakraborty_StringLogging
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9612,14 +9637,14 @@ pipelines:
       Chakraborty_SubpanelEnabledActor:
         git: git@github.com:oist/Chakraborty_SubpanelEnabledActor
         destination: Chakraborty_SubpanelEnabledActor
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9796,13 +9821,13 @@ pipelines:
       Chakraborty_TranslationStage:
         git: git@github.com:oist/Chakraborty_TranslationStage
         destination: Chakraborty_TranslationStage
-        auto_update: true
+        auto_update: false
         shallow_clone: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9890,7 +9915,7 @@ pipelines:
       Chakraborty_LTC2983:
         git: git@github.com:oist/Chakraborty_LTC2983
         destination: Chakraborty_LTC2983
-        auto_update: true
+        auto_update: false
         shallow_clone: false
       SPI-Communicator.lvlibp_pipelineMaterial: *id038
       SPI-Functions.lvlibp_pipelineMaterial: *id039
@@ -9898,7 +9923,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           Windows_32_Release:
             timeout: 15
