@@ -219,7 +219,7 @@ def generateMaterials(gitUrl, dependencies):
         dependencyMaterials[materialName] = {
           "pipeline": dependency,
           "stage": "build_ppls",
-          "ignoreForScheduling": False # Default
+          "ignore_for_scheduling": False # Default
         }
       materials[materialName] = dependencyMaterials.get(materialName)
   return materials

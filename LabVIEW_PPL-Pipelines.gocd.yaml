@@ -186,7 +186,7 @@ pipelines:
       builder: &id017
         pipeline: Zip_PPL_Builder
         stage: Zip
-        ignoreForScheduling: true
+        ignore_for_scheduling: true
       Chakraborty_StreamDatatypes:
         git: git@github.com:oist/Chakraborty_StreamDatatypes
         destination: Chakraborty_StreamDatatypes
@@ -195,7 +195,7 @@ pipelines:
       NS_ServerClient.lvlibp_pipelineMaterial: &id026
         pipeline: NS_ServerClient.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -606,7 +606,7 @@ pipelines:
       Actor-Framework.lvlibp_pipelineMaterial: &id029
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -888,11 +888,11 @@ pipelines:
       Request-for-Connection.lvlibp_pipelineMaterial:
         pipeline: Request-for-Connection.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       MResDatatype.lvlibp_pipelineMaterial: &id028
         pipeline: MResDatatype.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1175,7 +1175,7 @@ pipelines:
       Serial-Communication.lvlibp_pipelineMaterial: &id033
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1362,11 +1362,11 @@ pipelines:
       Dantec-Processor-Interface.lvlibp_pipelineMaterial:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       Measurement-Results.lvlibp_pipelineMaterial: &id027
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2063,7 +2063,7 @@ pipelines:
       OIST_Error.lvlibp_pipelineMaterial: &id030
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2251,17 +2251,17 @@ pipelines:
       Communication-Server.lvlibp_pipelineMaterial:
         pipeline: Communication-Server.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       MResDatatype.lvlibp_pipelineMaterial: *id028
       AF_Messages-PPL.lvlibp_pipelineMaterial: &id034
         pipeline: AF_Messages-PPL.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       Actor-Framework.lvlibp_pipelineMaterial: *id029
       Simple-Logger.lvlibp_pipelineMaterial: &id036
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2640,7 +2640,7 @@ pipelines:
       ISEL_TranslationStage.lvlibp_pipelineMaterial:
         pipeline: ISEL_TranslationStage.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3011,7 +3011,7 @@ pipelines:
       Fanuc-Interface.lvlibp_pipelineMaterial: &id031
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3383,7 +3383,7 @@ pipelines:
       Fanuc-Proxy.lvlibp_pipelineMaterial: &id032
         pipeline: Fanuc-Proxy.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
     stages:
     - build_ppls:
@@ -4638,7 +4638,7 @@ pipelines:
       Laser-Interface.lvlibp_pipelineMaterial:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       Serial-Communication.lvlibp_pipelineMaterial: *id033
     stages:
     - build_ppls:
@@ -4877,19 +4877,19 @@ pipelines:
       SPI-Communicator.lvlibp_pipelineMaterial: &id038
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       SPI-Functions.lvlibp_pipelineMaterial: &id039
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       X-Series-SPI-Comms.lvlibp_pipelineMaterial:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       SubpanelEnabledActor.lvlibp_pipelineMaterial: &id035
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5644,7 +5644,7 @@ pipelines:
       DiskLogger.lvlibp_pipelineMaterial:
         pipeline: DiskLogger.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       Measurement-Results.lvlibp_pipelineMaterial: *id027
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
@@ -6590,7 +6590,7 @@ pipelines:
       SQLite.lvlibp_pipelineMaterial:
         pipeline: SQLite.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6923,7 +6923,7 @@ pipelines:
       Motor-Ramping-Calculations.lvlibp_pipelineMaterial:
         pipeline: Motor-Ramping-Calculations.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
@@ -7677,7 +7677,7 @@ pipelines:
       PowerSupplyInterface.lvlibp_pipelineMaterial: &id037
         pipeline: PowerSupplyInterface.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
       OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
@@ -8753,7 +8753,7 @@ pipelines:
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
-        ignoreForScheduling: false
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'

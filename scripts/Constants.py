@@ -11,7 +11,7 @@ zipPipelineJobName = "Zip"
 builderMaterial = {
   "pipeline": zipPipelineName,
   "stage": zipPipelineStageName,
-  "ignoreForScheduling": True
+  "ignore_for_scheduling": True
 }
 
 # -- Configuration for the NIPKG Fetch Artifact step -- #
