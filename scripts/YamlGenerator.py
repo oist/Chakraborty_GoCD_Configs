@@ -299,3 +299,35 @@ def buildYamlObject(pipelineDictionary):
     "pipelines": pipelineDictionary
   }
   return full_yaml_object
+
+def findNonDefaultLVPipelines(pipelineDictionary, defaultVersion):
+  def myfilter(item):
+    return (item[1].minVersion != None and item[1].minVersion != defaultVersion)
+  return dict(filter(myfilter, pipelineDictionary.items())).keys()
+
+def updateMinimumVersions(pipelineDictionary):
+    # This code only works for 2 versions. With multiple non-default versions, needs more care
+    nonDefaultPipelineNames = findNonDefaultLVPipelines(pipelineDictionary, "2019")
+    pipelinesToUpdate = set(nonDefaultPipelineNames)
+    newElements = []
+    def dependsOnElems(dependenciesToInclude):
+      def innerFilter(item):
+        itemDependencies = item[1].dependencies
+        if itemDependencies == None:
+          return False
+        return set(itemDependencies) & set(dependenciesToInclude) and item[0] not in dependenciesToInclude
+      return innerFilter
+    while True:
+      newElements = dict(filter(dependsOnElems(pipelinesToUpdate), pipelineDictionary.items())).keys()
+      pipelinesToUpdate.update(newElements)
+      if len(newElements) == 0:
+        break
+    print("Updating target LabVIEW versions for " + str(pipelinesToUpdate))
+    def updateVers(name, pipeline):
+      if name in pipelinesToUpdate:
+        pipeline.minVersion = "2021"
+      return pipeline
+    # Seems like the comprehension here forces the function to iterate over the items
+    # Calling the function without creating the dictionary leaves it unexecuted
+    newDict = {k: updateVers(k, v) for k, v in pipelineDictionary.items()}
+    return newDict

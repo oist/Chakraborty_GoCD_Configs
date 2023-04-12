@@ -9,7 +9,7 @@ import yaml
 
 from GitTools import cloneRepo
 from FileUtils import find_file
-from YamlGenerator import PipelineDefinition, buildYamlObject
+from YamlGenerator import PipelineDefinition, buildYamlObject, updateMinimumVersions
 
 @contextlib.contextmanager
 def pushd(new_dir):
@@ -168,6 +168,7 @@ if __name__ == '__main__':
   # Sort to ensure the same order on repeated execution
   # This also helps reduce git diffs
   pipelineDict = dict(sorted(flatten_dict(pipelineDefinitionContent).items()))
+  updateMinimumVersions(pipelineDict)
 
   # The behaviour of the sort might depend on Python version - 
   # dictionary insertion order is preserved after Python 3.7
