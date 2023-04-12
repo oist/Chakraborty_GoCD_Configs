@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 from Constants import \
   dir_job, create_ppl_dir, ls_task, ls_currentDir_task,\
-  via_job, lv_ver, via_plugin_version, fetch_builder_task,\
+  via_job, via_plugin_version, fetch_builder_task,\
   expand_builder_task, gcli_build_task, builderMaterial,\
   fetch_ppl_configuration
 
@@ -79,12 +79,22 @@ nipkg_build_artifact = { "build": {
 }}
 
 profileId = {
-  Target.Windows_32_Debug: "labview_2019_x86",
-  Target.Windows_32_Release: "labview_2019_x86",
-  Target.Windows_64_Debug: "labview_2019_x64",
-  Target.Windows_64_Release: "labview_2019_x64",
-  Target.cRIO_Debug: "labview_2019_x86_crio",
-  Target.cRIO_Release: "labview_2019_x86_crio",
+  "2019": {
+    Target.Windows_32_Debug: "labview_2019_x86",
+    Target.Windows_32_Release: "labview_2019_x86",
+    Target.Windows_64_Debug: "labview_2019_x64",
+    Target.Windows_64_Release: "labview_2019_x64",
+    Target.cRIO_Debug: "labview_2019_x86_crio",
+    Target.cRIO_Release: "labview_2019_x86_crio",
+  },
+  "2021": {
+    Target.Windows_32_Debug: "labview_2021_x86",
+    Target.Windows_32_Release: "labview_2021_x86",
+    Target.Windows_64_Debug: "labview_2021_x64",
+    Target.Windows_64_Release: "labview_2021_x64",
+    Target.cRIO_Debug: "labview_2021_x86_crio",
+    Target.cRIO_Release: "labview_2021_x86_crio",
+  },
 }
 
 def generatePPLJobTasksWithDeps(dependencies, targetName):
@@ -125,14 +135,14 @@ for target in Target.__members__:
     "RELEASE_NOTES": ""
   }
 
-def generatePPLJobList(packageRootName, dependencies):
+def generatePPLJobList(packageRootName, lv_version, dependencies):
   ppl_job_list = {}
   for target in Target.__members__:
     targetT = Target[target]
     packageId = f"{packageRootName}_{target}_nipkg"
     ppl_job_list[target] = {
       "timeout": 15,
-      "elastic_profile_id": profileId[targetT],
+      "elastic_profile_id": profileId[lv_version][targetT],
       "environment_variables": environmentVariables[targetT],
       "artifacts": [
         ppl_build_artifact,
@@ -149,13 +159,13 @@ def generatePPLJobList(packageRootName, dependencies):
     }
   return ppl_job_list
 
-def generatePPLStage(packageRootName, dependencies):
+def generatePPLStage(packageRootName, lv_version, dependencies):
   return {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
       "approval": "success", # Set to manual to prevent auto-scheduling
       # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
-      "jobs": generatePPLJobList(packageRootName, dependencies)
+      "jobs": generatePPLJobList(packageRootName, lv_version, dependencies)
   }}
 
 def get_fetch_built_ppl_task(target):
@@ -227,7 +237,6 @@ def generateMaterials(gitUrl, dependencies):
 # Defines all of the 'common' parts of the pipeline config file
 def getCommonSection():
   commonSection = {
-    "lv_ver": lv_ver,
     "via_plugin_version": via_plugin_version,
     "dir_job": dir_job,
     "via_job": via_job,
@@ -250,6 +259,7 @@ class PipelineDefinition(yaml.YAMLObject):
     self.PPL_Name = values['PPL_Name']
     self.dependencies = values['Dependencies']
     self.dependencyPPLNames = values['Dependency PPL Names']
+    self.minVersion = values.get('minLabVIEWVersion')
   def buildData(self, dumper):
     materials = generateMaterials(self.gitUrl, self.dependencies)
     if self.dependencies != None:
@@ -257,17 +267,22 @@ class PipelineDefinition(yaml.YAMLObject):
     else:
       dependencyQuotedList = ""
     gitDirName = directoryFromGitRepo(self.gitUrl, None)
+    if self.minVersion != None:
+      lv_version = self.minVersion
+    else:
+      lv_version = '2019'
     return {
       "group": "PPLs",
       "parameters": {
         "PPL_Name": self.PPL_Name,
         "PPL_LIB_PATH": self.libPath,
         "GIT_DIR": gitDirName,
+        "LV_VERSION": lv_version,
         "Dependency_PPL_Names": dependencyQuotedList
       },
       "materials": materials,
       "stages": [
-        generatePPLStage(getPackageRootName(self.name), self.dependencies),
+        generatePPLStage(getPackageRootName(self.name), lv_version, self.dependencies),
         git_tag_stage
       ]
     }

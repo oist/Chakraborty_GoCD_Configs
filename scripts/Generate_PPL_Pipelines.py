@@ -64,7 +64,7 @@ def directoryFromGitRepo(gitRepo, output_dir = None):
 		dest = Path(output_dir) / dest
 	return dest
 
-def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames):
+def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames, minLabVIEWVersion):
   return {
     pipelineName: {
       "artifactId": pipelineName + "_nipkg",
@@ -72,7 +72,8 @@ def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencie
       "libPath": libPath,
       "PPL_Name": PPL_Name,
       "Dependencies": Dependencies,
-      "Dependency PPL Names": DependencyPPLNames
+      "Dependency PPL Names": DependencyPPLNames,
+      "minLabVIEWVersion": minLabVIEWVersion
     }
   }
 
@@ -93,6 +94,8 @@ def parseMkFile(mkFilePath, libName):
   print(f"Warning: Found a .mk file ({mkFilePath}) but could not parse it to get dependencies")
   return None
 
+allowedVersionStrings = ["2019", "2021"]
+
 def handleUrl(gitUrl, libNames, baseDir):
   outputDir = directoryFromGitRepo(gitUrl, baseDir)
   gitDir = directoryFromGitRepo(gitUrl, None)
@@ -106,14 +109,24 @@ def handleUrl(gitUrl, libNames, baseDir):
       raise FileNotFoundError('Could not find ' + libName + ' in ' + str(baseDir))
     libPath = os.path.join(gitDir, libPathPartial).replace(os.sep, "/")
     mkFilePath = find_file(libName.replace('.lvlib', '.mk'), outputDir)
+    minVerPath = find_file(libName.replace('.lvlib', '.min_lv_version'), outputDir)
     pipelineName = getSanitizedName(libName) + "p"
     PPL_Name = libName + "p"
+    minLabVIEWVersion = None
+    if minVerPath != None:
+      f = open(minVerPath, "r")
+      content = f.read()
+      f.close()
+      if content in allowedVersionStrings:
+        minLabVIEWVersion = content
+      else:
+        raise RuntimeError('Invalid minimum LabVIEW version: ' + content)
     if mkFilePath == None:
-      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, None, None))
+      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, None, None, minLabVIEWVersion))
     else:
       depsNames = parseMkFile(mkFilePath, libName)
       depsList = list(map(getSanitizedName, depsNames))
-      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, depsList, depsNames))
+      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, depsList, depsNames, minLabVIEWVersion))
   return retVals
 
 def printFlatDict(flat_dict):

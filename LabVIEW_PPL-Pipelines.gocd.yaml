@@ -1,6 +1,5 @@
 format_version: 10
 common:
-  lv_ver: '2019'
   via_plugin_version: 0.2.2.3
   dir_job:
     tasks:
@@ -33,7 +32,7 @@ common:
         arguments:
         - --verbose
         - --lv-ver
-        - '2019'
+        - '#{LV_VERSION}'
         - viaRunner.vi
         - --
         - viaResults.xml
@@ -80,7 +79,7 @@ common:
       command: g-cli
       arguments:
       - --lv-ver
-      - '2019'
+      - '#{LV_VERSION}'
       - '%BITNESS_FLAG%'
       - PPL_Builder\Call_Builder_Wiresmith.vi
       - --
@@ -181,6 +180,7 @@ pipelines:
       PPL_Name: ADC_StreamDatatypes.lvlibp
       PPL_LIB_PATH: Chakraborty_StreamDatatypes/Native Types/ADC_StreamDatatypes.lvlib
       GIT_DIR: Chakraborty_StreamDatatypes
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"NS_ServerClient.lvlibp"'
     materials:
       builder: &id017
@@ -502,6 +502,7 @@ pipelines:
       PPL_Name: ADG Requests.lvlibp
       PPL_LIB_PATH: Chakraborty_ADG_SwitchUpdateRequests/ADG Requests.lvlib
       GIT_DIR: Chakraborty_ADG_SwitchUpdateRequests
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -595,6 +596,7 @@ pipelines:
       PPL_Name: AF_Messages-PPL.lvlibp
       PPL_LIB_PATH: Chakraborty_NI_ActorFramework/AF_Messages-PPL/AF_Messages-PPL.lvlib
       GIT_DIR: Chakraborty_NI_ActorFramework
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp"'
     materials:
       builder: *id017
@@ -782,6 +784,7 @@ pipelines:
       PPL_Name: Actor Framework.lvlibp
       PPL_LIB_PATH: Chakraborty_NI_ActorFramework/ActorFramework/Actor Framework.lvlib
       GIT_DIR: Chakraborty_NI_ActorFramework
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -875,6 +878,7 @@ pipelines:
       PPL_Name: Communication Server.lvlibp
       PPL_LIB_PATH: Chakraborty_CommServer/Communication Server.lvlib
       GIT_DIR: Chakraborty_CommServer
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Request for Connection.lvlibp"
         "MResDatatype.lvlibp"'
     materials:
@@ -1164,6 +1168,7 @@ pipelines:
       PPL_Name: Cooler.lvlibp
       PPL_LIB_PATH: Chakraborty_CoolerUnit/Cooler/Cooler.lvlib
       GIT_DIR: Chakraborty_CoolerUnit
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Serial Communication.lvlibp"'
     materials:
       builder: *id017
@@ -1351,6 +1356,7 @@ pipelines:
       PPL_Name: Dantec LDV Processor.lvlibp
       PPL_LIB_PATH: Chakraborty_DantecBSAProcessor/Physical Classes/Dantec LDV Processor.lvlib
       GIT_DIR: Chakraborty_DantecBSAProcessor
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Dantec Processor Interface.lvlibp" "Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -1591,6 +1597,7 @@ pipelines:
       PPL_LIB_PATH: Chakraborty_DantecBSAProcessor/Dantec Interface/Dantec Processor
         Interface.lvlib
       GIT_DIR: Chakraborty_DantecBSAProcessor
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -1684,6 +1691,7 @@ pipelines:
       PPL_Name: DataStore.lvlibp
       PPL_LIB_PATH: Chakraborty_MResGraph/Storage/DataStore.lvlib
       GIT_DIR: Chakraborty_MResGraph
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -1868,6 +1876,7 @@ pipelines:
       PPL_Name: DiskLogger.lvlibp
       PPL_LIB_PATH: Chakraborty_DiskLogger/DiskLogger.lvlib
       GIT_DIR: Chakraborty_DiskLogger
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -2052,6 +2061,7 @@ pipelines:
       PPL_Name: ErrorHandling.lvlibp
       PPL_LIB_PATH: Chakraborty_ErrorHandlers/ErrorHandling.lvlib
       GIT_DIR: Chakraborty_ErrorHandlers
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"OIST_Error.lvlibp"'
     materials:
       builder: *id017
@@ -2239,6 +2249,7 @@ pipelines:
       PPL_Name: Fake Comm Server.lvlibp
       PPL_LIB_PATH: Chakraborty_FakeCommServer/Fake Comm Server.lvlib
       GIT_DIR: Chakraborty_FakeCommServer
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Communication Server.lvlibp" "MResDatatype.lvlibp" "AF_Messages-PPL.lvlibp"
         "Actor Framework.lvlibp" "Simple Logger.lvlibp"'
     materials:
@@ -2629,6 +2640,7 @@ pipelines:
       PPL_Name: FakeStage.lvlibp
       PPL_LIB_PATH: Chakraborty_ISEL-TranslationStage/FakeStage/FakeStage.lvlib
       GIT_DIR: Chakraborty_ISEL-TranslationStage
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"ISEL_TranslationStage.lvlibp"'
     materials:
       builder: *id017
@@ -2816,6 +2828,7 @@ pipelines:
       PPL_Name: Fanuc Interface.lvlibp
       PPL_LIB_PATH: Chakraborty_Fanuc_Interface/Fanuc Interface.lvlib
       GIT_DIR: Chakraborty_Fanuc_Interface
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"OIST_Error.lvlibp"'
     materials:
       builder: *id017
@@ -3000,6 +3013,7 @@ pipelines:
       PPL_Name: Fanuc Proxy.lvlibp
       PPL_LIB_PATH: Chakraborty_FanucProxy/Fanuc Proxy.lvlib
       GIT_DIR: Chakraborty_FanucProxy
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp"'
     materials:
       builder: *id017
@@ -3187,6 +3201,7 @@ pipelines:
       PPL_Name: Fanuc_FOCAS.lvlibp
       PPL_LIB_PATH: Chakraborty_Fanuc_FOCAS2/LabVIEW/Fanuc_FOCAS.lvlib
       GIT_DIR: Chakraborty_Fanuc_FOCAS2
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp"'
     materials:
       builder: *id017
@@ -3371,6 +3386,7 @@ pipelines:
       PPL_Name: Fanuc_NSProxy.lvlibp
       PPL_LIB_PATH: Chakraborty_FanucNSProxy/Fanuc_NSProxy.lvlib
       GIT_DIR: Chakraborty_FanucNSProxy
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "NS_ServerClient.lvlibp"'
     materials:
       builder: *id017
@@ -3656,6 +3672,7 @@ pipelines:
       PPL_Name: Fanuc_TCP.lvlibp
       PPL_LIB_PATH: Chakraborty_Fanuc_TCP/Fanuc_TCP.lvlib
       GIT_DIR: Chakraborty_Fanuc_TCP
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp"'
     materials:
       builder: *id017
@@ -3840,6 +3857,7 @@ pipelines:
       PPL_Name: Fanuc_TCPProxy.lvlibp
       PPL_LIB_PATH: Chakraborty_Fanuc_TCPProxy/Fanuc_TCPProxy.lvlib
       GIT_DIR: Chakraborty_Fanuc_TCPProxy
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp"'
     materials:
       builder: *id017
@@ -4073,6 +4091,7 @@ pipelines:
       PPL_Name: GX_Balance.lvlibp
       PPL_LIB_PATH: Chakraborty_GX-Balance/GX_Balance.lvlib
       GIT_DIR: Chakraborty_GX-Balance
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -4257,6 +4276,7 @@ pipelines:
       PPL_Name: HW Probes.lvlibp
       PPL_LIB_PATH: Chakraborty_HotWire_LabVIEW/HW Probes.lvlib
       GIT_DIR: Chakraborty_HotWire_LabVIEW
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -4350,6 +4370,7 @@ pipelines:
       PPL_Name: Hot Wire Temperature Correction.lvlibp
       PPL_LIB_PATH: OIST-TC_Tools/Hot Wire Temperature Correction.lvlib
       GIT_DIR: OIST-TC_Tools
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -4443,6 +4464,7 @@ pipelines:
       PPL_Name: ISEL_TranslationStage.lvlibp
       PPL_LIB_PATH: Chakraborty_ISEL-TranslationStage/ISEL_Stage/ISEL_TranslationStage.lvlib
       GIT_DIR: Chakraborty_ISEL-TranslationStage
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp"'
     materials:
       builder: *id017
@@ -4627,6 +4649,7 @@ pipelines:
       PPL_Name: Innova Laser.lvlibp
       PPL_LIB_PATH: Chakraborty_LaserSystem/CoherentInnova/Innova Laser.lvlib
       GIT_DIR: Chakraborty_LaserSystem
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Laser Interface.lvlibp" "Serial Communication.lvlibp"'
     materials:
       builder: *id017
@@ -4863,6 +4886,7 @@ pipelines:
       PPL_Name: LTC2983_Lib.lvlibp
       PPL_LIB_PATH: Chakraborty_LTC2983/Main/LTC2983_Lib.lvlib
       GIT_DIR: Chakraborty_LTC2983
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "AF_Messages-PPL.lvlibp" "SPI
         Communicator.lvlibp" "SPI Functions.lvlibp" "X-Series SPI Comms.lvlibp" "SubpanelEnabledActor.lvlibp"'
     materials:
@@ -5305,6 +5329,7 @@ pipelines:
       PPL_Name: Laser Interface.lvlibp
       PPL_LIB_PATH: Chakraborty_LaserSystem/Interface/Laser Interface.lvlib
       GIT_DIR: Chakraborty_LaserSystem
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -5398,6 +5423,7 @@ pipelines:
       PPL_Name: MResDatatype.lvlibp
       PPL_LIB_PATH: Chakraborty_StreamDatatypes/Measurement Result Datatype/MResDatatype.lvlib
       GIT_DIR: Chakraborty_StreamDatatypes
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -5631,6 +5657,7 @@ pipelines:
       PPL_Name: MSE LDV.lvlibp
       PPL_LIB_PATH: Chakraborty_MSE_LDV/MSE LDV.lvlib
       GIT_DIR: Chakraborty_MSE_LDV
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "DiskLogger.lvlibp" "Measurement
         Results.lvlibp" "OIST_Error.lvlibp"'
     materials:
@@ -5966,6 +5993,7 @@ pipelines:
       PPL_Name: Mean Value Plotting.lvlibp
       PPL_LIB_PATH: Chakraborty_MeanValuePlotting/Mean Value Plotting.lvlib
       GIT_DIR: Chakraborty_MeanValuePlotting
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "Measurement Results.lvlibp"'
     materials:
       builder: *id017
@@ -6199,6 +6227,7 @@ pipelines:
       PPL_Name: Measurement Results.lvlibp
       PPL_LIB_PATH: Chakraborty_MeasurementResult/Measurement Results.lvlib
       GIT_DIR: Chakraborty_MeasurementResult
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -6292,6 +6321,7 @@ pipelines:
       PPL_Name: Measurements.lvlibp
       PPL_LIB_PATH: Chakraborty_MeasurementActor/Measurements.lvlib
       GIT_DIR: Chakraborty_MeasurementActor
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "Measurement Results.lvlibp"
         "SubpanelEnabledActor.lvlibp"'
     materials:
@@ -6575,6 +6605,7 @@ pipelines:
       PPL_Name: Motor Activity Logging.lvlibp
       PPL_LIB_PATH: Chakraborty_FanucWithLogging/Motor Activity Logging.lvlib
       GIT_DIR: Chakraborty_FanucWithLogging
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp" "Actor Framework.lvlibp" "AF_Messages-PPL.lvlibp"
         "SQLite.lvlibp"'
     materials:
@@ -6910,6 +6941,7 @@ pipelines:
       PPL_Name: Motor Controller.lvlibp
       PPL_LIB_PATH: Chakraborty_FanucController/LabVIEW/Motor/Motor Controller.lvlib
       GIT_DIR: Chakraborty_FanucController
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Fanuc Interface.lvlibp" "Motor Ramping Calculations.lvlibp"
         "OIST_Error.lvlibp"'
     materials:
@@ -7197,6 +7229,7 @@ pipelines:
       PPL_LIB_PATH: Chakraborty_FanucController/LabVIEW/Ramp Generators/Motor Ramping
         Calculations.lvlib
       GIT_DIR: Chakraborty_FanucController
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -7290,6 +7323,7 @@ pipelines:
       PPL_Name: NS_ServerClient.lvlibp
       PPL_LIB_PATH: Chakraborty_NetworkStreams/NS_ServerClient.lvlib
       GIT_DIR: Chakraborty_NetworkStreams
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "AF_Messages-PPL.lvlibp" "Simple
         Logger.lvlibp"'
     materials:
@@ -7573,6 +7607,7 @@ pipelines:
       PPL_Name: OIST_Error.lvlibp
       PPL_LIB_PATH: Chakraborty_Errors/OIST_Error/OIST_Error.lvlib
       GIT_DIR: Chakraborty_Errors
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -7666,6 +7701,7 @@ pipelines:
       PPL_Name: PMX32-2QU.lvlibp
       PPL_LIB_PATH: Chakraborty_PMX32/PMX32-2QU.lvlib
       GIT_DIR: Chakraborty_PMX32
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"PowerSupplyInterface.lvlibp" "OIST_Error.lvlibp"'
     materials:
       builder: *id017
@@ -7902,6 +7938,7 @@ pipelines:
       PPL_Name: PowerSupplies-Arduino.lvlibp
       PPL_LIB_PATH: Chakraborty_PowerSupplies/Arduino/PowerSupplies-Arduino.lvlib
       GIT_DIR: Chakraborty_PowerSupplies
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -7995,6 +8032,7 @@ pipelines:
       PPL_Name: PowerSupplies-Serial.lvlibp
       PPL_LIB_PATH: Chakraborty_PowerSupplies/PowerSupplies-Serial/PowerSupplies-Serial.lvlib
       GIT_DIR: Chakraborty_PowerSupplies
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Serial Communication.lvlibp" "OIST_Error.lvlibp" "PowerSupplyInterface.lvlibp"'
     materials:
       builder: *id017
@@ -8277,6 +8315,7 @@ pipelines:
       PPL_Name: PowerSupplyInterface.lvlibp
       PPL_LIB_PATH: Chakraborty_PSU-Interface/PowerSupplyInterface.lvlib
       GIT_DIR: Chakraborty_PSU-Interface
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"OIST_Error.lvlibp"'
     materials:
       builder: *id017
@@ -8461,6 +8500,7 @@ pipelines:
       PPL_Name: ProjectUtilities.lvlibp
       PPL_LIB_PATH: Chakraborty_LabVIEW-Reuse/ProjectUtilities/ProjectUtilities.lvlib
       GIT_DIR: Chakraborty_LabVIEW-Reuse
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -8554,6 +8594,7 @@ pipelines:
       PPL_Name: Request for Connection.lvlibp
       PPL_LIB_PATH: Chakraborty_ReqForConnection/Request for Connection.lvlib
       GIT_DIR: Chakraborty_ReqForConnection
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"NS_ServerClient.lvlibp"'
     materials:
       builder: *id017
@@ -8738,6 +8779,7 @@ pipelines:
       PPL_Name: Result Graph.lvlibp
       PPL_LIB_PATH: Chakraborty_MResGraph/Result Graph.lvlib
       GIT_DIR: Chakraborty_MResGraph
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "Measurement Results.lvlibp"
         "SubpanelEnabledActor.lvlibp" "DataStore.lvlibp"'
     materials:
@@ -9073,6 +9115,7 @@ pipelines:
       PPL_Name: SPI Communicator.lvlibp
       PPL_LIB_PATH: Chakraborty_LTC2983/Communicators/SPI Communicator/SPI Communicator.lvlib
       GIT_DIR: Chakraborty_LTC2983
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9166,6 +9209,7 @@ pipelines:
       PPL_Name: SPI Functions.lvlibp
       PPL_LIB_PATH: Chakraborty_LTC2983/SPI Functions/SPI Functions.lvlib
       GIT_DIR: Chakraborty_LTC2983
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9259,6 +9303,7 @@ pipelines:
       PPL_Name: SQLite.lvlibp
       PPL_LIB_PATH: Chakraborty_JDP_SQLite/SQLite/SQLite.lvlib
       GIT_DIR: Chakraborty_JDP_SQLite
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9352,6 +9397,7 @@ pipelines:
       PPL_Name: Serial Communication.lvlibp
       PPL_LIB_PATH: Chakraborty_CoolerUnit/Serial Comms/Serial Communication.lvlib
       GIT_DIR: Chakraborty_CoolerUnit
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9445,6 +9491,7 @@ pipelines:
       PPL_Name: Simple Logger.lvlibp
       PPL_LIB_PATH: Chakraborty_LabVIEW-Reuse/SimpleLogger/Simple Logger.lvlib
       GIT_DIR: Chakraborty_LabVIEW-Reuse
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9538,6 +9585,7 @@ pipelines:
       PPL_Name: String Logging.lvlibp
       PPL_LIB_PATH: Chakraborty_StringLogging/String Logging.lvlib
       GIT_DIR: Chakraborty_StringLogging
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9631,6 +9679,7 @@ pipelines:
       PPL_Name: SubpanelEnabledActor.lvlibp
       PPL_LIB_PATH: Chakraborty_SubpanelEnabledActor/SubpanelEnabledActor.lvlib
       GIT_DIR: Chakraborty_SubpanelEnabledActor
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp"'
     materials:
       builder: *id017
@@ -9815,6 +9864,7 @@ pipelines:
       PPL_Name: TranslationStage.lvlibp
       PPL_LIB_PATH: Chakraborty_TranslationStage/TranslationStage.lvlib
       GIT_DIR: Chakraborty_TranslationStage
+      LV_VERSION: '2019'
       Dependency_PPL_Names: ''
     materials:
       builder: *id017
@@ -9909,6 +9959,7 @@ pipelines:
       PPL_LIB_PATH: Chakraborty_LTC2983/Communicators/DAQmx X Series SPI Comms/X-Series
         SPI Comms.lvlib
       GIT_DIR: Chakraborty_LTC2983
+      LV_VERSION: '2019'
       Dependency_PPL_Names: '"SPI Communicator.lvlibp" "SPI Functions.lvlibp"'
     materials:
       builder: *id017

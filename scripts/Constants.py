@@ -1,7 +1,5 @@
 # Simple constants
-lv_ver = "2019"
 via_plugin_version = "0.2.2.3"
-
 
 # Names defined in the Zip_PPL_Builder config file
 zipPipelineName = "Zip_PPL_Builder"
@@ -84,7 +82,7 @@ via_job = {
         "arguments": [
           "--verbose",
           "--lv-ver",
-          lv_ver,
+          "#{LV_VERSION}",
           "viaRunner.vi",
           "--",
           "viaResults.xml"
@@ -165,7 +163,7 @@ gcli_build_task = { "exec": {
   "command": "g-cli",
   "arguments": [
     "--lv-ver",
-    lv_ver,
+    "#{LV_VERSION}",
     '%BITNESS_FLAG%',
     "PPL_Builder\\Call_Builder_Wiresmith.vi", # This must be a backward slash
     "--",
