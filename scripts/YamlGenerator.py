@@ -308,6 +308,8 @@ def findNonDefaultLVPipelines(pipelineDictionary, defaultVersion):
 def updateMinimumVersions(pipelineDictionary):
     # This code only works for 2 versions. With multiple non-default versions, needs more care
     nonDefaultPipelineNames = findNonDefaultLVPipelines(pipelineDictionary, "2019")
+    if len(nonDefaultPipelineNames) == 0:
+      return pipelineDictionary
     pipelinesToUpdate = set(nonDefaultPipelineNames)
     newElements = []
     def dependsOnElems(dependenciesToInclude):
