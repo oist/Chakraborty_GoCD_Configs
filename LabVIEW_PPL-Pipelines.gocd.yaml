@@ -200,7 +200,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -515,7 +515,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -613,7 +613,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -797,7 +797,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -901,7 +901,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1185,7 +1185,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1377,7 +1377,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1610,7 +1610,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1705,7 +1705,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -1890,7 +1890,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2078,7 +2078,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2277,7 +2277,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2657,7 +2657,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -2842,7 +2842,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3030,7 +3030,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3215,7 +3215,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3405,7 +3405,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3686,7 +3686,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -3872,7 +3872,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4105,7 +4105,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4289,7 +4289,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4383,7 +4383,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4478,7 +4478,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4667,7 +4667,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -4918,7 +4918,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5342,7 +5342,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5438,7 +5438,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -5678,7 +5678,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6008,7 +6008,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6240,7 +6240,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6338,7 +6338,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6626,7 +6626,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -6961,7 +6961,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7242,7 +7242,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7340,7 +7340,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7620,7 +7620,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7719,7 +7719,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -7951,7 +7951,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8048,7 +8048,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8329,7 +8329,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8513,7 +8513,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8608,7 +8608,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -8800,7 +8800,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9128,7 +9128,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9222,7 +9222,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9316,7 +9316,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9410,7 +9410,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9504,7 +9504,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9598,7 +9598,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9693,7 +9693,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9877,7 +9877,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15
@@ -9974,7 +9974,7 @@ pipelines:
     - build_ppls:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           Windows_32_Release:
             timeout: 15

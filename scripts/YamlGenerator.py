@@ -163,7 +163,7 @@ def generatePPLStage(packageRootName, lv_version, dependencies):
   return {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
-      "approval": "success", # Set to manual to prevent auto-scheduling
+      "approval": "manual", # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
       # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
       "jobs": generatePPLJobList(packageRootName, lv_version, dependencies)
   }}
