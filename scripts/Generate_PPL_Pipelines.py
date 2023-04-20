@@ -152,7 +152,7 @@ if __name__ == '__main__':
   generator = ((keyname, list(value), outputDirectory) for keyname, value in urlToLibDict.items())
   with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
     results = pool.starmap(handleUrl, generator)
-    
+
   toc_end = time.perf_counter()
   print(f"Cloned all repositories in {toc_end-tic_start:0.2f} seconds")
   list_dicts = [item for sublist in results for item in sublist]
@@ -170,12 +170,12 @@ if __name__ == '__main__':
   pipelineDict = dict(sorted(flatten_dict(pipelineDefinitionContent).items()))
   updateMinimumVersions(pipelineDict)
 
-  # The behaviour of the sort might depend on Python version - 
+  # The behaviour of the sort might depend on Python version -
   # dictionary insertion order is preserved after Python 3.7
   yamlObject = buildYamlObject(pipelineDict)
   # print(yaml.dump(yamlObject, sort_keys=False))
 
   outputFilePath = "./LabVIEW_PPL-Pipelines.gocd.yaml"
-  with open(outputFilePath, 'w') as outputFile: 
+  with open(outputFilePath, 'w') as outputFile:
     yaml.dump(yamlObject, outputFile, sort_keys=False)
   print(str(os.path.getsize(outputFilePath)) + " bytes")
