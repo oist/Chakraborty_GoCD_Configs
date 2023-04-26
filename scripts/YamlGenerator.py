@@ -203,7 +203,8 @@ git_tag_stage = {"git_tag": {
     "fetch_materials": "yes",
     "environment_variables": {
       "GITHUB_RELEASE_TOKEN": "{{SECRET:[secrets.json][github_publishing_token]}}",
-      "PPL_NAME": "#{PPL_Name}"
+      "PPL_NAME": "#{PPL_Name}",
+      "RELEASE_NOTES": ""
     },
     # Single job, so no need for jobs entry
     "tasks": git_tag_tasks

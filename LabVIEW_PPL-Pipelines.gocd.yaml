@@ -439,6 +439,7 @@ pipelines:
         environment_variables:
           GITHUB_RELEASE_TOKEN: '{{SECRET:[secrets.json][github_publishing_token]}}'
           PPL_NAME: '#{PPL_Name}'
+          RELEASE_NOTES: ''
         tasks:
         - *id001
         - *id002
