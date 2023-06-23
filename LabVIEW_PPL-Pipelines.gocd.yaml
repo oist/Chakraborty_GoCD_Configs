@@ -8831,7 +8831,7 @@ pipelines:
       GIT_DIR: Chakraborty_MResGraph
       LV_VERSION: '2019'
       Dependency_PPL_Names: '"Actor Framework.lvlibp" "Measurement Results.lvlibp"
-        "SubpanelEnabledActor.lvlibp" "DataStore.lvlibp"'
+        "DataStore.lvlibp" "SubpanelEnabledActor.lvlibp" "OIST_Error.lvlibp" "AF_Messages-PPL.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_MResGraph:
@@ -8841,11 +8841,13 @@ pipelines:
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id030
       Measurement-Results.lvlibp_pipelineMaterial: *id027
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
+      OIST_Error.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8886,6 +8888,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: DataStore_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: Windows_32_Release
@@ -8894,10 +8904,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: Windows_32_Release
-                artifact_id: DataStore_Windows_32_Release_nipkg
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: AF_Messages-PPL_Windows_32_Release_nipkg
                 configuration: *id010
             - *id003
             - *id004
@@ -8937,6 +8955,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: DataStore_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: Windows_32_Debug
@@ -8945,10 +8971,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: Windows_32_Debug
-                artifact_id: DataStore_Windows_32_Debug_nipkg
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: AF_Messages-PPL_Windows_32_Debug_nipkg
                 configuration: *id010
             - *id011
             - *id004
@@ -8988,6 +9022,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: DataStore_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: Windows_64_Release
@@ -8996,10 +9038,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: Windows_64_Release
-                artifact_id: DataStore_Windows_64_Release_nipkg
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: AF_Messages-PPL_Windows_64_Release_nipkg
                 configuration: *id010
             - *id013
             - *id004
@@ -9039,6 +9089,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: DataStore_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: Windows_64_Debug
@@ -9047,10 +9105,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: Windows_64_Debug
-                artifact_id: DataStore_Windows_64_Debug_nipkg
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: AF_Messages-PPL_Windows_64_Debug_nipkg
                 configuration: *id010
             - *id014
             - *id004
@@ -9090,6 +9156,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: DataStore_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: cRIO_Release
@@ -9098,10 +9172,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: cRIO_Release
-                artifact_id: DataStore_cRIO_Release_nipkg
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: AF_Messages-PPL_cRIO_Release_nipkg
                 configuration: *id010
             - *id015
             - *id004
@@ -9141,6 +9223,14 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: DataStore_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
                 pipeline: SubpanelEnabledActor.lvlibp
                 stage: build_ppls
                 job: cRIO_Debug
@@ -9149,10 +9239,18 @@ pipelines:
             - fetch:
                 run_if: passed
                 artifact_origin: external
-                pipeline: DataStore.lvlibp
+                pipeline: OIST_Error.lvlibp
                 stage: build_ppls
                 job: cRIO_Debug
-                artifact_id: DataStore_cRIO_Debug_nipkg
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: AF_Messages-PPL_cRIO_Debug_nipkg
                 configuration: *id010
             - *id016
             - *id004
