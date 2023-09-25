@@ -873,6 +873,100 @@ pipelines:
                 configuration: *id008
             tasks: *id019
     - *id025
+  Baumer-OM70-Modbus.lvlibp:
+    group: PPLs
+    parameters:
+      PPL_Name: Baumer OM70 Modbus.lvlibp
+      PPL_LIB_PATH: Chakraborty_BaumerSensor/Sensor/Modbus/Baumer OM70 Modbus.lvlib
+      GIT_DIR: Chakraborty_BaumerSensor
+      LV_VERSION: '2019'
+      Dependency_PPL_Names: ''
+    materials:
+      builder: *id017
+      Chakraborty_BaumerSensor:
+        git: git@github.com:oist/Chakraborty_BaumerSensor
+        destination: Chakraborty_BaumerSensor
+        auto_update: false
+        shallow_clone: false
+    stages:
+    - build_ppls:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          Windows_32_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id018
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_Windows_32_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+          Windows_32_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id020
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_Windows_32_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+          Windows_64_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id021
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_Windows_64_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+          Windows_64_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id022
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_Windows_64_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+          cRIO_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id023
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_cRIO_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+          cRIO_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id024
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks: *id019
+    - *id025
   Communication-Server.lvlibp:
     group: PPLs
     parameters:
