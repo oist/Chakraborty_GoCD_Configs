@@ -54,6 +54,7 @@ GX_Balance_REPO := oist/Chakraborty_GX-Balance
 PowerSupplyInterface_REPO := oist/Chakraborty_PSU-Interface
 PMX32-2QU_REPO := oist/Chakraborty_PMX32
 Baumer+OM70+Modbus_REPO := oist/Chakraborty_BaumerSensor
+Brainbox+Serial+over+TCP_REPO := oist/Chakraborty_Brainbox
 
 # Change these:
 # Name of MeasurementActor repo?
