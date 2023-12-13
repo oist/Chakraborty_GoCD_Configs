@@ -1878,7 +1878,7 @@ pipelines:
         Interface.lvlib
       GIT_DIR: Chakraborty_DantecBSAProcessor
       LV_VERSION: '2019'
-      Dependency_PPL_Names: ''
+      Dependency_PPL_Names: '"Measurement Results.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_DantecBSAProcessor:
@@ -1886,6 +1886,7 @@ pipelines:
         destination: Chakraborty_DantecBSAProcessor
         auto_update: false
         shallow_clone: false
+      Measurement-Results.lvlibp_pipelineMaterial: *id028
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1903,7 +1904,22 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_32_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Measurement-Results_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id004
+            - *id012
+            - *id005
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -1915,7 +1931,22 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_32_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Measurement-Results_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1927,7 +1958,22 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_64_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Measurement-Results_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1939,7 +1985,22 @@ pipelines:
                 id: Dantec-Processor-Interface_Windows_64_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Measurement-Results_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id004
+            - *id012
+            - *id005
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1951,7 +2012,22 @@ pipelines:
                 id: Dantec-Processor-Interface_cRIO_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Measurement-Results_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id004
+            - *id012
+            - *id005
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1963,7 +2039,22 @@ pipelines:
                 id: Dantec-Processor-Interface_cRIO_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Measurement-Results_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id004
+            - *id012
+            - *id005
     - *id025
   DataStore.lvlibp:
     group: PPLs
