@@ -57,6 +57,7 @@ Baumer+OM70+Modbus_REPO := oist/Chakraborty_BaumerSensor
 Brainbox+Serial+over+TCP_REPO := oist/Chakraborty_Brainbox
 TCP_Serial_REPO := oist/Chakraborty_TCP_Serial
 PopoutPanel_REPO := oist/Chakraborty_PopoutPanels
+Step+Scheduler_REPO := oist/Chakraborty_StepScheduler
 
 # Change these:
 # Name of MeasurementActor repo?
