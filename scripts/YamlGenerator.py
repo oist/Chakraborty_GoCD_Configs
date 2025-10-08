@@ -206,6 +206,7 @@ git_tag_stage = {"git_tag": {
       "PPL_NAME": "#{PPL_Name}",
       "RELEASE_NOTES": ""
     },
+    "resources": [ "powershell" ],
     # Single job, so no need for jobs entry
     "tasks": git_tag_tasks
   }

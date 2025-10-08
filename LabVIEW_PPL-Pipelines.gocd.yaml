@@ -440,6 +440,8 @@ pipelines:
           GITHUB_RELEASE_TOKEN: '{{SECRET:[secrets.json][github_publishing_token]}}'
           PPL_NAME: '#{PPL_Name}'
           RELEASE_NOTES: ''
+        resources:
+        - powershell
         tasks:
         - *id001
         - *id002
