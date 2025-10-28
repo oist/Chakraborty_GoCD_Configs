@@ -58,6 +58,7 @@ Brainbox+Serial+over+TCP_REPO := oist/Chakraborty_Brainbox
 TCP_Serial_REPO := oist/Chakraborty_TCP_Serial
 PopoutPanel_REPO := oist/Chakraborty_PopoutPanels
 Step+Scheduler_REPO := oist/Chakraborty_StepScheduler
+Countdown+Actor_REPO := oist/Chakraborty_CountdownActor
 
 # Change these:
 # Name of MeasurementActor repo?
