@@ -10575,7 +10575,7 @@ pipelines:
       PPL_LIB_PATH: Chakraborty_StepScheduler/Step Scheduler.lvlib
       GIT_DIR: Chakraborty_StepScheduler
       LV_VERSION: '2019'
-      Dependency_PPL_Names: '"Actor Framework.lvlibp"'
+      Dependency_PPL_Names: '"Actor Framework.lvlibp" "OIST_Error.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_StepScheduler:
@@ -10584,6 +10584,7 @@ pipelines:
         auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id028
+      OIST_Error.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -10613,6 +10614,14 @@ pipelines:
                 job: Windows_32_Release
                 artifact_id: Actor-Framework_Windows_32_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
             - *id003
             - *id004
             - *id012
@@ -10639,6 +10648,14 @@ pipelines:
                 stage: build_ppls
                 job: Windows_32_Debug
                 artifact_id: Actor-Framework_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
                 configuration: *id010
             - *id011
             - *id004
@@ -10667,6 +10684,14 @@ pipelines:
                 job: Windows_64_Release
                 artifact_id: Actor-Framework_Windows_64_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
             - *id013
             - *id004
             - *id012
@@ -10693,6 +10718,14 @@ pipelines:
                 stage: build_ppls
                 job: Windows_64_Debug
                 artifact_id: Actor-Framework_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
                 configuration: *id010
             - *id014
             - *id004
@@ -10721,6 +10754,14 @@ pipelines:
                 job: cRIO_Release
                 artifact_id: Actor-Framework_cRIO_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
             - *id015
             - *id004
             - *id012
@@ -10747,6 +10788,14 @@ pipelines:
                 stage: build_ppls
                 job: cRIO_Debug
                 artifact_id: Actor-Framework_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
                 configuration: *id010
             - *id016
             - *id004
