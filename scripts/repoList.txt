@@ -59,6 +59,7 @@ TCP_Serial_REPO := oist/Chakraborty_TCP_Serial
 PopoutPanel_REPO := oist/Chakraborty_PopoutPanels
 Step+Scheduler_REPO := oist/Chakraborty_StepScheduler
 Countdown+Actor_REPO := oist/Chakraborty_CountdownActor
+Measurement+Actors_REPO := oist/Chakraborty_MeasurementActors
 
 # Change these:
 # Name of MeasurementActor repo?

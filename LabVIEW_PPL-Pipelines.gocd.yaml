@@ -1174,7 +1174,7 @@ pipelines:
         auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
-      Request-for-Connection.lvlibp_pipelineMaterial:
+      Request-for-Connection.lvlibp_pipelineMaterial: &id035
         pipeline: Request-for-Connection.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -2975,7 +2975,7 @@ pipelines:
       MResDatatype.lvlibp_pipelineMaterial: *id031
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
       Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Simple-Logger.lvlibp_pipelineMaterial: &id036
+      Simple-Logger.lvlibp_pipelineMaterial: &id038
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -5604,11 +5604,11 @@ pipelines:
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id028
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
-      SPI-Communicator.lvlibp_pipelineMaterial: &id038
+      SPI-Communicator.lvlibp_pipelineMaterial: &id040
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SPI-Functions.lvlibp_pipelineMaterial: &id039
+      SPI-Functions.lvlibp_pipelineMaterial: &id041
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -5616,7 +5616,7 @@ pipelines:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id035
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id037
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -6374,7 +6374,7 @@ pipelines:
         auto_update: false
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id028
-      DiskLogger.lvlibp_pipelineMaterial:
+      DiskLogger.lvlibp_pipelineMaterial: &id036
         pipeline: DiskLogger.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -6927,6 +6927,487 @@ pipelines:
             - *id012
             - *id005
     - *id025
+  Measurement-Actors.lvlibp:
+    group: PPLs
+    parameters:
+      PPL_Name: Measurement Actors.lvlibp
+      PPL_LIB_PATH: Chakraborty_MeasurementActors/Measurement Actors.lvlib
+      GIT_DIR: Chakraborty_MeasurementActors
+      LV_VERSION: '2019'
+      Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Request for Connection.lvlibp"
+        "Measurement Results.lvlibp" "Actor Framework.lvlibp" "OIST_Error.lvlibp"
+        "DiskLogger.lvlibp" "MResDatatype.lvlibp"'
+    materials:
+      builder: *id017
+      Chakraborty_MeasurementActors:
+        git: git@github.com:oist/Chakraborty_MeasurementActors
+        destination: Chakraborty_MeasurementActors
+        auto_update: false
+        shallow_clone: false
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
+      Request-for-Connection.lvlibp_pipelineMaterial: *id035
+      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      OIST_Error.lvlibp_pipelineMaterial: *id030
+      DiskLogger.lvlibp_pipelineMaterial: *id036
+      MResDatatype.lvlibp_pipelineMaterial: *id031
+    stages:
+    - build_ppls:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          Windows_32_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id018
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_Windows_32_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: NS_ServerClient_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Request-for-Connection_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Measurement-Results_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Actor-Framework_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: DiskLogger_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: MResDatatype_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id004
+            - *id012
+            - *id005
+          Windows_32_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id020
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_Windows_32_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: NS_ServerClient_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Request-for-Connection_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Measurement-Results_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Actor-Framework_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: DiskLogger_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: MResDatatype_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id004
+            - *id012
+            - *id005
+          Windows_64_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id021
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_Windows_64_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: NS_ServerClient_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Request-for-Connection_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Measurement-Results_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Actor-Framework_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: DiskLogger_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: MResDatatype_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id004
+            - *id012
+            - *id005
+          Windows_64_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id022
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_Windows_64_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: NS_ServerClient_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Request-for-Connection_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Measurement-Results_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Actor-Framework_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: DiskLogger_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: MResDatatype_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id004
+            - *id012
+            - *id005
+          cRIO_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id023
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_cRIO_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: NS_ServerClient_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Request-for-Connection_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Measurement-Results_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Actor-Framework_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: DiskLogger_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: MResDatatype_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id004
+            - *id012
+            - *id005
+          cRIO_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id024
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Measurement-Actors_cRIO_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: NS_ServerClient_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Request-for-Connection_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Measurement-Results_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Actor-Framework_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DiskLogger.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: DiskLogger_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: MResDatatype_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id004
+            - *id012
+            - *id005
+    - *id025
   Measurement-Results.lvlibp:
     group: PPLs
     parameters:
@@ -7039,7 +7520,7 @@ pipelines:
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id028
       Measurement-Results.lvlibp_pipelineMaterial: *id029
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id037
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8041,7 +8522,7 @@ pipelines:
         shallow_clone: false
       Actor-Framework.lvlibp_pipelineMaterial: *id028
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
-      Simple-Logger.lvlibp_pipelineMaterial: *id036
+      Simple-Logger.lvlibp_pipelineMaterial: *id038
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8416,7 +8897,7 @@ pipelines:
         destination: Chakraborty_PMX32
         auto_update: false
         shallow_clone: false
-      PowerSupplyInterface.lvlibp_pipelineMaterial: &id037
+      PowerSupplyInterface.lvlibp_pipelineMaterial: &id039
         pipeline: PowerSupplyInterface.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -8934,7 +9415,7 @@ pipelines:
         shallow_clone: false
       Serial-Communication.lvlibp_pipelineMaterial: *id027
       OIST_Error.lvlibp_pipelineMaterial: *id030
-      PowerSupplyInterface.lvlibp_pipelineMaterial: *id037
+      PowerSupplyInterface.lvlibp_pipelineMaterial: *id039
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9686,7 +10167,7 @@ pipelines:
         pipeline: DataStore.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id035
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id037
       OIST_Error.lvlibp_pipelineMaterial: *id030
       AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
     stages:
@@ -11376,8 +11857,8 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: false
         shallow_clone: false
-      SPI-Communicator.lvlibp_pipelineMaterial: *id038
-      SPI-Functions.lvlibp_pipelineMaterial: *id039
+      SPI-Communicator.lvlibp_pipelineMaterial: *id040
+      SPI-Functions.lvlibp_pipelineMaterial: *id041
     stages:
     - build_ppls:
         fetch_materials: 'yes'
