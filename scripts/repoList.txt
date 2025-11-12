@@ -60,6 +60,7 @@ PopoutPanel_REPO := oist/Chakraborty_PopoutPanels
 Step+Scheduler_REPO := oist/Chakraborty_StepScheduler
 Countdown+Actor_REPO := oist/Chakraborty_CountdownActor
 Measurement+Actors_REPO := oist/Chakraborty_MeasurementActors
+Status+Reporting_REPO := oist/Chakraborty_StatusReporting
 
 # Change these:
 # Name of MeasurementActor repo?
