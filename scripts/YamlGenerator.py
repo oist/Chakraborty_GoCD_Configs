@@ -145,7 +145,8 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
             "Verbose": False
           },
           "configuration": {
-            "id": "jp.oist.chakraborty.vi-package-installer"
+            "id": "jp.oist.chakraborty.vi-package-installer",
+            "version": "0.1"
           }
         }
       })

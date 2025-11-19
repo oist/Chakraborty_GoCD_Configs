@@ -11079,6 +11079,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11087,6 +11088,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id003
             - *id004
             - *id012
@@ -11114,6 +11116,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11122,6 +11125,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id011
             - *id004
             - *id012
@@ -11149,6 +11153,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11157,6 +11162,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id013
             - *id004
             - *id012
@@ -11184,6 +11190,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11192,6 +11199,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id014
             - *id004
             - *id012
@@ -11219,6 +11227,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11227,6 +11236,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id015
             - *id004
             - *id012
@@ -11254,6 +11264,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - plugin:
                 run_if: passed
                 options:
@@ -11262,6 +11273,7 @@ pipelines:
                   Verbose: false
                 configuration:
                   id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
             - *id016
             - *id004
             - *id012
