@@ -119,12 +119,13 @@ labviewDir = {
 def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version):
   if dependencies is None and vipkgUrls is None:
     raise ValueError("Attempted to generate a PPL Task List with dependencies without passing a list of Dependencies")
-  fetchTasks = []
+  pplDepTasks = []
   if dependencies is not None:
+    pplDepTasks.append(create_ppl_dir)
     for dependency in dependencies:
       dependencyRootName = getPackageRootName(dependency)
       packageId = f"{dependencyRootName}_{targetName}_nipkg"
-      fetchTasks.append({"fetch": {
+      pplDepTasks.append({"fetch": {
         "run_if": "passed",
         "artifact_origin": "external",
         "pipeline": dependency,
@@ -133,6 +134,8 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
         "artifact_id": packageId,
         "configuration": fetch_ppl_configuration
       }})
+    pplDepTasks.append(mklink_tasks[targetName])
+    pplDepTasks.append(ls_currentDir_task)
   vipkgTasks = []
   if vipkgUrls is not None:
     targetT = Target[targetName]
@@ -150,8 +153,8 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
           }
         }
       })
-  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + vipkgTasks +\
-    [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_build_task ]
+  return [ fetch_builder_task, expand_builder_task ] + pplDepTasks +\
+    vipkgTasks + [ ls_task, gcli_build_task ]
 
 nipkgConfigOptions = {
   "options": {
