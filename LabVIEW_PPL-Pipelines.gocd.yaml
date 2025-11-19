@@ -11067,7 +11067,30 @@ pipelines:
                 id: Status-Reporting_Windows_32_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id003
+            - *id004
+            - *id012
+            - *id005
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -11079,7 +11102,30 @@ pipelines:
                 id: Status-Reporting_Windows_32_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id011
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11091,7 +11137,30 @@ pipelines:
                 id: Status-Reporting_Windows_64_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id013
+            - *id004
+            - *id012
+            - *id005
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11103,7 +11172,30 @@ pipelines:
                 id: Status-Reporting_Windows_64_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id014
+            - *id004
+            - *id012
+            - *id005
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11115,7 +11207,30 @@ pipelines:
                 id: Status-Reporting_cRIO_Release_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id015
+            - *id004
+            - *id012
+            - *id005
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11127,7 +11242,30 @@ pipelines:
                 id: Status-Reporting_cRIO_Debug_nipkg
                 store_id: cicwin
                 configuration: *id008
-            tasks: *id019
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration:
+                  id: jp.oist.chakraborty.vi-package-installer
+            - *id016
+            - *id004
+            - *id012
+            - *id005
     - *id025
   Step-Scheduler.lvlibp:
     group: PPLs
