@@ -64,7 +64,7 @@ def directoryFromGitRepo(gitRepo, output_dir = None):
 		dest = Path(output_dir) / dest
 	return dest
 
-def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames, minLabVIEWVersion):
+def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames, minLabVIEWVersion, vipkgUrls):
   return {
     pipelineName: {
       "artifactId": pipelineName + "_nipkg",
@@ -73,7 +73,8 @@ def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencie
       "PPL_Name": PPL_Name,
       "Dependencies": Dependencies,
       "Dependency PPL Names": DependencyPPLNames,
-      "minLabVIEWVersion": minLabVIEWVersion
+      "minLabVIEWVersion": minLabVIEWVersion,
+      "vipkgUrls": vipkgUrls
     }
   }
 
@@ -94,6 +95,18 @@ def parseMkFile(mkFilePath, libName):
   print(f"Warning: Found a .mk file ({mkFilePath}) but could not parse it to get dependencies")
   return None
 
+def parseVipkgReqsFile(vipkgReqsPath):
+  f = open(vipkgReqsPath, "r")
+  # print(f"Reading VI package requirements from {vipkgReqsPath}")
+  content = f.readlines() # Read all lines (not just first)
+  vipkgUrls = []
+  for line in content:
+    line = line.strip()
+    if line.startswith("#") or line == "":
+      continue
+    vipkgUrls.append(line)
+  return vipkgUrls if len(vipkgUrls) > 0 else None
+
 allowedVersionStrings = ["2019", "2021"]
 
 def handleUrl(gitUrl, libNames, baseDir):
@@ -110,6 +123,7 @@ def handleUrl(gitUrl, libNames, baseDir):
     libPath = os.path.join(gitDir, libPathPartial).replace(os.sep, "/")
     mkFilePath = find_file(libName.replace('.lvlib', '.mk'), outputDir)
     minVerPath = find_file(libName.replace('.lvlib', '.min_lv_version'), outputDir)
+    vipkgReqsPath = find_file(libName.replace('.lvlib', '.vipm_reqs'), outputDir)
     pipelineName = getSanitizedName(libName) + "p"
     PPL_Name = libName + "p"
     minLabVIEWVersion = None
@@ -121,12 +135,15 @@ def handleUrl(gitUrl, libNames, baseDir):
         minLabVIEWVersion = content
       else:
         raise RuntimeError('Invalid minimum LabVIEW version: ' + content)
-    if mkFilePath == None:
-      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, None, None, minLabVIEWVersion))
-    else:
+    depsNames = None
+    depsList = None
+    vipkgUrls = None
+    if mkFilePath != None:
       depsNames = parseMkFile(mkFilePath, libName)
       depsList = list(map(getSanitizedName, depsNames))
-      retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, depsList, depsNames, minLabVIEWVersion))
+    if vipkgReqsPath != None:
+      vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
+    retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, depsList, depsNames, minLabVIEWVersion, vipkgUrls))
   return retVals
 
 def printFlatDict(flat_dict):

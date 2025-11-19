@@ -97,23 +97,59 @@ profileId = {
   },
 }
 
-def generatePPLJobTasksWithDeps(dependencies, targetName):
-  if dependencies is None:
+labviewDir = {
+  "2019": {
+    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+  },
+  "2021": {
+    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+  },
+}
+
+def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version):
+  if dependencies is None and vipkgUrls is None:
     raise ValueError("Attempted to generate a PPL Task List with dependencies without passing a list of Dependencies")
   fetchTasks = []
-  for dependency in dependencies:
-    dependencyRootName = getPackageRootName(dependency)
-    packageId = f"{dependencyRootName}_{targetName}_nipkg"
-    fetchTasks.append({"fetch": {
-      "run_if": "passed",
-      "artifact_origin": "external",
-      "pipeline": dependency,
-      "stage": "build_ppls",
-      "job": targetName,
-      "artifact_id": packageId,
-      "configuration": fetch_ppl_configuration
-    }})
-  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks +\
+  if dependencies is not None:
+    for dependency in dependencies:
+      dependencyRootName = getPackageRootName(dependency)
+      packageId = f"{dependencyRootName}_{targetName}_nipkg"
+      fetchTasks.append({"fetch": {
+        "run_if": "passed",
+        "artifact_origin": "external",
+        "pipeline": dependency,
+        "stage": "build_ppls",
+        "job": targetName,
+        "artifact_id": packageId,
+        "configuration": fetch_ppl_configuration
+      }})
+  vipkgTasks = []
+  if vipkgUrls is not None:
+    targetT = Target[targetName]
+    for vipkgUrl in vipkgUrls:
+      vipkgTasks.append({"plugin": {
+          "run_if": "passed",
+          "options": {
+            "Url": vipkgUrl,
+            "LabVIEWDirectory": labviewDir[lv_version][targetT],
+            "Verbose": False
+          },
+          "configuration": {
+            "id": "jp.oist.chakraborty.vi-package-installer"
+          }
+        }
+      })
+  return [ fetch_builder_task, expand_builder_task, create_ppl_dir ] + fetchTasks + vipkgTasks +\
     [ mklink_tasks[targetName], ls_task, ls_currentDir_task, gcli_build_task ]
 
 nipkgConfigOptions = {
@@ -135,7 +171,7 @@ for target in Target.__members__:
     "RELEASE_NOTES": ""
   }
 
-def generatePPLJobList(packageRootName, lv_version, dependencies):
+def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
   ppl_job_list = {}
   for target in Target.__members__:
     targetT = Target[target]
@@ -155,17 +191,17 @@ def generatePPLJobList(packageRootName, lv_version, dependencies):
             "configuration": nipkgConfigOptions
         }}
       ],
-      "tasks": PPLJobTasks_NoDeps if dependencies is None else generatePPLJobTasksWithDeps(dependencies, target)
+      "tasks": PPLJobTasks_NoDeps if dependencies is None and vipkgUrls is None else generatePPLJobTasksWithDeps(dependencies, vipkgUrls, target, lv_version)
     }
   return ppl_job_list
 
-def generatePPLStage(packageRootName, lv_version, dependencies):
+def generatePPLStage(packageRootName, lv_version, dependencies, vipkgUrls):
   return {"build_ppls": {
       "fetch_materials": "yes",
       "clean_workspace": "yes",
       "approval": "manual", # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
       # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
-      "jobs": generatePPLJobList(packageRootName, lv_version, dependencies)
+      "jobs": generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls)
   }}
 
 def get_fetch_built_ppl_task(target):
@@ -262,6 +298,7 @@ class PipelineDefinition(yaml.YAMLObject):
     self.dependencies = values['Dependencies']
     self.dependencyPPLNames = values['Dependency PPL Names']
     self.minVersion = values.get('minLabVIEWVersion')
+    self.vipkgUrls = values.get('vipkgUrls')
   def buildData(self, dumper):
     materials = generateMaterials(self.gitUrl, self.dependencies)
     if self.dependencies != None:
@@ -284,7 +321,7 @@ class PipelineDefinition(yaml.YAMLObject):
       },
       "materials": materials,
       "stages": [
-        generatePPLStage(getPackageRootName(self.name), lv_version, self.dependencies),
+        generatePPLStage(getPackageRootName(self.name), lv_version, self.dependencies, self.vipkgUrls),
         git_tag_stage
       ]
     }
