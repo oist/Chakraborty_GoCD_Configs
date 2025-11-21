@@ -61,6 +61,7 @@ Step+Scheduler_REPO := oist/Chakraborty_StepScheduler
 Countdown+Actor_REPO := oist/Chakraborty_CountdownActor
 Measurement+Actors_REPO := oist/Chakraborty_MeasurementActors
 Status+Reporting_REPO := oist/Chakraborty_StatusReporting
+Acquisition+Objects_REPO := oist/Chakraborty_AcquisitionObjects
 
 # Change these:
 # Name of MeasurementActor repo?

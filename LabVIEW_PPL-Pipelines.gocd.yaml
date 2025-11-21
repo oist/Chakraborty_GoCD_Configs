@@ -608,7 +608,7 @@ pipelines:
         destination: Chakraborty_NI_ActorFramework
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: &id028
+      Actor-Framework.lvlibp_pipelineMaterial: &id030
         pipeline: Actor-Framework.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -775,6 +775,399 @@ pipelines:
                 stage: build_ppls
                 job: cRIO_Debug
                 artifact_id: Actor-Framework_cRIO_Debug_nipkg
+                configuration: *id010
+            - *id016
+            - *id012
+            - *id004
+            - *id005
+    - *id025
+  Acquisition-Objects.lvlibp:
+    group: PPLs
+    parameters:
+      PPL_Name: Acquisition Objects.lvlibp
+      PPL_LIB_PATH: Chakraborty_AcquisitionObjects/Acquisition Objects.lvlib
+      GIT_DIR: Chakraborty_AcquisitionObjects
+      LV_VERSION: '2019'
+      Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Request for Connection.lvlibp" "MResDatatype.lvlibp" "Communication Server.lvlibp" "Status Reporting.lvlibp"'
+    materials:
+      builder: *id017
+      Chakraborty_AcquisitionObjects:
+        git: git@github.com:oist/Chakraborty_AcquisitionObjects
+        destination: Chakraborty_AcquisitionObjects
+        auto_update: false
+        shallow_clone: false
+      NS_ServerClient.lvlibp_pipelineMaterial: *id026
+      Request-for-Connection.lvlibp_pipelineMaterial: &id027
+        pipeline: Request-for-Connection.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      MResDatatype.lvlibp_pipelineMaterial: &id028
+        pipeline: MResDatatype.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Communication-Server.lvlibp_pipelineMaterial: &id033
+        pipeline: Communication-Server.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Status-Reporting.lvlibp_pipelineMaterial:
+        pipeline: Status-Reporting.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+    stages:
+    - build_ppls:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          Windows_32_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id018
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_Windows_32_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: NS_ServerClient_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Request-for-Connection_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: MResDatatype_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Communication-Server_Windows_32_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: Status-Reporting_Windows_32_Release_nipkg
+                configuration: *id010
+            - *id003
+            - *id012
+            - *id004
+            - *id005
+          Windows_32_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86
+            environment_variables: *id020
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_Windows_32_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: NS_ServerClient_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Request-for-Connection_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: MResDatatype_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Communication-Server_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: Status-Reporting_Windows_32_Debug_nipkg
+                configuration: *id010
+            - *id011
+            - *id012
+            - *id004
+            - *id005
+          Windows_64_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id021
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_Windows_64_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: NS_ServerClient_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Request-for-Connection_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: MResDatatype_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Communication-Server_Windows_64_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: Status-Reporting_Windows_64_Release_nipkg
+                configuration: *id010
+            - *id013
+            - *id012
+            - *id004
+            - *id005
+          Windows_64_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x64
+            environment_variables: *id022
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_Windows_64_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: NS_ServerClient_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Request-for-Connection_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: MResDatatype_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Communication-Server_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: Status-Reporting_Windows_64_Debug_nipkg
+                configuration: *id010
+            - *id014
+            - *id012
+            - *id004
+            - *id005
+          cRIO_Release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id023
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_cRIO_Release_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: NS_ServerClient_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Request-for-Connection_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: MResDatatype_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Communication-Server_cRIO_Release_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Status-Reporting_cRIO_Release_nipkg
+                configuration: *id010
+            - *id015
+            - *id012
+            - *id004
+            - *id005
+          cRIO_Debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables: *id024
+            artifacts:
+            - *id006
+            - *id007
+            - external:
+                id: Acquisition-Objects_cRIO_Debug_nipkg
+                store_id: cicwin
+                configuration: *id008
+            tasks:
+            - *id001
+            - *id002
+            - *id009
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: NS_ServerClient.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: NS_ServerClient_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Request-for-Connection_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: MResDatatype_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Communication-Server_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Status-Reporting_cRIO_Debug_nipkg
                 configuration: *id010
             - *id016
             - *id012
@@ -984,7 +1377,7 @@ pipelines:
         destination: Chakraborty_Brainbox
         auto_update: false
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: &id027
+      Serial-Communication.lvlibp_pipelineMaterial: &id029
         pipeline: Serial-Communication.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -1173,14 +1566,8 @@ pipelines:
         auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
-      Request-for-Connection.lvlibp_pipelineMaterial: &id035
-        pipeline: Request-for-Connection.lvlibp
-        stage: build_ppls
-        ignore_for_scheduling: false
-      MResDatatype.lvlibp_pipelineMaterial: &id031
-        pipeline: MResDatatype.lvlibp
-        stage: build_ppls
-        ignore_for_scheduling: false
+      Request-for-Connection.lvlibp_pipelineMaterial: *id027
+      MResDatatype.lvlibp_pipelineMaterial: *id028
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1461,7 +1848,7 @@ pipelines:
         destination: Chakraborty_CoolerUnit
         auto_update: false
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: *id027
+      Serial-Communication.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1646,8 +2033,8 @@ pipelines:
         destination: Chakraborty_CountdownActor
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: &id032
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      AF_Messages-PPL.lvlibp_pipelineMaterial: &id034
         pipeline: AF_Messages-PPL.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -1887,11 +2274,11 @@ pipelines:
         pipeline: Dantec-Processor-Interface.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      Measurement-Results.lvlibp_pipelineMaterial: &id029
+      Measurement-Results.lvlibp_pipelineMaterial: &id031
         pipeline: Measurement-Results.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2172,7 +2559,7 @@ pipelines:
         destination: Chakraborty_DantecBSAProcessor
         auto_update: false
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2357,8 +2744,8 @@ pipelines:
         destination: Chakraborty_DataStorage
         auto_update: false
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
-      OIST_Error.lvlibp_pipelineMaterial: &id030
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
+      OIST_Error.lvlibp_pipelineMaterial: &id032
         pipeline: OIST_Error.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -2594,7 +2981,7 @@ pipelines:
         destination: Chakraborty_DiskLogger
         auto_update: false
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2779,7 +3166,7 @@ pipelines:
         destination: Chakraborty_ErrorHandlers
         auto_update: false
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -2964,14 +3351,11 @@ pipelines:
         destination: Chakraborty_FakeCommServer
         auto_update: false
         shallow_clone: false
-      Communication-Server.lvlibp_pipelineMaterial:
-        pipeline: Communication-Server.lvlibp
-        stage: build_ppls
-        ignore_for_scheduling: false
-      MResDatatype.lvlibp_pipelineMaterial: *id031
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Simple-Logger.lvlibp_pipelineMaterial: &id038
+      Communication-Server.lvlibp_pipelineMaterial: *id033
+      MResDatatype.lvlibp_pipelineMaterial: *id028
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      Simple-Logger.lvlibp_pipelineMaterial: &id039
         pipeline: Simple-Logger.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -3539,7 +3923,7 @@ pipelines:
         destination: Chakraborty_Fanuc_Interface
         auto_update: false
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -3724,7 +4108,7 @@ pipelines:
         destination: Chakraborty_FanucProxy
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: &id033
+      Fanuc-Interface.lvlibp_pipelineMaterial: &id035
         pipeline: Fanuc-Interface.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -3912,7 +4296,7 @@ pipelines:
         destination: Chakraborty_Fanuc_FOCAS2
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4097,8 +4481,8 @@ pipelines:
         destination: Chakraborty_FanucNSProxy
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
-      Fanuc-Proxy.lvlibp_pipelineMaterial: &id034
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
+      Fanuc-Proxy.lvlibp_pipelineMaterial: &id036
         pipeline: Fanuc-Proxy.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -4383,7 +4767,7 @@ pipelines:
         destination: Chakraborty_Fanuc_TCP
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4568,8 +4952,8 @@ pipelines:
         destination: Chakraborty_Fanuc_TCPProxy
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
-      Fanuc-Proxy.lvlibp_pipelineMaterial: *id034
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
+      Fanuc-Proxy.lvlibp_pipelineMaterial: *id036
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -4802,7 +5186,7 @@ pipelines:
         destination: Chakraborty_GX-Balance
         auto_update: false
         shallow_clone: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5175,7 +5559,7 @@ pipelines:
         destination: Chakraborty_ISEL-TranslationStage
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5364,7 +5748,7 @@ pipelines:
         pipeline: Laser-Interface.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      Serial-Communication.lvlibp_pipelineMaterial: *id027
+      Serial-Communication.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -5597,13 +5981,13 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
-      SPI-Communicator.lvlibp_pipelineMaterial: &id040
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
+      SPI-Communicator.lvlibp_pipelineMaterial: &id041
         pipeline: SPI-Communicator.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SPI-Functions.lvlibp_pipelineMaterial: &id041
+      SPI-Functions.lvlibp_pipelineMaterial: &id042
         pipeline: SPI-Functions.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -5611,7 +5995,7 @@ pipelines:
         pipeline: X-Series-SPI-Comms.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id037
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: &id038
         pipeline: SubpanelEnabledActor.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
@@ -6134,7 +6518,7 @@ pipelines:
         auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6367,13 +6751,13 @@ pipelines:
         destination: Chakraborty_MSE_LDV
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      DiskLogger.lvlibp_pipelineMaterial: &id036
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      DiskLogger.lvlibp_pipelineMaterial: &id037
         pipeline: DiskLogger.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6702,8 +7086,8 @@ pipelines:
         destination: Chakraborty_MeanValuePlotting
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -6937,12 +7321,12 @@ pipelines:
         auto_update: false
         shallow_clone: false
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
-      Request-for-Connection.lvlibp_pipelineMaterial: *id035
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      OIST_Error.lvlibp_pipelineMaterial: *id030
-      DiskLogger.lvlibp_pipelineMaterial: *id036
-      MResDatatype.lvlibp_pipelineMaterial: *id031
+      Request-for-Connection.lvlibp_pipelineMaterial: *id027
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
+      DiskLogger.lvlibp_pipelineMaterial: *id037
+      MResDatatype.lvlibp_pipelineMaterial: *id028
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7509,9 +7893,9 @@ pipelines:
         destination: Chakraborty_MeasurementActor
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id037
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id038
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -7792,9 +8176,9 @@ pipelines:
         destination: Chakraborty_FanucWithLogging
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
       SQLite.lvlibp_pipelineMaterial:
         pipeline: SQLite.lvlibp
         stage: build_ppls
@@ -8127,12 +8511,12 @@ pipelines:
         destination: Chakraborty_FanucController
         auto_update: false
         shallow_clone: false
-      Fanuc-Interface.lvlibp_pipelineMaterial: *id033
+      Fanuc-Interface.lvlibp_pipelineMaterial: *id035
       Motor-Ramping-Calculations.lvlibp_pipelineMaterial:
         pipeline: Motor-Ramping-Calculations.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8507,9 +8891,9 @@ pipelines:
         destination: Chakraborty_NetworkStreams
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
-      Simple-Logger.lvlibp_pipelineMaterial: *id038
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
+      Simple-Logger.lvlibp_pipelineMaterial: *id039
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -8884,11 +9268,11 @@ pipelines:
         destination: Chakraborty_PMX32
         auto_update: false
         shallow_clone: false
-      PowerSupplyInterface.lvlibp_pipelineMaterial: &id039
+      PowerSupplyInterface.lvlibp_pipelineMaterial: &id040
         pipeline: PowerSupplyInterface.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9121,7 +9505,7 @@ pipelines:
         destination: Chakraborty_PopoutPanels
         auto_update: false
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9400,9 +9784,9 @@ pipelines:
         destination: Chakraborty_PowerSupplies
         auto_update: false
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: *id027
-      OIST_Error.lvlibp_pipelineMaterial: *id030
-      PowerSupplyInterface.lvlibp_pipelineMaterial: *id039
+      Serial-Communication.lvlibp_pipelineMaterial: *id029
+      OIST_Error.lvlibp_pipelineMaterial: *id032
+      PowerSupplyInterface.lvlibp_pipelineMaterial: *id040
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -9683,7 +10067,7 @@ pipelines:
         destination: Chakraborty_PSU-Interface
         auto_update: false
         shallow_clone: false
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -10147,15 +10531,15 @@ pipelines:
         destination: Chakraborty_MResGraph
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      Measurement-Results.lvlibp_pipelineMaterial: *id029
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      Measurement-Results.lvlibp_pipelineMaterial: *id031
       DataStore.lvlibp_pipelineMaterial:
         pipeline: DataStore.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
-      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id037
-      OIST_Error.lvlibp_pipelineMaterial: *id030
-      AF_Messages-PPL.lvlibp_pipelineMaterial: *id032
+      SubpanelEnabledActor.lvlibp_pipelineMaterial: *id038
+      OIST_Error.lvlibp_pipelineMaterial: *id032
+      AF_Messages-PPL.lvlibp_pipelineMaterial: *id034
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -11276,8 +11660,8 @@ pipelines:
         destination: Chakraborty_StepScheduler
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
-      OIST_Error.lvlibp_pipelineMaterial: *id030
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -11604,7 +11988,7 @@ pipelines:
         destination: Chakraborty_SubpanelEnabledActor
         auto_update: false
         shallow_clone: false
-      Actor-Framework.lvlibp_pipelineMaterial: *id028
+      Actor-Framework.lvlibp_pipelineMaterial: *id030
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -11789,7 +12173,7 @@ pipelines:
         destination: Chakraborty_TCP_Serial
         auto_update: false
         shallow_clone: false
-      Serial-Communication.lvlibp_pipelineMaterial: *id027
+      Serial-Communication.lvlibp_pipelineMaterial: *id029
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -12068,8 +12452,8 @@ pipelines:
         destination: Chakraborty_LTC2983
         auto_update: false
         shallow_clone: false
-      SPI-Communicator.lvlibp_pipelineMaterial: *id040
-      SPI-Functions.lvlibp_pipelineMaterial: *id041
+      SPI-Communicator.lvlibp_pipelineMaterial: *id041
+      SPI-Functions.lvlibp_pipelineMaterial: *id042
     stages:
     - build_ppls:
         fetch_materials: 'yes'
