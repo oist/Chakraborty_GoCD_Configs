@@ -1557,7 +1557,7 @@ pipelines:
       PPL_LIB_PATH: Chakraborty_CommServer/Communication Server.lvlib
       GIT_DIR: Chakraborty_CommServer
       LV_VERSION: '2019'
-      Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Request for Connection.lvlibp" "MResDatatype.lvlibp"'
+      Dependency_PPL_Names: '"NS_ServerClient.lvlibp" "Request for Connection.lvlibp" "MResDatatype.lvlibp" "OIST_Error.lvlibp"'
     materials:
       builder: *id017
       Chakraborty_CommServer:
@@ -1568,6 +1568,10 @@ pipelines:
       NS_ServerClient.lvlibp_pipelineMaterial: *id026
       Request-for-Connection.lvlibp_pipelineMaterial: *id027
       MResDatatype.lvlibp_pipelineMaterial: *id028
+      OIST_Error.lvlibp_pipelineMaterial: &id032
+        pipeline: OIST_Error.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
     stages:
     - build_ppls:
         fetch_materials: 'yes'
@@ -1613,6 +1617,14 @@ pipelines:
                 job: Windows_32_Release
                 artifact_id: MResDatatype_Windows_32_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Release
+                artifact_id: OIST_Error_Windows_32_Release_nipkg
+                configuration: *id010
             - *id003
             - *id012
             - *id004
@@ -1655,6 +1667,14 @@ pipelines:
                 stage: build_ppls
                 job: Windows_32_Debug
                 artifact_id: MResDatatype_Windows_32_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_32_Debug
+                artifact_id: OIST_Error_Windows_32_Debug_nipkg
                 configuration: *id010
             - *id011
             - *id012
@@ -1699,6 +1719,14 @@ pipelines:
                 job: Windows_64_Release
                 artifact_id: MResDatatype_Windows_64_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Release
+                artifact_id: OIST_Error_Windows_64_Release_nipkg
+                configuration: *id010
             - *id013
             - *id012
             - *id004
@@ -1741,6 +1769,14 @@ pipelines:
                 stage: build_ppls
                 job: Windows_64_Debug
                 artifact_id: MResDatatype_Windows_64_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: Windows_64_Debug
+                artifact_id: OIST_Error_Windows_64_Debug_nipkg
                 configuration: *id010
             - *id014
             - *id012
@@ -1785,6 +1821,14 @@ pipelines:
                 job: cRIO_Release
                 artifact_id: MResDatatype_cRIO_Release_nipkg
                 configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id010
             - *id015
             - *id012
             - *id004
@@ -1827,6 +1871,14 @@ pipelines:
                 stage: build_ppls
                 job: cRIO_Debug
                 artifact_id: MResDatatype_cRIO_Debug_nipkg
+                configuration: *id010
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
                 configuration: *id010
             - *id016
             - *id012
@@ -2745,10 +2797,7 @@ pipelines:
         auto_update: false
         shallow_clone: false
       Measurement-Results.lvlibp_pipelineMaterial: *id031
-      OIST_Error.lvlibp_pipelineMaterial: &id032
-        pipeline: OIST_Error.lvlibp
-        stage: build_ppls
-        ignore_for_scheduling: false
+      OIST_Error.lvlibp_pipelineMaterial: *id032
     stages:
     - build_ppls:
         fetch_materials: 'yes'
