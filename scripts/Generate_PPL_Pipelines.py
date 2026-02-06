@@ -22,7 +22,7 @@ def get_libraries_and_urls(path):
   if(not path.exists()):
     raise RuntimeError(f"Bad path passed to get_libraries_and_urls: {path}")
   print('Getting libraries and URLs from file: ' + str(path))
-  matcher = re.compile("^(.*?)_REPO\s?:=\s?(.*)$")
+  matcher = re.compile(r"^(.*?)_REPO\s?:=\s?(.*)$")
   repos = {}
   file = open(path)
   for line in file.readlines():
