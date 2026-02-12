@@ -1,5 +1,4 @@
 #! python3
-import contextlib
 import multiprocessing
 import re
 import os
@@ -8,15 +7,9 @@ import time
 import yaml
 
 from GitTools import cloneRepo
-from FileUtils import find_file
+from FileUtils import find_file, pushd, directoryFromGitRepo
 from YamlGenerator import PipelineDefinition, buildYamlObject, updateMinimumVersions
-
-@contextlib.contextmanager
-def pushd(new_dir):
-	prev_dir = os.getcwd()
-	os.chdir(new_dir)
-	yield
-	os.chdir(prev_dir)
+from NameTransformers import sanitizeForPipelineName, parseMkfileTargetToName, parseMkFile, parseVipkgReqsFile
 
 def get_libraries_and_urls(path):
   if(not path.exists()):
@@ -32,37 +25,17 @@ def get_libraries_and_urls(path):
     match = matcher.match(line)
     if (match):
       libraryName = match.group(1)
-      libraryUrl = match.group(2)
-      pipelineName = getSanitizedName(libraryName)
-      userLibraryName = getLibraryName(libraryName)
-      if (libraryUrl.startswith("oist/")):
-        libraryUrl = "git@github.com:" + libraryUrl
-      repos[pipelineName] = {"url": libraryUrl, "filename": userLibraryName + '.lvlib'}
+      repoUrl = match.group(2)
+      pipelineName = sanitizeForPipelineName(libraryName)
+      userLibraryName = parseMkfileTargetToName(libraryName)
+      if (repoUrl.startswith("oist/")):
+        repoUrl = "git@github.com:" + repoUrl
+      repos[pipelineName] = {"url": repoUrl, "filename": userLibraryName + '.lvlib'}
 
   file.close()
   print('Parsed repository list')
   print()
   return repos
-
-def getLibraryName(libraryName):
-  libraryName = libraryName.replace("+", " ")
-  return libraryName
-
-def getSanitizedName(libraryName):
-  # Used for dictionary keys and the pipeline name
-  # Must be "only letters, numbers, hyphens, underscores, and periods. Max 255 chars."
-  # Can be mixed case.
-  pipelineName = libraryName.replace("+","-").replace(" ","-")[0:255]
-  if(re.match(r"^[A-z0-9_.-]*$", pipelineName) is None):
-    print('Invalid pipeline name generated: ' + pipelineName)
-  return pipelineName
-
-directoryNameMatcher = re.compile(r'^.*:.*/(.*)$')
-def directoryFromGitRepo(gitRepo, output_dir = None):
-	dest = directoryNameMatcher.match(gitRepo).group(1)
-	if output_dir:
-		dest = Path(output_dir) / dest
-	return dest
 
 def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencies, DependencyPPLNames, minLabVIEWVersion, vipkgUrls):
   return {
@@ -77,35 +50,6 @@ def generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, Dependencie
       "vipkgUrls": vipkgUrls
     }
   }
-
-def parseMkFile(mkFilePath, libName):
-  depVarName = libName.replace(' ',r'\+').replace('.lvlib','_Deps')
-  f = open(mkFilePath, "r")
-  # print(f"Reading dependencies for {libName} from {mkFilePath}")
-  content = f.readlines() # Read all lines (not just first)
-  depsList = []
-  for line in content:
-    # Match <libraryname>_Deps := (.*)
-    matchedDeps = re.match(depVarName+r'[ ]?:=[ ]?(.*)$', line.strip())
-    if matchedDeps:
-      # Split the group on unescaped spaces
-      listDeps = matchedDeps.group(1).replace(r'\ ','+').split(' ')
-      depsList = [elem.replace('+', ' ') for elem in listDeps]
-      return depsList
-  print(f"Warning: Found a .mk file ({mkFilePath}) but could not parse it to get dependencies")
-  return None
-
-def parseVipkgReqsFile(vipkgReqsPath):
-  f = open(vipkgReqsPath, "r")
-  # print(f"Reading VI package requirements from {vipkgReqsPath}")
-  content = f.readlines() # Read all lines (not just first)
-  vipkgUrls = []
-  for line in content:
-    line = line.strip()
-    if line.startswith("#") or line == "":
-      continue
-    vipkgUrls.append(line)
-  return vipkgUrls if len(vipkgUrls) > 0 else None
 
 allowedVersionStrings = ["2019", "2021"]
 
@@ -124,7 +68,7 @@ def handleUrl(gitUrl, libNames, baseDir):
     mkFilePath = find_file(libName.replace('.lvlib', '.mk'), outputDir)
     minVerPath = find_file(libName.replace('.lvlib', '.min_lv_version'), outputDir)
     vipkgReqsPath = find_file(libName.replace('.lvlib', '.vipm_reqs'), outputDir)
-    pipelineName = getSanitizedName(libName) + "p"
+    pipelineName = sanitizeForPipelineName(libName) + "p"
     PPL_Name = libName + "p"
     minLabVIEWVersion = None
     if minVerPath != None:
@@ -140,7 +84,7 @@ def handleUrl(gitUrl, libNames, baseDir):
     vipkgUrls = None
     if mkFilePath != None:
       depsNames = parseMkFile(mkFilePath, libName)
-      depsList = list(map(getSanitizedName, depsNames))
+      depsList = list(map(sanitizeForPipelineName, depsNames))
     if vipkgReqsPath != None:
       vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
     retVals.append(generateEntryDictionary(pipelineName, gitUrl, libPath, PPL_Name, depsList, depsNames, minLabVIEWVersion, vipkgUrls))
