@@ -1,43 +1,14 @@
 import yaml
 import re
-from enum import Enum
 from pathlib import Path
+from FileUtils import directoryFromGitRepo
 from Constants import \
   dir_job, create_ppl_dir, ls_task, ls_currentDir_task,\
   via_job, via_plugin_version, fetch_builder_task,\
   expand_builder_task, gcli_build_task, builderMaterial,\
-  fetch_ppl_configuration
-
-directoryNameMatcher = re.compile(r'^.*:.*/(.*)$')
-def directoryFromGitRepo(gitRepo, output_dir = None):
-	dest = directoryNameMatcher.match(gitRepo).group(1)
-	if output_dir:
-		dest = Path(output_dir) / dest
-	return dest
-
-class Target(Enum):
-  Windows_32_Release = 0
-  Windows_32_Debug = 1
-  Windows_64_Release = 2
-  Windows_64_Debug = 3
-  cRIO_Release = 4
-  cRIO_Debug = 5
-  
-# The names here are used for the G-CLI call directly.
-class BuildType(Enum):
-  MAJOR = 0
-  MINOR = 1
-  PATCH = 2
-  BUILD = 3
-
-targetPathEnds = {
-  "Windows_32_Release": "Windows\\Release_32",
-  "Windows_32_Debug": "Windows\\Debug_32",
-  "Windows_64_Release": "Windows\\Release_64",
-  "Windows_64_Debug": "Windows\\Debug_64",
-  "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
-  "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin"
-}
+  fetch_ppl_configuration, labviewDir, profileId, Target,\
+  BuildType, targetPathEnds
+from PipelineGenerationUtils import generateMaterials, generateFetchPPLJob, getPackageRootName
 
 def get_mklink_task(target):
   targetPathEnd = targetPathEnds[target]
@@ -78,44 +49,6 @@ nipkg_build_artifact = { "build": {
   "destination": "#{PPL_Name}"
 }}
 
-profileId = {
-  "2019": {
-    Target.Windows_32_Debug: "labview_2019_x86",
-    Target.Windows_32_Release: "labview_2019_x86",
-    Target.Windows_64_Debug: "labview_2019_x64",
-    Target.Windows_64_Release: "labview_2019_x64",
-    Target.cRIO_Debug: "labview_2019_x86_crio",
-    Target.cRIO_Release: "labview_2019_x86_crio",
-  },
-  "2021": {
-    Target.Windows_32_Debug: "labview_2021_x86",
-    Target.Windows_32_Release: "labview_2021_x86",
-    Target.Windows_64_Debug: "labview_2021_x64",
-    Target.Windows_64_Release: "labview_2021_x64",
-    Target.cRIO_Debug: "labview_2021_x86_crio",
-    Target.cRIO_Release: "labview_2021_x86_crio",
-  },
-}
-
-labviewDir = {
-  "2019": {
-    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
-    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
-    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-  },
-  "2021": {
-    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
-    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
-    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-  },
-}
-
 def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version):
   if dependencies is None and vipkgUrls is None:
     raise ValueError("Attempted to generate a PPL Task List with dependencies without passing a list of Dependencies")
@@ -123,17 +56,7 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
   if dependencies is not None:
     pplDepTasks.append(create_ppl_dir)
     for dependency in dependencies:
-      dependencyRootName = getPackageRootName(dependency)
-      packageId = f"{dependencyRootName}_{targetName}_nipkg"
-      pplDepTasks.append({"fetch": {
-        "run_if": "passed",
-        "artifact_origin": "external",
-        "pipeline": dependency,
-        "stage": "build_ppls",
-        "job": targetName,
-        "artifact_id": packageId,
-        "configuration": fetch_ppl_configuration
-      }})
+      pplDepTasks.append(generateFetchPPLJob(dependency, targetName))
     pplDepTasks.append(mklink_tasks[targetName])
     pplDepTasks.append(ls_currentDir_task)
   vipkgTasks = []
@@ -252,30 +175,6 @@ git_tag_stage = {"git_tag": {
   }
 }
 
-dependencyMaterials = {}
-def generateMaterials(gitUrl, dependencies):
-  topDir = directoryFromGitRepo(gitUrl, None)
-  materials = {
-    "builder": builderMaterial,
-    topDir: {
-      "git": gitUrl,
-      "destination": topDir,
-      "auto_update": False,
-      "shallow_clone": False
-    }
-  }
-  if dependencies is not None:
-    for dependency in dependencies:
-      materialName = dependency+"_pipelineMaterial"
-      if(not materialName in dependencyMaterials):
-        dependencyMaterials[materialName] = {
-          "pipeline": dependency,
-          "stage": "build_ppls",
-          "ignore_for_scheduling": False # Default
-        }
-      materials[materialName] = dependencyMaterials.get(materialName)
-  return materials
-
 # Defines all of the 'common' parts of the pipeline config file
 def getCommonSection():
   commonSection = {
@@ -288,9 +187,7 @@ def getCommonSection():
     commonSection["mklink_task_" + k] = v
   return commonSection
 
-def getPackageRootName(pipelineName):
-  return pipelineName.replace(".lvlibp", "")
-
+dependencyMaterials = {}
 class PipelineDefinition(yaml.YAMLObject):
   yaml_tag = u"!PipelineDefinition"
   def __init__(self, pipelineName, values):
@@ -304,7 +201,7 @@ class PipelineDefinition(yaml.YAMLObject):
     self.minVersion = values.get('minLabVIEWVersion')
     self.vipkgUrls = values.get('vipkgUrls')
   def buildData(self, dumper):
-    materials = generateMaterials(self.gitUrl, self.dependencies)
+    materials = { "builder": builderMaterial } | generateMaterials(self.gitUrl, self.dependencies, dependencyMaterials)
     if self.dependencies != None:
       dependencyQuotedList = "\"" + "\" \"".join(self.dependencyPPLNames) + "\""
     else:

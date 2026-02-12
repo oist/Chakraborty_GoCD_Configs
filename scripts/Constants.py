@@ -1,3 +1,5 @@
+from enum import Enum
+
 # Simple constants
 via_plugin_version = "0.2.2.3"
 
@@ -10,6 +12,68 @@ builderMaterial = {
   "pipeline": zipPipelineName,
   "stage": zipPipelineStageName,
   "ignore_for_scheduling": True
+}
+
+class Target(Enum):
+  Windows_32_Release = 0
+  Windows_32_Debug = 1
+  Windows_64_Release = 2
+  Windows_64_Debug = 3
+  cRIO_Release = 4
+  cRIO_Debug = 5
+  
+# The names here are used for the G-CLI call directly.
+class BuildType(Enum):
+  MAJOR = 0
+  MINOR = 1
+  PATCH = 2
+  BUILD = 3
+
+targetPathEnds = {
+  "Windows_32_Release": "Windows\\Release_32",
+  "Windows_32_Debug": "Windows\\Debug_32",
+  "Windows_64_Release": "Windows\\Release_64",
+  "Windows_64_Debug": "Windows\\Debug_64",
+  "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
+  "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin"
+}
+
+profileId = {
+  "2019": {
+    Target.Windows_32_Debug: "labview_2019_x86",
+    Target.Windows_32_Release: "labview_2019_x86",
+    Target.Windows_64_Debug: "labview_2019_x64",
+    Target.Windows_64_Release: "labview_2019_x64",
+    Target.cRIO_Debug: "labview_2019_x86_crio",
+    Target.cRIO_Release: "labview_2019_x86_crio",
+  },
+  "2021": {
+    Target.Windows_32_Debug: "labview_2021_x86",
+    Target.Windows_32_Release: "labview_2021_x86",
+    Target.Windows_64_Debug: "labview_2021_x64",
+    Target.Windows_64_Release: "labview_2021_x64",
+    Target.cRIO_Debug: "labview_2021_x86_crio",
+    Target.cRIO_Release: "labview_2021_x86_crio",
+  },
+}
+
+labviewDir = {
+  "2019": {
+    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+  },
+  "2021": {
+    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+  },
 }
 
 # -- Configuration for the NIPKG Fetch Artifact step -- #
