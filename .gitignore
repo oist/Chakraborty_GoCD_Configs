@@ -2,5 +2,5 @@
 **/__pycache__
 # Ignore the directories checked out to build the configs.
 # This allows processing/testing in place.
-Chakraborty_*/
+cloned/*
 OIST-TC_Tools/

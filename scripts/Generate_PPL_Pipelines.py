@@ -164,7 +164,7 @@ if __name__ == '__main__':
     urlToLibDict[url] = libNames
   tic_start = time.perf_counter()
   processes: list[multiprocessing.Process] = []
-  outputDirectory = Path.cwd()
+  outputDirectory = os.path.join(Path.cwd(), "cloned")
   forceUpdate = False
   generator = ((keyname, list(value), outputDirectory) for keyname, value in urlToLibDict.items())
   with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
