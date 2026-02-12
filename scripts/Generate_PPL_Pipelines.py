@@ -176,5 +176,7 @@ if __name__ == "__main__":
 
     outputFilePath = "./LabVIEW_PPL-Pipelines.gocd.yaml"
     with open(outputFilePath, "w") as outputFile:
-        yaml.dump(yamlObject, outputFile, sort_keys=False, width=999999)
+        yaml.dump(
+            yamlObject, outputFile, sort_keys=False, width=999999, line_break="\r\n"
+        )
     print(str(os.path.getsize(outputFilePath)) + " bytes")
