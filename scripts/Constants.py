@@ -9,71 +9,74 @@ zipPipelineStageName = "Zip"
 zipPipelineJobName = "Zip"
 
 builderMaterial = {
-  "pipeline": zipPipelineName,
-  "stage": zipPipelineStageName,
-  "ignore_for_scheduling": True
+    "pipeline": zipPipelineName,
+    "stage": zipPipelineStageName,
+    "ignore_for_scheduling": True,
 }
 
+
 class Target(Enum):
-  Windows_32_Release = 0
-  Windows_32_Debug = 1
-  Windows_64_Release = 2
-  Windows_64_Debug = 3
-  cRIO_Release = 4
-  cRIO_Debug = 5
-  
+    Windows_32_Release = 0
+    Windows_32_Debug = 1
+    Windows_64_Release = 2
+    Windows_64_Debug = 3
+    cRIO_Release = 4
+    cRIO_Debug = 5
+
+
 # The names here are used for the G-CLI call directly.
 class BuildType(Enum):
-  MAJOR = 0
-  MINOR = 1
-  PATCH = 2
-  BUILD = 3
+    MAJOR = 0
+    MINOR = 1
+    PATCH = 2
+    BUILD = 3
+
 
 targetPathEnds = {
-  "Windows_32_Release": "Windows\\Release_32",
-  "Windows_32_Debug": "Windows\\Debug_32",
-  "Windows_64_Release": "Windows\\Release_64",
-  "Windows_64_Debug": "Windows\\Debug_64",
-  "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
-  "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin"
+    "Windows_32_Release": "Windows\\Release_32",
+    "Windows_32_Debug": "Windows\\Debug_32",
+    "Windows_64_Release": "Windows\\Release_64",
+    "Windows_64_Debug": "Windows\\Debug_64",
+    "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
+    "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
 }
 
 profileId = {
-  "2019": {
-    Target.Windows_32_Debug: "labview_2019_x86",
-    Target.Windows_32_Release: "labview_2019_x86",
-    Target.Windows_64_Debug: "labview_2019_x64",
-    Target.Windows_64_Release: "labview_2019_x64",
-    Target.cRIO_Debug: "labview_2019_x86_crio",
-    Target.cRIO_Release: "labview_2019_x86_crio",
-  },
-  "2021": {
-    Target.Windows_32_Debug: "labview_2021_x86",
-    Target.Windows_32_Release: "labview_2021_x86",
-    Target.Windows_64_Debug: "labview_2021_x64",
-    Target.Windows_64_Release: "labview_2021_x64",
-    Target.cRIO_Debug: "labview_2021_x86_crio",
-    Target.cRIO_Release: "labview_2021_x86_crio",
-  },
+    "2019": {
+        Target.Windows_32_Debug: "labview_2019_x86",
+        Target.Windows_32_Release: "labview_2019_x86",
+        Target.Windows_64_Debug: "labview_2019_x64",
+        Target.Windows_64_Release: "labview_2019_x64",
+        Target.cRIO_Debug: "labview_2019_x86_crio",
+        Target.cRIO_Release: "labview_2019_x86_crio",
+    },
+    "2021": {
+        Target.Windows_32_Debug: "labview_2021_x86",
+        Target.Windows_32_Release: "labview_2021_x86",
+        Target.Windows_64_Debug: "labview_2021_x64",
+        Target.Windows_64_Release: "labview_2021_x64",
+        Target.cRIO_Debug: "labview_2021_x86_crio",
+        Target.cRIO_Release: "labview_2021_x86_crio",
+    },
 }
 
 labviewDir = {
-  "2019": {
-    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
-    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
-    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
-  },
-  "2021": {
-    Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
-    Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
-    Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-    Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
-  },
+    "2019": {
+        Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+        Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+        Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+        Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
+        Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+        Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+    },
+    "2021": {
+        Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+        Target.Windows_32_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+        Target.Windows_64_Debug: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+        Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
+        Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+        Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+    },
 }
 
 # -- Configuration for the NIPKG Fetch Artifact step -- #
@@ -89,153 +92,148 @@ labviewDir = {
 # DownloadDestDir
 # DownloadIncludeDeps
 # DownloadSkipDependenciesCheck
-fetch_ppl_configuration = { "options": {
-  "DownloadOrInstall": "Install",
-  "SuppressIncompatibilityErrors": False,
-  "AllowUpgrade": True,
-  "AllowDowngrade": True,
-  "AllowUninstallation": False,
-  "InstallRecommended": False,
-  "InstallRootDir": None
-}}
-
-# ------------------- Jobs ---------------------------- #
-dir_job = {
-  "tasks": [
-    {"exec": {
-      "command": "dir",
-      "arguments": [ "*" ]
-    }}
-  ]
+fetch_ppl_configuration = {
+    "options": {
+        "DownloadOrInstall": "Install",
+        "SuppressIncompatibilityErrors": False,
+        "AllowUpgrade": True,
+        "AllowDowngrade": True,
+        "AllowUninstallation": False,
+        "InstallRecommended": False,
+        "InstallRootDir": None,
+    }
 }
 
+# ------------------- Jobs ---------------------------- #
+dir_job = {"tasks": [{"exec": {"command": "dir", "arguments": ["*"]}}]}
+
 via_job = {
-  "environment_variables": {
-      "PROJECT_TITLE": "#{PPL_Name}"
-  },
-  "timeout": 3,
-  "tabs": {
-    "VIA_Results": "#{PPL_Name}/viaResultsCheckstyle.xml",
-    "VIA_Report": "#{PPL_Name}/CheckstyleReport.html"
-  },
-  "artifacts": [
-    # Checkstyle xml generated by LabVIEW code
-    {"build": {
-        "source": "#{GIT_DIR}/viaResultsCheckstyle.xml",
-        "destination": "#{PPL_Name}"
-      }
+    "environment_variables": {"PROJECT_TITLE": "#{PPL_Name}"},
+    "timeout": 3,
+    "tabs": {
+        "VIA_Results": "#{PPL_Name}/viaResultsCheckstyle.xml",
+        "VIA_Report": "#{PPL_Name}/CheckstyleReport.html",
     },
-    # Report generated by plugin - the main tab for this job
-    {"build": {
-        "source": "CheckstyleReport.html",
-        "destination": "#{PPL_Name}"
-      }
-    },
-    # The raw VIA results (could remove)
-    {"build": {
-        "source": "#{GIT_DIR}/viaResults.xml",
-        "destination": "#{PPL_Name}"
-      }
-    }
-  ],
-  "tasks": [
-    { "exec": {
-        "run_if": "passed",
-        "command": "g-cli",
-        "working_directory": "#{GIT_DIR}",
-        "arguments": [
-          "--verbose",
-          "--lv-ver",
-          "#{LV_VERSION}",
-          "viaRunner.vi",
-          "--",
-          "viaResults.xml"
-        ]
-    }},
-    {"plugin": {
-        "configuration": {
-          "id": "Checkstyle.LabVIEW.VIA",
-          "version": via_plugin_version
+    "artifacts": [
+        # Checkstyle xml generated by LabVIEW code
+        {
+            "build": {
+                "source": "#{GIT_DIR}/viaResultsCheckstyle.xml",
+                "destination": "#{PPL_Name}",
+            }
         },
-        "run_if": "passed",
-        "options": {
-          "SourceVIAFile": "#{GIT_DIR}/viaResults.xml",
-          "SourceCheckstyleFile": "#{GIT_DIR}/viaResultsCheckstyle.xml",
-          "DestinationFile": "CheckstyleReport.html",
-          "AddEmpty": False
-        }
-    }}
-  ]
+        # Report generated by plugin - the main tab for this job
+        {"build": {"source": "CheckstyleReport.html", "destination": "#{PPL_Name}"}},
+        # The raw VIA results (could remove)
+        {
+            "build": {
+                "source": "#{GIT_DIR}/viaResults.xml",
+                "destination": "#{PPL_Name}",
+            }
+        },
+    ],
+    "tasks": [
+        {
+            "exec": {
+                "run_if": "passed",
+                "command": "g-cli",
+                "working_directory": "#{GIT_DIR}",
+                "arguments": [
+                    "--verbose",
+                    "--lv-ver",
+                    "#{LV_VERSION}",
+                    "viaRunner.vi",
+                    "--",
+                    "viaResults.xml",
+                ],
+            }
+        },
+        {
+            "plugin": {
+                "configuration": {
+                    "id": "Checkstyle.LabVIEW.VIA",
+                    "version": via_plugin_version,
+                },
+                "run_if": "passed",
+                "options": {
+                    "SourceVIAFile": "#{GIT_DIR}/viaResults.xml",
+                    "SourceCheckstyleFile": "#{GIT_DIR}/viaResultsCheckstyle.xml",
+                    "DestinationFile": "CheckstyleReport.html",
+                    "AddEmpty": False,
+                },
+            }
+        },
+    ],
 }
 
 # ------------------- Tasks --------------------------- #
 create_ppl_dir = {
-  "exec": {
-    "run_if": "passed",
-    "command": "powershell",
-    "arguments": [
-      "-Command",
-      "New-Item",
-      "-Force",
-      "-ItemType",
-      "Directory",
-      "-Path",
-      "\\\"C:\\LabVIEW Sources\\PPLs\\\""
-    ]
-  }
+    "exec": {
+        "run_if": "passed",
+        "command": "powershell",
+        "arguments": [
+            "-Command",
+            "New-Item",
+            "-Force",
+            "-ItemType",
+            "Directory",
+            "-Path",
+            '\\"C:\\LabVIEW Sources\\PPLs\\"',
+        ],
+    }
 }
 
-ls_task = { "exec": {
-  "run_if": "passed",
-  "command": "ls",
-  "arguments": [ "*" ]
-}}
+ls_task = {"exec": {"run_if": "passed", "command": "ls", "arguments": ["*"]}}
 
 # Note that adding a '*' to the end here causes an error
 # This seems to be due to the execution via Invoke-Expression and the $RUN_CMD variable in the elastic agent.
-ls_currentDir_task = { "exec": {
-  "run_if": "passed",
-  "command": "ls",
-  "arguments": [ "PPLs\\\\Current" ]
-}}
+ls_currentDir_task = {
+    "exec": {"run_if": "passed", "command": "ls", "arguments": ["PPLs\\\\Current"]}
+}
 
-fetch_builder_task = { "fetch" : {
-  "run_if": "passed",
-  "pipeline": zipPipelineName,
-  "stage": zipPipelineStageName,
-  "job": zipPipelineJobName,
-  "source": "PPL_Builder/PPL_Builder.zip",
-  "destination": ".",
-  "is_file": "yes"
-}}
+fetch_builder_task = {
+    "fetch": {
+        "run_if": "passed",
+        "pipeline": zipPipelineName,
+        "stage": zipPipelineStageName,
+        "job": zipPipelineJobName,
+        "source": "PPL_Builder/PPL_Builder.zip",
+        "destination": ".",
+        "is_file": "yes",
+    }
+}
 
-expand_builder_task = { "exec": {
-  "run_if": "passed",
-  "command": "powershell",
-  "arguments": [
-    "-Command",
-    "Expand-Archive",
-    "-Path",
-    "PPL_Builder.zip",
-    "-DestinationPath",
-    "."
-  ]
-}}
+expand_builder_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "powershell",
+        "arguments": [
+            "-Command",
+            "Expand-Archive",
+            "-Path",
+            "PPL_Builder.zip",
+            "-DestinationPath",
+            ".",
+        ],
+    }
+}
 
-gcli_build_task = { "exec": {
-  "run_if": "passed",
-  "command": "g-cli",
-  "arguments": [
-    "--lv-ver",
-    "#{LV_VERSION}",
-    '%BITNESS_FLAG%',
-    "PPL_Builder\\Call_Builder_Wiresmith.vi", # This must be a backward slash
-    "--",
-    "#{PPL_LIB_PATH}",
-    "PPLs/Current",
-    "%IS_DEBUG_BUILD%",
-    "%TARGET_SYSTEM%",
-    "%BUILD_TYPE%",
-    "#{Dependency_PPL_Names}"
-  ]
-}}
+gcli_build_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "g-cli",
+        "arguments": [
+            "--lv-ver",
+            "#{LV_VERSION}",
+            "%BITNESS_FLAG%",
+            "PPL_Builder\\Call_Builder_Wiresmith.vi",  # This must be a backward slash
+            "--",
+            "#{PPL_LIB_PATH}",
+            "PPLs/Current",
+            "%IS_DEBUG_BUILD%",
+            "%TARGET_SYSTEM%",
+            "%BUILD_TYPE%",
+            "#{Dependency_PPL_Names}",
+        ],
+    }
+}
