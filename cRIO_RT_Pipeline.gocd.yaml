@@ -1,6 +1,6 @@
 format_version: 10
 pipelines:
-- group: ''
+- group: defaultGroup
   parameters:
     GIT_DIR: Chakraborty_cRIO
     LV_VERSION: '2019'

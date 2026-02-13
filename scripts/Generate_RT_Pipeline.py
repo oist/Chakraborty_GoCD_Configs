@@ -65,7 +65,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             lv_version = "2019"
 
         return {
-            "group": "",
+            "group": "defaultGroup",
             "parameters": {
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": lv_version,
