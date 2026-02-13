@@ -69,6 +69,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": lv_version,
                 "Dependency_PPL_Names": dependencyQuotedList,
+                "APP_NAME": "TC_cRIO_Application",
             },
             "materials": materials,
             "stages": [
@@ -90,6 +91,14 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                         # "TARGET_SYSTEM": "cRIO",
                                         "BUILD_TYPE": "BUILD",  # Overwritten elsewhere
                                     },
+                                    "artifacts": [
+                                        {
+                                            "build": {
+                                                "source": "builds/cRIO-9045-RT",
+                                                "destination": "#{APP_NAME}",
+                                            }
+                                        }
+                                    ],
                                     "tasks": [
                                         create_ppl_dir,
                                         create_home_link_task(Target.cRIO_Debug),

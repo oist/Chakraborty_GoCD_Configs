@@ -5,6 +5,7 @@ pipelines:
     GIT_DIR: Chakraborty_cRIO
     LV_VERSION: '2019'
     Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
+    APP_NAME: TC_cRIO_Application
   materials:
     Chakraborty_cRIO:
       git: git@github.com:oist/Chakraborty_cRIO
@@ -105,14 +106,16 @@ pipelines:
       clean_workspace: 'yes'
       approval: manual
       jobs:
-      - debug_version:
+      - build_debug:
           timeout: 15
           elastic_profile_id: labview_2019_x86_crio
           environment_variables:
             IS_DEBUG_BUILD: 1
-            TARGET_SYSTEM: cRIO
-            BITNESS_FLAG: -v
             BUILD_TYPE: BUILD
+          artifacts:
+          - build:
+              source: builds/cRIO-9045-RT
+              destination: '#{APP_NAME}'
           tasks:
           - exec:
               run_if: passed
