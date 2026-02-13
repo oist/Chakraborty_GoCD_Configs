@@ -1,3 +1,4 @@
+import os
 import yaml
 from pathlib import Path
 from GitTools import cloneRepo
@@ -144,7 +145,7 @@ def buildYamlObject(pipelineDictionary):
 
 
 if __name__ == "__main__":
-    baseDir = Path.cwd()
+    baseDir = os.path.join(Path.cwd(), "cloned")
     gitUrl = "git@github.com:oist/Chakraborty_cRIO"
 
     # Clone the cRIO repository
