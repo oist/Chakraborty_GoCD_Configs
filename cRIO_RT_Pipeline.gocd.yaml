@@ -129,19 +129,6 @@ pipelines:
                 - Directory
                 - -Path
                 - \"C:\LabVIEW Sources\PPLs\"
-            - exec:
-                run_if: passed
-                command: powershell
-                arguments:
-                - -Command
-                - New-Item
-                - -Force
-                - -ItemType
-                - Junction
-                - -Path
-                - PPLs\cRIO-9045\home
-                - -Target
-                - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
             - fetch:
                 run_if: passed
                 artifact_origin: external
@@ -326,6 +313,19 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Status-Reporting_cRIO_Debug_nipkg
                 configuration: *id001
+            - exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - New-Item
+                - -Force
+                - -ItemType
+                - Junction
+                - -Path
+                - PPLs\cRIO-9045\home
+                - -Target
+                - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
             - exec:
                 run_if: passed
                 command: LabVIEWCLI.exe

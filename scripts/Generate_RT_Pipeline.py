@@ -101,10 +101,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 ],
                                 "tasks": [
                                     create_ppl_dir,
-                                    create_home_link_task(Target.cRIO_Debug),
                                 ]
                                 + pplDepTasks
                                 + [
+                                    create_home_link_task(Target.cRIO_Debug),
                                     {
                                         "exec": {
                                             "run_if": "passed",
@@ -122,7 +122,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "RT Main Application",
                                             ],
                                         }
-                                    }
+                                    },
                                 ],
                             }
                         },
