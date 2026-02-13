@@ -150,7 +150,7 @@ if __name__ == "__main__":
     # Clone the cRIO repository
     outputDir = directoryFromGitRepo(gitUrl, baseDir)
     forceUpdate = False
-    cloneRepo(gitUrl, outputDir, forceUpdate)
+    cloneRepo(gitUrl, outputDir, forceUpdate, timeout=20)
 
     # Read dependencies
     mkFilePath = find_file("cRIO-9045-RT.mk", outputDir)

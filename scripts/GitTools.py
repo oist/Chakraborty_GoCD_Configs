@@ -16,11 +16,13 @@ def runCmd(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, shell=False).stdout
 
 
-def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False):
+def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False, timeout=10):
     # Can add --depth 1 but only marginal improvement at the moment...
     # gitCmd = f'wsl git clone -q  -- {gitUrl}'
     gitCmd = ["git", "clone", "-q", "--", gitUrl, destinationDirectory]
-    cloneResult = subprocess.run(gitCmd, capture_output=True, text=True, shell=False)
+    cloneResult = subprocess.run(
+        gitCmd, capture_output=True, text=True, shell=False, timeout=timeout
+    )
     exists = "already exists and is not an empty directory" in cloneResult.stderr
     if cloneResult.returncode == 128 and exists:
         if forceUpdate:
