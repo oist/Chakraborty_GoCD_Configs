@@ -1,341 +1,342 @@
 format_version: 10
 pipelines:
-- group: defaultGroup
-  parameters:
-    GIT_DIR: Chakraborty_cRIO
-    LV_VERSION: '2019'
-    Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
-    APP_NAME: TC_cRIO_Application
-  materials:
-    Chakraborty_cRIO:
-      git: git@github.com:oist/Chakraborty_cRIO
-      destination: Chakraborty_cRIO
-      auto_update: false
-      shallow_clone: false
-    Acquisition-Objects.lvlibp_pipelineMaterial:
-      pipeline: Acquisition-Objects.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Actor-Framework.lvlibp_pipelineMaterial:
-      pipeline: Actor-Framework.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    ADG-Requests.lvlibp_pipelineMaterial:
-      pipeline: ADG-Requests.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    AF_Messages-PPL.lvlibp_pipelineMaterial:
-      pipeline: AF_Messages-PPL.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Baumer-OM70-Modbus.lvlibp_pipelineMaterial:
-      pipeline: Baumer-OM70-Modbus.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Communication-Server.lvlibp_pipelineMaterial:
-      pipeline: Communication-Server.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    DataStore.lvlibp_pipelineMaterial:
-      pipeline: DataStore.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Fanuc-Interface.lvlibp_pipelineMaterial:
-      pipeline: Fanuc-Interface.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Fanuc-Proxy.lvlibp_pipelineMaterial:
-      pipeline: Fanuc-Proxy.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Fanuc_TCP.lvlibp_pipelineMaterial:
-      pipeline: Fanuc_TCP.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Fanuc_TCPProxy.lvlibp_pipelineMaterial:
-      pipeline: Fanuc_TCPProxy.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Measurement-Results.lvlibp_pipelineMaterial:
-      pipeline: Measurement-Results.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Motor-Activity-Logging.lvlibp_pipelineMaterial:
-      pipeline: Motor-Activity-Logging.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    MResDatatype.lvlibp_pipelineMaterial:
-      pipeline: MResDatatype.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    PMX32-2QU.lvlibp_pipelineMaterial:
-      pipeline: PMX32-2QU.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    OIST_Error.lvlibp_pipelineMaterial:
-      pipeline: OIST_Error.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    PowerSupplies-Serial.lvlibp_pipelineMaterial:
-      pipeline: PowerSupplies-Serial.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    PowerSupplyInterface.lvlibp_pipelineMaterial:
-      pipeline: PowerSupplyInterface.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Request-for-Connection.lvlibp_pipelineMaterial:
-      pipeline: Request-for-Connection.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Serial-Communication.lvlibp_pipelineMaterial:
-      pipeline: Serial-Communication.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    SQLite.lvlibp_pipelineMaterial:
-      pipeline: SQLite.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-    Status-Reporting.lvlibp_pipelineMaterial:
-      pipeline: Status-Reporting.lvlibp
-      stage: build_ppls
-      ignore_for_scheduling: false
-  stages:
-  - build:
-      fetch_materials: 'yes'
-      clean_workspace: 'yes'
-      approval: manual
-      jobs:
-      - build_debug:
-          timeout: 15
-          elastic_profile_id: labview_2019_x86_crio
-          environment_variables:
-            IS_DEBUG_BUILD: 1
-            BUILD_TYPE: BUILD
-          artifacts:
-          - build:
-              source: builds/cRIO-9045-RT
-              destination: '#{APP_NAME}'
-          tasks:
-          - exec:
-              run_if: passed
-              command: powershell
-              arguments:
-              - -Command
-              - New-Item
-              - -Force
-              - -ItemType
-              - Directory
-              - -Path
-              - \"C:\LabVIEW Sources\PPLs\"
-          - exec:
-              run_if: passed
-              command: powershell
-              arguments:
-              - -Command
-              - New-Item
-              - -Force
-              - -ItemType
-              - Junction
-              - -Path
-              - PPLs\cRIO-9045\home
-              - -Target
-              - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Acquisition-Objects.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Acquisition-Objects_cRIO_Debug_nipkg
-              configuration: &id001
-                options:
-                  DownloadOrInstall: Install
-                  SuppressIncompatibilityErrors: false
-                  AllowUpgrade: true
-                  AllowDowngrade: true
-                  AllowUninstallation: false
-                  InstallRecommended: false
-                  InstallRootDir: null
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Actor-Framework.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Actor-Framework_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: ADG-Requests.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: ADG-Requests_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: AF_Messages-PPL.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: AF_Messages-PPL_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Baumer-OM70-Modbus.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Communication-Server.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Communication-Server_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: DataStore.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: DataStore_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Fanuc-Interface.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Fanuc-Interface_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Fanuc-Proxy.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Fanuc-Proxy_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Fanuc_TCP.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Fanuc_TCP_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Fanuc_TCPProxy.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Fanuc_TCPProxy_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Measurement-Results.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Measurement-Results_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Motor-Activity-Logging.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Motor-Activity-Logging_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: MResDatatype.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: MResDatatype_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: PMX32-2QU.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: PMX32-2QU_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: OIST_Error.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: OIST_Error_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: PowerSupplies-Serial.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: PowerSupplies-Serial_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: PowerSupplyInterface.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: PowerSupplyInterface_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Request-for-Connection.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Request-for-Connection_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Serial-Communication.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Serial-Communication_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: SQLite.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: SQLite_cRIO_Debug_nipkg
-              configuration: *id001
-          - fetch:
-              run_if: passed
-              artifact_origin: external
-              pipeline: Status-Reporting.lvlibp
-              stage: build_ppls
-              job: cRIO_Debug
-              artifact_id: Status-Reporting_cRIO_Debug_nipkg
-              configuration: *id001
-          - exec:
-              run_if: passed
-              command: LabVIEWCLI.exe
-              arguments:
-              - -OperationName
-              - ExecuteBuildSpec
-              - -Verbosity
-              - Detailed
-              - -ProjectPath
-              - \"C:\LabVIEW Sources\Chakraborty_cRIO\cRIO-9045-RT.lvproj\"
-              - -TargetName
-              - RT CompactRIO Target
-              - -BuildSpecName
-              - RT Main Application
+  TC_cRIO_Application:
+    group: defaultGroup
+    parameters:
+      GIT_DIR: Chakraborty_cRIO
+      LV_VERSION: '2019'
+      Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
+      APP_NAME: TC_cRIO_Application
+    materials:
+      Chakraborty_cRIO:
+        git: git@github.com:oist/Chakraborty_cRIO
+        destination: Chakraborty_cRIO
+        auto_update: false
+        shallow_clone: false
+      Acquisition-Objects.lvlibp_pipelineMaterial:
+        pipeline: Acquisition-Objects.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Actor-Framework.lvlibp_pipelineMaterial:
+        pipeline: Actor-Framework.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      ADG-Requests.lvlibp_pipelineMaterial:
+        pipeline: ADG-Requests.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      AF_Messages-PPL.lvlibp_pipelineMaterial:
+        pipeline: AF_Messages-PPL.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Baumer-OM70-Modbus.lvlibp_pipelineMaterial:
+        pipeline: Baumer-OM70-Modbus.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Communication-Server.lvlibp_pipelineMaterial:
+        pipeline: Communication-Server.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      DataStore.lvlibp_pipelineMaterial:
+        pipeline: DataStore.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Fanuc-Interface.lvlibp_pipelineMaterial:
+        pipeline: Fanuc-Interface.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Fanuc-Proxy.lvlibp_pipelineMaterial:
+        pipeline: Fanuc-Proxy.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Fanuc_TCP.lvlibp_pipelineMaterial:
+        pipeline: Fanuc_TCP.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Fanuc_TCPProxy.lvlibp_pipelineMaterial:
+        pipeline: Fanuc_TCPProxy.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Measurement-Results.lvlibp_pipelineMaterial:
+        pipeline: Measurement-Results.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Motor-Activity-Logging.lvlibp_pipelineMaterial:
+        pipeline: Motor-Activity-Logging.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      MResDatatype.lvlibp_pipelineMaterial:
+        pipeline: MResDatatype.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      PMX32-2QU.lvlibp_pipelineMaterial:
+        pipeline: PMX32-2QU.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      OIST_Error.lvlibp_pipelineMaterial:
+        pipeline: OIST_Error.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      PowerSupplies-Serial.lvlibp_pipelineMaterial:
+        pipeline: PowerSupplies-Serial.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      PowerSupplyInterface.lvlibp_pipelineMaterial:
+        pipeline: PowerSupplyInterface.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Request-for-Connection.lvlibp_pipelineMaterial:
+        pipeline: Request-for-Connection.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Serial-Communication.lvlibp_pipelineMaterial:
+        pipeline: Serial-Communication.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      SQLite.lvlibp_pipelineMaterial:
+        pipeline: SQLite.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+      Status-Reporting.lvlibp_pipelineMaterial:
+        pipeline: Status-Reporting.lvlibp
+        stage: build_ppls
+        ignore_for_scheduling: false
+    stages:
+    - build:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          build_debug:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables:
+              IS_DEBUG_BUILD: 1
+              BUILD_TYPE: BUILD
+            artifacts:
+            - build:
+                source: builds/cRIO-9045-RT
+                destination: '#{APP_NAME}'
+            tasks:
+            - exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - New-Item
+                - -Force
+                - -ItemType
+                - Directory
+                - -Path
+                - \"C:\LabVIEW Sources\PPLs\"
+            - exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - New-Item
+                - -Force
+                - -ItemType
+                - Junction
+                - -Path
+                - PPLs\cRIO-9045\home
+                - -Target
+                - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Acquisition-Objects.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Acquisition-Objects_cRIO_Debug_nipkg
+                configuration: &id001
+                  options:
+                    DownloadOrInstall: Install
+                    SuppressIncompatibilityErrors: false
+                    AllowUpgrade: true
+                    AllowDowngrade: true
+                    AllowUninstallation: false
+                    InstallRecommended: false
+                    InstallRootDir: null
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Actor-Framework_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: ADG-Requests.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: ADG-Requests_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: AF_Messages-PPL_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Baumer-OM70-Modbus.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Communication-Server_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: DataStore_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc-Interface.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Fanuc-Interface_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc-Proxy.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Fanuc-Proxy_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc_TCP.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Fanuc_TCP_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc_TCPProxy.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Fanuc_TCPProxy_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Measurement-Results_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Motor-Activity-Logging.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Motor-Activity-Logging_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: MResDatatype_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PMX32-2QU.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: PMX32-2QU_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: OIST_Error_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PowerSupplies-Serial.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: PowerSupplies-Serial_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PowerSupplyInterface.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: PowerSupplyInterface_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Request-for-Connection_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Serial-Communication.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Serial-Communication_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: SQLite.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: SQLite_cRIO_Debug_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: cRIO_Debug
+                artifact_id: Status-Reporting_cRIO_Debug_nipkg
+                configuration: *id001
+            - exec:
+                run_if: passed
+                command: LabVIEWCLI.exe
+                arguments:
+                - -OperationName
+                - ExecuteBuildSpec
+                - -Verbosity
+                - Detailed
+                - -ProjectPath
+                - \"C:\LabVIEW Sources\Chakraborty_cRIO\cRIO-9045-RT.lvproj\"
+                - -TargetName
+                - RT CompactRIO Target
+                - -BuildSpecName
+                - RT Main Application

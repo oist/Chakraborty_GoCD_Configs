@@ -80,54 +80,52 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         "clean_workspace": "yes",
                         "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
                         # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
-                        "jobs": [
-                            {
-                                "build_debug": {
-                                    "timeout": 15,
-                                    "elastic_profile_id": profileId[lv_version][
-                                        Target.cRIO_Debug
-                                    ],
-                                    "environment_variables": {
-                                        "IS_DEBUG_BUILD": 1,
-                                        # "TARGET_SYSTEM": "cRIO",
-                                        "BUILD_TYPE": "BUILD",  # Overwritten elsewhere
-                                    },
-                                    "artifacts": [
-                                        {
-                                            "build": {
-                                                "source": "builds/cRIO-9045-RT",
-                                                "destination": "#{APP_NAME}",
-                                            }
+                        "jobs": {
+                            "build_debug": {
+                                "timeout": 15,
+                                "elastic_profile_id": profileId[lv_version][
+                                    Target.cRIO_Debug
+                                ],
+                                "environment_variables": {
+                                    "IS_DEBUG_BUILD": 1,
+                                    # "TARGET_SYSTEM": "cRIO",
+                                    "BUILD_TYPE": "BUILD",  # Overwritten elsewhere
+                                },
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "builds/cRIO-9045-RT",
+                                            "destination": "#{APP_NAME}",
                                         }
-                                    ],
-                                    "tasks": [
-                                        create_ppl_dir,
-                                        create_home_link_task(Target.cRIO_Debug),
-                                    ]
-                                    + pplDepTasks
-                                    + [
-                                        {
-                                            "exec": {
-                                                "run_if": "passed",
-                                                "command": "LabVIEWCLI.exe",
-                                                "arguments": [
-                                                    "-OperationName",
-                                                    "ExecuteBuildSpec",
-                                                    "-Verbosity",
-                                                    "Detailed",
-                                                    "-ProjectPath",
-                                                    f'\\"C:\\LabVIEW Sources\\{gitDirName}\\cRIO-9045-RT.lvproj\\"',
-                                                    "-TargetName",
-                                                    "RT CompactRIO Target",
-                                                    "-BuildSpecName",
-                                                    "RT Main Application",
-                                                ],
-                                            }
+                                    }
+                                ],
+                                "tasks": [
+                                    create_ppl_dir,
+                                    create_home_link_task(Target.cRIO_Debug),
+                                ]
+                                + pplDepTasks
+                                + [
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "LabVIEWCLI.exe",
+                                            "arguments": [
+                                                "-OperationName",
+                                                "ExecuteBuildSpec",
+                                                "-Verbosity",
+                                                "Detailed",
+                                                "-ProjectPath",
+                                                f'\\"C:\\LabVIEW Sources\\{gitDirName}\\cRIO-9045-RT.lvproj\\"',
+                                                "-TargetName",
+                                                "RT CompactRIO Target",
+                                                "-BuildSpecName",
+                                                "RT Main Application",
+                                            ],
                                         }
-                                    ],
-                                }
+                                    }
+                                ],
                             }
-                        ],
+                        },
                     }
                 }
             ],
@@ -173,7 +171,9 @@ if __name__ == "__main__":
     }
 
     # Build a list of objects describing each pipeline (just one)
-    pipelineDefinitionContent = [PipelineDefinition_RTapp(pipelineEntry)]
+    pipelineDefinitionContent = {
+        "TC_cRIO_Application": PipelineDefinition_RTapp(pipelineEntry)
+    }
 
     # Convert the list of pipelines into a YAML object
     yamlObject = buildYamlObject(pipelineDefinitionContent)
