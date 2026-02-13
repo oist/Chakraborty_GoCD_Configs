@@ -325,3 +325,17 @@ pipelines:
               job: cRIO_Debug
               artifact_id: Status-Reporting_cRIO_Debug_nipkg
               configuration: *id001
+          - exec:
+              run_if: passed
+              command: LabVIEWCLI.exe
+              arguments:
+              - -OperationName
+              - ExecuteBuildSpec
+              - -Verbosity
+              - Detailed
+              - -ProjectPath
+              - \"C:\LabVIEW Sources\Chakraborty_cRIO\cRIO-9045-RT.lvproj\"
+              - -TargetName
+              - RT CompactRIO Target
+              - -BuildSpecName
+              - RT Main Application
