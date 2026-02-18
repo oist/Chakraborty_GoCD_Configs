@@ -237,3 +237,26 @@ gcli_build_task = {
         ],
     }
 }
+
+# ------------------- FPGA Build Tasks -------------------- #
+fpga_build_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "LabVIEWCLI.exe",
+        "arguments": [
+            "-OperationName",
+            "ExecuteBuildSpec",
+            "-Verbosity",
+            "Detailed",
+            "-ProjectPath",
+            '"C:\\LabVIEW Sources\\#{GIT_DIR}\\cRIO-9045-RT.lvproj"',
+            "-TargetName",
+            "#{FPGA_TARGET_NAME}",
+            "-BuildSpecName",
+            "#{FPGA_BUILDSPEC_NAME}",
+        ],
+    }
+}
+
+fpga_artifact_path = "FPGA Bitfiles/*.lvbitx"
+

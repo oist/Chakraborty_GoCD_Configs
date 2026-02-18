@@ -1,0 +1,117 @@
+import os
+import yaml
+from pathlib import Path
+from GitTools import cloneRepo
+from FileUtils import directoryFromGitRepo
+from PipelineGenerationUtils import generateMaterials
+from Constants import fpga_build_task, fpga_artifact_path
+
+cachedMaterials = {}
+
+
+class PipelineDefinition_FPGA(yaml.YAMLObject):
+    yaml_tag = "!PipelineDefinition"
+
+    def __init__(self, pipelineEntry):
+        [name, values] = list(pipelineEntry.items())[0]
+        self.name = name
+        self.gitUrl = values["gitUrl"]
+        self.targetName = values["targetName"]
+        self.buildSpecName = values["buildSpecName"]
+        self.lv_version = values["lv_version"] if "lv_version" in values else "2019"
+
+    def buildData(self, dumper):
+        gitDirName = directoryFromGitRepo(self.gitUrl, None)
+        materials = generateMaterials(self.gitUrl, None, cachedMaterials)
+
+        return {
+            "group": "FPGA",
+            "parameters": {
+                "GIT_DIR": gitDirName,
+                "LV_VERSION": self.lv_version,
+                "FPGA_TARGET_NAME": self.targetName,
+                "FPGA_BUILDSPEC_NAME": self.buildSpecName,
+            },
+            "materials": materials,
+            "stages": [
+                {
+                    "build_fpga": {
+                        "fetch_materials": "yes",
+                        "clean_workspace": "yes",
+                        "approval": "manual",  # Set to "manual" to prevent auto-scheduling
+                        "jobs": {
+                            "build_fpga": {
+                                # Timeout in minutes. FPGA builds typically take 40-60 minutes,
+                                # with long silent periods during Xilinx synthesis, place & route,
+                                # and bitstream generation. Set to 90 minutes to provide margin
+                                # for slower builds without aborting prematurely. GoCD will
+                                # cancel the job if it exceeds this duration.
+                                "timeout": 90,
+                                "elastic_profile_id": f"labview_{self.lv_version}_fpgacompilation",
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": fpga_artifact_path,
+                                            "destination": "FPGA Bitfiles",
+                                        }
+                                    }
+                                ],
+                                "tasks": [
+                                    fpga_build_task,
+                                ],
+                            }
+                        },
+                    }
+                }
+            ],
+        }
+
+    @classmethod
+    def to_yaml(cls, dumper, self):
+        data = self.buildData(dumper)
+        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
+
+
+def buildYamlObject(pipelineDictionary):
+    full_yaml_object = {"format_version": 10, "pipelines": pipelineDictionary}
+    return full_yaml_object
+
+
+if __name__ == "__main__":
+    baseDir = os.path.join(Path.cwd(), "cloned")
+    gitUrl = "git@github.com:oist/Chakraborty_cRIO"
+
+    # Clone the cRIO repository
+    outputDir = directoryFromGitRepo(gitUrl, baseDir)
+    forceUpdate = False
+    cloneRepo(gitUrl, outputDir, forceUpdate, timeout=20)
+
+    # Define FPGA pipeline entries
+    pipelineEntries = {
+        "cRIO_FPGA_Main": {
+            "gitUrl": gitUrl,
+            "targetName": "FPGA Target",
+            "buildSpecName": "FPGA Main",
+            "lv_version": "2019",
+        },
+        "cRIO_FPGA_Expansion": {
+            "gitUrl": gitUrl,
+            "targetName": "FPGA Target 2",
+            "buildSpecName": "Main",
+            "lv_version": "2019",
+        },
+    }
+
+    # Build a list of objects describing each pipeline
+    pipelineDefinitionContent = {}
+    for name, values in pipelineEntries.items():
+        pipelineDefinitionContent[name] = PipelineDefinition_FPGA({name: values})
+
+    # Convert the list of pipelines into a YAML object
+    yamlObject = buildYamlObject(pipelineDefinitionContent)
+    # Write to file
+    outputFilePath = "./cRIO_FPGA_Pipelines.gocd.yaml"
+    with open(outputFilePath, "w") as outputFile:
+        yaml.dump(yamlObject, outputFile, sort_keys=False, width=999999)
+
+    print(f"Generated {outputFilePath} ({os.path.getsize(outputFilePath)} bytes)")
