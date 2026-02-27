@@ -1,7 +1,7 @@
 format_version: 10
 pipelines:
   cRIO_FPGA_Main:
-    group: 'cRIO '
+    group: 'cRIO'
     parameters:
       GIT_DIR: Chakraborty_cRIO
       LV_VERSION: '2019'
@@ -55,7 +55,7 @@ pipelines:
                 - -BuildSpecName
                 - '#{FPGA_BUILDSPEC_NAME}'
   cRIO_FPGA_Expansion:
-    group: 'cRIO '
+    group: 'cRIO'
     parameters:
       GIT_DIR: Chakraborty_cRIO
       LV_VERSION: '2019'

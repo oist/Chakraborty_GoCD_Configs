@@ -39,7 +39,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
         targetName = Target.FPGA_Debug
 
         return {
-            "group": "cRIO ",
+            "group": "cRIO",
             "parameters": {
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": self.lv_version,
