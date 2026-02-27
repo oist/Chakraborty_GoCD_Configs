@@ -260,6 +260,20 @@ fpga_build_task = {
 
 fpga_artifact_path = "FPGA Bitfiles/*.lvbitx"
 
+script_fpga_version_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "g-cli",
+        "arguments": [
+            "--lv-ver",
+            "#{LV_VERSION}",
+            "Builder\\Script FPGA Version VI Wrapper.vi",
+            "--",
+            "#{VERSION_VI_PATH}",
+        ],
+    }
+}
+
 # ------------------- RT Build with G-CLI ----------------- #
 gcli_rt_build_task = {
     "exec": {

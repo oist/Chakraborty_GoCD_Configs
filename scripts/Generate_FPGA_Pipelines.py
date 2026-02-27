@@ -4,7 +4,7 @@ from pathlib import Path
 from GitTools import cloneRepo
 from FileUtils import directoryFromGitRepo
 from PipelineGenerationUtils import generateMaterials
-from Constants import fpga_build_task, fpga_artifact_path
+from Constants import fpga_build_task, fpga_artifact_path, script_fpga_version_task
 
 cachedMaterials = {}
 
@@ -19,6 +19,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
         self.targetName = values["targetName"]
         self.buildSpecName = values["buildSpecName"]
         self.lv_version = values["lv_version"] if "lv_version" in values else "2019"
+        self.version_vi_path = (
+            values["version_VI_path"] if "version_VI_path" in values else None
+        )
 
     def buildData(self, dumper):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
@@ -31,6 +34,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                 "LV_VERSION": self.lv_version,
                 "FPGA_TARGET_NAME": self.targetName,
                 "FPGA_BUILDSPEC_NAME": self.buildSpecName,
+                "VERSION_VI_PATH": self.version_vi_path,
             },
             "materials": materials,
             "stages": [
@@ -57,6 +61,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                     }
                                 ],
                                 "tasks": [
+                                    script_fpga_version_task,
                                     fpga_build_task,
                                 ],
                             }
@@ -93,12 +98,14 @@ if __name__ == "__main__":
             "targetName": "FPGA Target",
             "buildSpecName": "FPGA Main",
             "lv_version": "2019",
+            "version_VI_path": "FPGA/FPGA Version Number.vi",
         },
         "cRIO_FPGA_Expansion": {
             "gitUrl": gitUrl,
             "targetName": "FPGA Target 2",
             "buildSpecName": "Main",
             "lv_version": "2019",
+            "version_VI_path": "FPGA Expansion/FPGA Expansion Version Number.vi",
         },
     }
 
