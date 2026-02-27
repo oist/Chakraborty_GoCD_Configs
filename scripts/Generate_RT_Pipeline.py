@@ -98,7 +98,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             lv_version = "2019"
 
         return {
-            "group": "defaultGroup",
+            "group": "cRIO",
             "parameters": {
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": lv_version,
@@ -407,6 +407,6 @@ if __name__ == "__main__":
     # Convert the list of pipelines into a YAML object
     yamlObject = buildYamlObject(pipelineDefinitionContent)
     # Write to file
-    outputFilePath = "./cRIO_RT_Pipeline.gocd.yaml"
+    outputFilePath = "./cRIO_RT_Pipelines.gocd.yaml"
     with open(outputFilePath, "w") as outputFile:
         yaml.dump(yamlObject, outputFile, sort_keys=False, width=999999)

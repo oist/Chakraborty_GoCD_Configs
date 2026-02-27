@@ -1,12 +1,17 @@
 format_version: 10
 pipelines:
   TC_cRIO_Application:
-    group: defaultGroup
+    group: cRIO
     parameters:
       GIT_DIR: Chakraborty_cRIO
       LV_VERSION: '2019'
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
+      BUILD_TYPE: BUILD
+      DEPLOY_BUILD_TYPE: debug
+      CRIO_HOST: ''
+      CRIO_USER: admin
+      PACKAGE_SERVER: packageserver
     materials:
       Chakraborty_cRIO:
         git: git@github.com:oist/Chakraborty_cRIO
@@ -101,6 +106,14 @@ pipelines:
         pipeline: Status-Reporting.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
+      cRIO_FPGA_Main_material:
+        pipeline: cRIO_FPGA_Main
+        stage: build_fpga
+        ignore_for_scheduling: false
+      cRIO_FPGA_Expansion_material:
+        pipeline: cRIO_FPGA_Expansion
+        stage: build_fpga
+        ignore_for_scheduling: false
     stages:
     - build:
         fetch_materials: 'yes'
@@ -112,13 +125,32 @@ pipelines:
             elastic_profile_id: labview_2019_x86_crio
             environment_variables:
               IS_DEBUG_BUILD: 1
-              BUILD_TYPE: BUILD
+              BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
             - build:
                 source: builds/cRIO-9045-RT
                 destination: '#{APP_NAME}'
             tasks:
-            - exec:
+            - &id002
+              fetch:
+                run_if: passed
+                pipeline: cRIO_FPGA_Main
+                stage: build_fpga
+                job: build_fpga
+                is_file: false
+                source: FPGA Bitfiles
+                destination: FPGA Bitfiles/
+            - &id003
+              fetch:
+                run_if: passed
+                pipeline: cRIO_FPGA_Expansion
+                stage: build_fpga
+                job: build_fpga
+                is_file: false
+                source: FPGA Bitfiles
+                destination: FPGA Bitfiles/
+            - &id004
+              exec:
                 run_if: passed
                 command: powershell
                 arguments:
@@ -129,7 +161,8 @@ pipelines:
                 - Directory
                 - -Path
                 - \"C:\LabVIEW Sources\PPLs\"
-            - fetch:
+            - &id005
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Acquisition-Objects.lvlibp
@@ -145,7 +178,8 @@ pipelines:
                     AllowUninstallation: false
                     InstallRecommended: false
                     InstallRootDir: null
-            - fetch:
+            - &id006
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Actor-Framework.lvlibp
@@ -153,7 +187,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Actor-Framework_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id007
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: ADG-Requests.lvlibp
@@ -161,7 +196,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: ADG-Requests_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id008
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: AF_Messages-PPL.lvlibp
@@ -169,7 +205,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: AF_Messages-PPL_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id009
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Baumer-OM70-Modbus.lvlibp
@@ -177,7 +214,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id010
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Communication-Server.lvlibp
@@ -185,7 +223,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Communication-Server_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id011
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: DataStore.lvlibp
@@ -193,7 +232,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: DataStore_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id012
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc-Interface.lvlibp
@@ -201,7 +241,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc-Interface_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id013
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc-Proxy.lvlibp
@@ -209,7 +250,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc-Proxy_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id014
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc_TCP.lvlibp
@@ -217,7 +259,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc_TCP_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id015
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc_TCPProxy.lvlibp
@@ -225,7 +268,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc_TCPProxy_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id016
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Measurement-Results.lvlibp
@@ -233,7 +277,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Measurement-Results_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id017
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Motor-Activity-Logging.lvlibp
@@ -241,7 +286,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Motor-Activity-Logging_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id018
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: MResDatatype.lvlibp
@@ -249,7 +295,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: MResDatatype_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id019
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PMX32-2QU.lvlibp
@@ -257,7 +304,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PMX32-2QU_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id020
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: OIST_Error.lvlibp
@@ -265,7 +313,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: OIST_Error_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id021
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PowerSupplies-Serial.lvlibp
@@ -273,7 +322,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PowerSupplies-Serial_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id022
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PowerSupplyInterface.lvlibp
@@ -281,7 +331,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PowerSupplyInterface_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id023
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Request-for-Connection.lvlibp
@@ -289,7 +340,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Request-for-Connection_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id024
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Serial-Communication.lvlibp
@@ -297,7 +349,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Serial-Communication_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id025
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: SQLite.lvlibp
@@ -305,7 +358,8 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: SQLite_cRIO_Debug_nipkg
                 configuration: *id001
-            - fetch:
+            - &id026
+              fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Status-Reporting.lvlibp
@@ -326,6 +380,89 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
+            - &id027
+              exec:
+                run_if: passed
+                command: g-cli
+                arguments:
+                - --lv-ver
+                - '#{LV_VERSION}'
+                - Builder\Build_RT_Application.vi
+                - --
+                - cRIO-9045-RT.lvproj
+                - RT CompactRIO Target
+                - RT Main Application
+                - '%BUILD_TYPE%'
+                - '%IS_DEBUG_BUILD%'
+          build_release:
+            timeout: 15
+            elastic_profile_id: labview_2019_x86_crio
+            environment_variables:
+              IS_DEBUG_BUILD: 0
+              BUILD_TYPE: '#{BUILD_TYPE}'
+            artifacts:
+            - build:
+                source: builds/cRIO-9045-RT
+                destination: '#{APP_NAME}'
+            tasks:
+            - *id002
+            - *id003
+            - *id004
+            - *id005
+            - *id006
+            - *id007
+            - *id008
+            - *id009
+            - *id010
+            - *id011
+            - *id012
+            - *id013
+            - *id014
+            - *id015
+            - *id016
+            - *id017
+            - *id018
+            - *id019
+            - *id020
+            - *id021
+            - *id022
+            - *id023
+            - *id024
+            - *id025
+            - *id026
+            - exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - New-Item
+                - -Force
+                - -ItemType
+                - Junction
+                - -Path
+                - PPLs\cRIO-9045\home
+                - -Target
+                - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Release_32\home\"
+            - *id027
+    - build_packages:
+        fetch_materials: 'no'
+        clean_workspace: 'no'
+        approval: success
+        jobs:
+          package_debug:
+            timeout: 10
+            elastic_profile_id: labview_2019_x86_crio
+            artifacts:
+            - build:
+                source: builds/packages/*.ipkg
+                destination: packages
+            tasks:
+            - fetch:
+                run_if: passed
+                stage: build
+                job: build_debug
+                source: '#{APP_NAME}'
+                destination: builds
             - exec:
                 run_if: passed
                 command: LabVIEWCLI.exe
@@ -335,8 +472,113 @@ pipelines:
                 - -Verbosity
                 - Detailed
                 - -ProjectPath
-                - \"C:\LabVIEW Sources\Chakraborty_cRIO\cRIO-9045-RT.lvproj\"
+                - '"C:\LabVIEW Sources\#{GIT_DIR}\cRIO-9045-RT.lvproj"'
                 - -TargetName
                 - RT CompactRIO Target
                 - -BuildSpecName
-                - RT Main Application
+                - cRIO Package - Debug
+          package_release:
+            timeout: 10
+            elastic_profile_id: labview_2019_x86_crio
+            artifacts:
+            - build:
+                source: builds/packages/*.ipkg
+                destination: packages
+            tasks:
+            - fetch:
+                run_if: passed
+                stage: build
+                job: build_release
+                source: '#{APP_NAME}'
+                destination: builds
+            - exec:
+                run_if: passed
+                command: LabVIEWCLI.exe
+                arguments:
+                - -OperationName
+                - ExecuteBuildSpec
+                - -Verbosity
+                - Detailed
+                - -ProjectPath
+                - '"C:\LabVIEW Sources\#{GIT_DIR}\cRIO-9045-RT.lvproj"'
+                - -TargetName
+                - RT CompactRIO Target
+                - -BuildSpecName
+                - cRIO Package - Release
+    - publish_to_archive:
+        fetch_materials: 'no'
+        clean_workspace: 'no'
+        approval: success
+        jobs:
+          publish_to_feed:
+            timeout: 5
+            environment_variables:
+              PACKAGE_SERVER: '#{PACKAGE_SERVER}'
+            tasks:
+            - fetch:
+                run_if: passed
+                stage: build_packages
+                job: package_release
+                source: packages
+                destination: artifacts
+            - exec:
+                run_if: passed
+                command: scp
+                arguments:
+                - artifacts/packages/*.ipkg
+                - '#{PACKAGE_SERVER}:/var/www/packages/'
+            - exec:
+                run_if: passed
+                command: ssh
+                arguments:
+                - '#{PACKAGE_SERVER}'
+                - cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz
+    - deploy:
+        fetch_materials: 'no'
+        clean_workspace: 'no'
+        approval: manual
+        jobs:
+          deploy_to_crio:
+            timeout: 5
+            environment_variables:
+              CRIO_HOST: '#{CRIO_HOST}'
+              CRIO_USER: '#{CRIO_USER}'
+              CRIO_PASSWORD: '{{SECRET:[secrets.json][crio_ssh_password]}}'
+            tasks:
+            - fetch:
+                run_if: passed
+                stage: build_packages
+                job: package_#{DEPLOY_BUILD_TYPE}
+                source: packages
+                destination: artifacts
+            - exec:
+                run_if: passed
+                command: sshpass
+                arguments:
+                - -p
+                - '#{CRIO_PASSWORD}'
+                - scp
+                - -o
+                - StrictHostKeyChecking=no
+                - artifacts/packages/*.ipkg
+                - '#{CRIO_USER}@#{CRIO_HOST}:/tmp/'
+            - exec:
+                run_if: passed
+                command: sshpass
+                arguments:
+                - -p
+                - '#{CRIO_PASSWORD}'
+                - ssh
+                - -o
+                - StrictHostKeyChecking=no
+                - '#{CRIO_USER}@#{CRIO_HOST}'
+                - opkg remove tc-crio-app || true; opkg install /tmp/*.ipkg
+            - exec:
+                run_if: passed
+                command: sshpass
+                arguments:
+                - -p
+                - '#{CRIO_PASSWORD}'
+                - ssh
+                - '#{CRIO_USER}@#{CRIO_HOST}'
+                - /etc/init.d/niapp restart || systemctl restart niapp

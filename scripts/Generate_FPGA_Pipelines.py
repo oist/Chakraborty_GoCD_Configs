@@ -31,7 +31,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
         materials = generateMaterials(self.gitUrl, None, cachedMaterials)
 
         return {
-            "group": "FPGA",
+            "group": "cRIO",
             "parameters": {
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": self.lv_version,
