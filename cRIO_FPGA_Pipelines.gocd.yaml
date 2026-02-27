@@ -1,0 +1,72 @@
+format_version: 10
+pipelines:
+  cRIO_FPGA_Main:
+    group: FPGA
+    parameters:
+      GIT_DIR: Chakraborty_cRIO
+      LV_VERSION: '2019'
+      FPGA_TARGET_NAME: FPGA Target
+      FPGA_BUILDSPEC_NAME: FPGA Main
+    materials:
+      Chakraborty_cRIO:
+        git: git@github.com:oist/Chakraborty_cRIO
+        destination: Chakraborty_cRIO
+        auto_update: false
+        shallow_clone: false
+    stages:
+    - build_fpga:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          build_fpga:
+            timeout: 90
+            elastic_profile_id: labview_2019_fpgacompilation
+            artifacts:
+            - build:
+                source: FPGA Bitfiles/*.lvbitx
+                destination: FPGA Bitfiles
+            tasks:
+            - &id001
+              exec:
+                run_if: passed
+                command: LabVIEWCLI.exe
+                arguments:
+                - -OperationName
+                - ExecuteBuildSpec
+                - -Verbosity
+                - Detailed
+                - -ProjectPath
+                - '"C:\LabVIEW Sources\#{GIT_DIR}\cRIO-9045-RT.lvproj"'
+                - -TargetName
+                - '#{FPGA_TARGET_NAME}'
+                - -BuildSpecName
+                - '#{FPGA_BUILDSPEC_NAME}'
+  cRIO_FPGA_Expansion:
+    group: FPGA
+    parameters:
+      GIT_DIR: Chakraborty_cRIO
+      LV_VERSION: '2019'
+      FPGA_TARGET_NAME: FPGA Target 2
+      FPGA_BUILDSPEC_NAME: Main
+    materials:
+      Chakraborty_cRIO:
+        git: git@github.com:oist/Chakraborty_cRIO
+        destination: Chakraborty_cRIO
+        auto_update: false
+        shallow_clone: false
+    stages:
+    - build_fpga:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          build_fpga:
+            timeout: 90
+            elastic_profile_id: labview_2019_fpgacompilation
+            artifacts:
+            - build:
+                source: FPGA Bitfiles/*.lvbitx
+                destination: FPGA Bitfiles
+            tasks:
+            - *id001

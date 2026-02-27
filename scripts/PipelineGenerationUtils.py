@@ -43,3 +43,34 @@ def generateFetchPPLJob(dependency, targetName):
             "configuration": fetch_ppl_configuration,
         }
     }
+
+
+def generateFetchFPGAJob(fpga_pipeline_name):
+    """Generate fetch task for FPGA bitfile from FPGA pipeline.
+    
+    Fetches the "FPGA Bitfiles" directory (is_file=False) rather than a specific
+    file to avoid hardcoding the bitfile name with its hash suffix. Each FPGA 
+    pipeline produces only a single .lvbitx file in this directory, but the exact
+    filename includes a generated hash (e.g., cR9045-FPGAMain_tiGh-z7G0kw.lvbitx).
+    By fetching the directory, we get the bitfile regardless of its hash.
+    
+    Multiple FPGA fetch tasks can target the same "FPGA Bitfiles/" destination;
+    GoCD will merge the directory contents from each fetch.
+    
+    Args:
+        fpga_pipeline_name: Name of the FPGA pipeline (e.g., "cRIO_FPGA_Main")
+    
+    Returns:
+        Dictionary with fetch task configuration
+    """
+    return {
+        "fetch": {
+            "run_if": "passed",
+            "pipeline": fpga_pipeline_name,
+            "stage": "build_fpga",
+            "job": "build_fpga",
+            "is_file": False,  # Fetch directory, not individual file
+            "source": "FPGA Bitfiles",
+            "destination": "FPGA Bitfiles/",
+        }
+    }

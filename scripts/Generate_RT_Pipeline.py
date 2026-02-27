@@ -4,8 +4,19 @@ from pathlib import Path
 from GitTools import cloneRepo
 from FileUtils import directoryFromGitRepo, find_file
 from NameTransformers import parseMkFile, parseVipkgReqsFile, sanitizeForPipelineName
-from PipelineGenerationUtils import generateMaterials, generateFetchPPLJob
-from Constants import profileId, Target, create_ppl_dir
+from PipelineGenerationUtils import (
+    generateMaterials,
+    generateFetchPPLJob,
+    generateFetchFPGAJob,
+)
+from Constants import (
+    profileId,
+    Target,
+    create_ppl_dir,
+    gcli_rt_build_task,
+    ipkg_build_task_debug,
+    ipkg_build_task_release,
+)
 
 
 def create_home_link_task(target):
@@ -53,7 +64,29 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         targetName = "cRIO_Debug"
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
         materials = generateMaterials(self.gitUrl, self.dependencies, cachedMaterials)
+
+        # Add FPGA pipeline materials
+        # ignore_for_scheduling=False means this pipeline will automatically trigger
+        # when the upstream FPGA pipelines complete successfully. Set to True if you
+        # only want to use the FPGA artifacts without auto-triggering on FPGA changes.
+        materials["cRIO_FPGA_Main_material"] = {
+            "pipeline": "cRIO_FPGA_Main",
+            "stage": "build_fpga",
+            "ignore_for_scheduling": False,
+        }
+        materials["cRIO_FPGA_Expansion_material"] = {
+            "pipeline": "cRIO_FPGA_Expansion",
+            "stage": "build_fpga",
+            "ignore_for_scheduling": False,
+        }
+
         dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
+        # FPGA fetch tasks (same bitfiles for both debug and release)
+        fpgaFetchTasks = [
+            generateFetchFPGAJob("cRIO_FPGA_Main"),
+            generateFetchFPGAJob("cRIO_FPGA_Expansion"),
+        ]
+
         pplDepTasks = [
             generateFetchPPLJob(dependency, targetName)
             for dependency in self.dependencies
@@ -71,6 +104,11 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "LV_VERSION": lv_version,
                 "Dependency_PPL_Names": dependencyQuotedList,
                 "APP_NAME": "TC_cRIO_Application",
+                "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
+                "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
+                "CRIO_HOST": "",  # Must be set when triggering deployment
+                "CRIO_USER": "admin",  # Default SSH user for cRIO
+                "PACKAGE_SERVER": "packageserver",  # Hostname/IP of package archive server
             },
             "materials": materials,
             "stages": [
@@ -88,8 +126,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 ],
                                 "environment_variables": {
                                     "IS_DEBUG_BUILD": 1,
-                                    # "TARGET_SYSTEM": "cRIO",
-                                    "BUILD_TYPE": "BUILD",  # Overwritten elsewhere
+                                    "BUILD_TYPE": "#{BUILD_TYPE}",
                                 },
                                 "artifacts": [
                                     {
@@ -99,27 +136,147 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                         }
                                     }
                                 ],
-                                "tasks": [
+                                "tasks": fpgaFetchTasks
+                                + [
                                     create_ppl_dir,
                                 ]
                                 + pplDepTasks
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
+                                    gcli_rt_build_task,
+                                ],
+                            },
+                            "build_release": {
+                                "timeout": 15,
+                                "elastic_profile_id": profileId[lv_version][
+                                    Target.cRIO_Release
+                                ],
+                                "environment_variables": {
+                                    "IS_DEBUG_BUILD": 0,
+                                    "BUILD_TYPE": "#{BUILD_TYPE}",
+                                },
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "builds/cRIO-9045-RT",
+                                            "destination": "#{APP_NAME}",
+                                        }
+                                    }
+                                ],
+                                "tasks": fpgaFetchTasks
+                                + [
+                                    create_ppl_dir,
+                                ]
+                                + pplDepTasks
+                                + [
+                                    create_home_link_task(Target.cRIO_Release),
+                                    gcli_rt_build_task,
+                                ],
+                            },
+                        },
+                    }
+                },
+                # Package build stage
+                {
+                    "build_packages": {
+                        "fetch_materials": "no",
+                        "clean_workspace": "no",
+                        "approval": "success",
+                        "jobs": {
+                            "package_debug": {
+                                "timeout": 10,
+                                "elastic_profile_id": profileId[lv_version][
+                                    Target.cRIO_Debug
+                                ],
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "builds/packages/*.ipkg",
+                                            "destination": "packages",
+                                        }
+                                    }
+                                ],
+                                "tasks": [
+                                    {
+                                        "fetch": {
+                                            "run_if": "passed",
+                                            "stage": "build",
+                                            "job": "build_debug",
+                                            "source": "#{APP_NAME}",
+                                            "destination": "builds",
+                                        }
+                                    },
+                                    ipkg_build_task_debug,
+                                ],
+                            },
+                            "package_release": {
+                                "timeout": 10,
+                                "elastic_profile_id": profileId[lv_version][
+                                    Target.cRIO_Release
+                                ],
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "builds/packages/*.ipkg",
+                                            "destination": "packages",
+                                        }
+                                    }
+                                ],
+                                "tasks": [
+                                    {
+                                        "fetch": {
+                                            "run_if": "passed",
+                                            "stage": "build",
+                                            "job": "build_release",
+                                            "source": "#{APP_NAME}",
+                                            "destination": "builds",
+                                        }
+                                    },
+                                    ipkg_build_task_release,
+                                ],
+                            },
+                        },
+                    }
+                },
+                # Archive publishing stage (runs automatically after build_packages succeeds)
+                {
+                    "publish_to_archive": {
+                        "fetch_materials": "no",
+                        "clean_workspace": "no",
+                        "approval": "success",
+                        "jobs": {
+                            "publish_to_feed": {
+                                "timeout": 5,
+                                "environment_variables": {
+                                    "PACKAGE_SERVER": "#{PACKAGE_SERVER}",
+                                },
+                                "tasks": [
+                                    {
+                                        "fetch": {
+                                            "run_if": "passed",
+                                            "stage": "build_packages",
+                                            "job": "package_release",
+                                            "source": "packages",
+                                            "destination": "artifacts",
+                                        }
+                                    },
                                     {
                                         "exec": {
                                             "run_if": "passed",
-                                            "command": "LabVIEWCLI.exe",
+                                            "command": "scp",
                                             "arguments": [
-                                                "-OperationName",
-                                                "ExecuteBuildSpec",
-                                                "-Verbosity",
-                                                "Detailed",
-                                                "-ProjectPath",
-                                                f'\\"C:\\LabVIEW Sources\\{gitDirName}\\cRIO-9045-RT.lvproj\\"',
-                                                "-TargetName",
-                                                "RT CompactRIO Target",
-                                                "-BuildSpecName",
-                                                "RT Main Application",
+                                                "artifacts/packages/*.ipkg",
+                                                "#{PACKAGE_SERVER}:/var/www/packages/",
+                                            ],
+                                        }
+                                    },
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "ssh",
+                                            "arguments": [
+                                                "#{PACKAGE_SERVER}",
+                                                "cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz",
                                             ],
                                         }
                                     },
@@ -127,7 +284,79 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                             }
                         },
                     }
-                }
+                },
+                # Deployment stage (independent of publish_to_archive, requires manual approval)
+                {
+                    "deploy": {
+                        "fetch_materials": "no",
+                        "clean_workspace": "no",
+                        "approval": "manual",  # Manual approval before deployment
+                        "jobs": {
+                            "deploy_to_crio": {
+                                "timeout": 5,
+                                "environment_variables": {
+                                    "CRIO_HOST": "#{CRIO_HOST}",
+                                    "CRIO_USER": "#{CRIO_USER}",
+                                    "CRIO_PASSWORD": "{{SECRET:[secrets.json][crio_ssh_password]}}",
+                                },
+                                "tasks": [
+                                    {
+                                        "fetch": {
+                                            "run_if": "passed",
+                                            "stage": "build_packages",
+                                            "job": "package_#{DEPLOY_BUILD_TYPE}",
+                                            "source": "packages",
+                                            "destination": "artifacts",
+                                        }
+                                    },
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "sshpass",
+                                            "arguments": [
+                                                "-p",
+                                                "#{CRIO_PASSWORD}",
+                                                "scp",
+                                                "-o",
+                                                "StrictHostKeyChecking=no",
+                                                "artifacts/packages/*.ipkg",
+                                                "#{CRIO_USER}@#{CRIO_HOST}:/tmp/",
+                                            ],
+                                        }
+                                    },
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "sshpass",
+                                            "arguments": [
+                                                "-p",
+                                                "#{CRIO_PASSWORD}",
+                                                "ssh",
+                                                "-o",
+                                                "StrictHostKeyChecking=no",
+                                                "#{CRIO_USER}@#{CRIO_HOST}",
+                                                "opkg remove tc-crio-app || true; opkg install /tmp/*.ipkg",
+                                            ],
+                                        }
+                                    },
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "sshpass",
+                                            "arguments": [
+                                                "-p",
+                                                "#{CRIO_PASSWORD}",
+                                                "ssh",
+                                                "#{CRIO_USER}@#{CRIO_HOST}",
+                                                "/etc/init.d/niapp restart || systemctl restart niapp",
+                                            ],
+                                        }
+                                    },
+                                ],
+                            }
+                        },
+                    }
+                },
             ],
         }
 

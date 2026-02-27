@@ -260,3 +260,60 @@ fpga_build_task = {
 
 fpga_artifact_path = "FPGA Bitfiles/*.lvbitx"
 
+# ------------------- RT Build with G-CLI ----------------- #
+gcli_rt_build_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "g-cli",
+        "arguments": [
+            "--lv-ver",
+            "#{LV_VERSION}",
+            "Builder\\Build_RT_Application.vi",
+            "--",
+            "cRIO-9045-RT.lvproj",
+            "RT CompactRIO Target",
+            "RT Main Application",
+            "%BUILD_TYPE%",
+            "%IS_DEBUG_BUILD%",
+        ],
+    }
+}
+
+# ------------------- Package Build Tasks ----------------- #
+ipkg_build_task_debug = {
+    "exec": {
+        "run_if": "passed",
+        "command": "LabVIEWCLI.exe",
+        "arguments": [
+            "-OperationName",
+            "ExecuteBuildSpec",
+            "-Verbosity",
+            "Detailed",
+            "-ProjectPath",
+            '"C:\\LabVIEW Sources\\#{GIT_DIR}\\cRIO-9045-RT.lvproj"',
+            "-TargetName",
+            "RT CompactRIO Target",
+            "-BuildSpecName",
+            "cRIO Package - Debug",
+        ],
+    }
+}
+
+ipkg_build_task_release = {
+    "exec": {
+        "run_if": "passed",
+        "command": "LabVIEWCLI.exe",
+        "arguments": [
+            "-OperationName",
+            "ExecuteBuildSpec",
+            "-Verbosity",
+            "Detailed",
+            "-ProjectPath",
+            '"C:\\LabVIEW Sources\\#{GIT_DIR}\\cRIO-9045-RT.lvproj"',
+            "-TargetName",
+            "RT CompactRIO Target",
+            "-BuildSpecName",
+            "cRIO Package - Release",
+        ],
+    }
+}
