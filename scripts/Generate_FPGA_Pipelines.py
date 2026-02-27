@@ -4,7 +4,13 @@ from pathlib import Path
 from GitTools import cloneRepo
 from FileUtils import directoryFromGitRepo
 from PipelineGenerationUtils import generateMaterials
-from Constants import fpga_build_task, fpga_artifact_path, script_fpga_version_task
+from Constants import (
+    Target,
+    profileId,
+    fpga_build_task,
+    fpga_artifact_path,
+    script_fpga_version_task,
+)
 
 cachedMaterials = {}
 
@@ -30,8 +36,10 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
         materials = generateMaterials(self.gitUrl, None, cachedMaterials)
 
+        targetName = Target.FPGA_Debug
+
         return {
-            "group": "cRIO",
+            "group": "cRIO ",
             "parameters": {
                 "GIT_DIR": gitDirName,
                 "LV_VERSION": self.lv_version,
@@ -55,7 +63,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                 # for slower builds without aborting prematurely. GoCD will
                                 # cancel the job if it exceeds this duration.
                                 "timeout": 90,
-                                "elastic_profile_id": f"labview_{self.lv_version}_fpgacompilation",
+                                "elastic_profile_id": profileId[self.lv_version][
+                                    targetName
+                                ],
                                 "artifacts": [
                                     {
                                         "build": {

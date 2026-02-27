@@ -46,6 +46,8 @@ def get_mklink_task(target):
 
 mklink_tasks = {}
 for target in Target._member_names_:
+    if target == "FPGA_Debug" or target == "FPGA_Release":
+        continue  # FPGA pipelines are generated separately since they have different parameters and build steps
     mklink_tasks[target] = get_mklink_task(target)
 
 PPLJobTasks_NoDeps = [fetch_builder_task, expand_builder_task, ls_task, gcli_build_task]
@@ -116,6 +118,8 @@ for target in Target.__members__:
 def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
     ppl_job_list = {}
     for target in Target.__members__:
+        if target == "FPGA_Debug" or target == "FPGA_Release":
+            continue  # FPGA pipelines are generated separately since they have different parameters and build steps
         targetT = Target[target]
         packageId = f"{packageRootName}_{target}_nipkg"
         ppl_job_list[target] = {
@@ -175,6 +179,8 @@ def get_fetch_built_ppl_task(target):
 
 git_tag_tasks = [fetch_builder_task, expand_builder_task]
 for target in Target._member_names_:
+    if target == "FPGA_Debug" or target == "FPGA_Release":
+        continue  # FPGA pipelines are generated separately since they have different parameters and build steps
     git_tag_tasks.append(get_fetch_built_ppl_task(target))
 git_tag_tasks.append(
     {"exec": {"run_if": "passed", "command": "dir", "arguments": ["*"]}}

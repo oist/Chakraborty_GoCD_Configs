@@ -1,7 +1,7 @@
 format_version: 10
 pipelines:
   cRIO_FPGA_Main:
-    group: cRIO
+    group: 'cRIO '
     parameters:
       GIT_DIR: Chakraborty_cRIO
       LV_VERSION: '2019'
@@ -23,7 +23,7 @@ pipelines:
         jobs:
           build_fpga:
             timeout: 90
-            elastic_profile_id: labview_2019_fpgacompilation
+            elastic_profile_id: labview_2019_x86_fpga
             artifacts:
             - build:
                 source: FPGA Bitfiles/*.lvbitx
@@ -55,7 +55,7 @@ pipelines:
                 - -BuildSpecName
                 - '#{FPGA_BUILDSPEC_NAME}'
   cRIO_FPGA_Expansion:
-    group: cRIO
+    group: 'cRIO '
     parameters:
       GIT_DIR: Chakraborty_cRIO
       LV_VERSION: '2019'
@@ -77,7 +77,7 @@ pipelines:
         jobs:
           build_fpga:
             timeout: 90
-            elastic_profile_id: labview_2019_fpgacompilation
+            elastic_profile_id: labview_2019_x86_fpga
             artifacts:
             - build:
                 source: FPGA Bitfiles/*.lvbitx

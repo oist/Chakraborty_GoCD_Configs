@@ -22,6 +22,8 @@ class Target(Enum):
     Windows_64_Debug = 3
     cRIO_Release = 4
     cRIO_Debug = 5
+    FPGA_Release = 6
+    FPGA_Debug = 7
 
 
 # The names here are used for the G-CLI call directly.
@@ -39,6 +41,10 @@ targetPathEnds = {
     "Windows_64_Debug": "Windows\\Debug_64",
     "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
     "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
+    "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
+    "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
+    "FPGA_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
+    "FPGA_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
 }
 
 profileId = {
@@ -49,6 +55,8 @@ profileId = {
         Target.Windows_64_Release: "labview_2019_x64",
         Target.cRIO_Debug: "labview_2019_x86_crio",
         Target.cRIO_Release: "labview_2019_x86_crio",
+        Target.FPGA_Debug: "labview_2019_x86_fpga",
+        Target.FPGA_Release: "labview_2019_x86_fpga",
     },
     "2021": {
         Target.Windows_32_Debug: "labview_2021_x86",
@@ -57,6 +65,8 @@ profileId = {
         Target.Windows_64_Release: "labview_2021_x64",
         Target.cRIO_Debug: "labview_2021_x86_crio",
         Target.cRIO_Release: "labview_2021_x86_crio",
+        Target.FPGA_Debug: "labview_2021_x86_fpga",
+        Target.FPGA_Release: "labview_2021_x86_fpga",
     },
 }
 
@@ -68,6 +78,8 @@ labviewDir = {
         Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2019",
         Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
         Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+        Target.FPGA_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
+        Target.FPGA_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2019",
     },
     "2021": {
         Target.Windows_32_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
@@ -76,6 +88,8 @@ labviewDir = {
         Target.Windows_64_Release: "C:\\Program Files\\National Instruments\\LabVIEW 2021",
         Target.cRIO_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
         Target.cRIO_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+        Target.FPGA_Debug: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
+        Target.FPGA_Release: "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021",
     },
 }
 
