@@ -249,7 +249,7 @@ fpga_build_task = {
             "-Verbosity",
             "Detailed",
             "-ProjectPath",
-            '"C:\\LabVIEW Sources\\#{GIT_DIR}\\cRIO-9045-RT.lvproj"',
+            "#{PROJECT_PATH}",
             "-TargetName",
             "#{FPGA_TARGET_NAME}",
             "-BuildSpecName",

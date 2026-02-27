@@ -22,6 +22,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
         self.version_vi_path = (
             values["version_VI_path"] if "version_VI_path" in values else None
         )
+        self.projectFileName = (
+            values["projectFileName"] if "projectFileName" in values else None
+        )
 
     def buildData(self, dumper):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
@@ -34,6 +37,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                 "LV_VERSION": self.lv_version,
                 "FPGA_TARGET_NAME": self.targetName,
                 "FPGA_BUILDSPEC_NAME": self.buildSpecName,
+                "PROJECT_PATH": f"C:\\LabVIEW Sources\\{gitDirName}\\{self.projectFileName}",
                 "VERSION_VI_PATH": self.version_vi_path,
             },
             "materials": materials,
@@ -99,6 +103,7 @@ if __name__ == "__main__":
             "buildSpecName": "FPGA Main",
             "lv_version": "2019",
             "version_VI_path": "FPGA/FPGA Version Number.vi",
+            "projectFileName": "cRIO-9045-RT.lvproj",
         },
         "cRIO_FPGA_Expansion": {
             "gitUrl": gitUrl,
@@ -106,6 +111,7 @@ if __name__ == "__main__":
             "buildSpecName": "Main",
             "lv_version": "2019",
             "version_VI_path": "FPGA Expansion/FPGA Expansion Version Number.vi",
+            "projectFileName": "cRIO-9045-RT.lvproj",
         },
     }
 
