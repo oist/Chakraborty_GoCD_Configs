@@ -297,7 +297,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 "environment_variables": {
                                     "CRIO_HOST": "#{CRIO_HOST}",
                                     "CRIO_USER": "#{CRIO_USER}",
-                                    "CRIO_PASSWORD": "{{SECRET:[secrets.json][crio_ssh_password]}}",
                                 },
                                 "tasks": [
                                     {
@@ -315,7 +314,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "sshpass",
                                             "arguments": [
                                                 "-p",
-                                                "#{CRIO_PASSWORD}",
+                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
                                                 "scp",
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
@@ -330,7 +329,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "sshpass",
                                             "arguments": [
                                                 "-p",
-                                                "#{CRIO_PASSWORD}",
+                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
                                                 "ssh",
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
@@ -345,8 +344,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "sshpass",
                                             "arguments": [
                                                 "-p",
-                                                "#{CRIO_PASSWORD}",
+                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
                                                 "ssh",
+                                                "-o",
+                                                "StrictHostKeyChecking=no",
                                                 "#{CRIO_USER}@#{CRIO_HOST}",
                                                 "/etc/init.d/niapp restart || systemctl restart niapp",
                                             ],
