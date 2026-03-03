@@ -281,9 +281,9 @@ script_fpga_version_task = {
         "arguments": [
             "--lv-ver",
             "#{LV_VERSION}",
-            "Builder\\Script FPGA Version VI Wrapper.vi",
+            "Builder\\Script_FPGA_Version_VI_Wrapper.vi",
             "--",
-            "#{VERSION_VI_PATH}",
+            "'#{VERSION_VI_PATH}'",
         ],
     }
 }
