@@ -116,9 +116,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                 ],
                                 "tasks": [
                                     create_ppl_dir,
-                                    mklink_fpga_tasks["debug"],
+                                    # mklink_fpga_tasks["debug"],
                                     ls_task,
-                                    ls_currentDir_task,
+                                    # ls_currentDir_task,
                                     script_fpga_version_task,
                                     fpga_build_task,
                                 ],
