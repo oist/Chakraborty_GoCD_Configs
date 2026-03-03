@@ -281,6 +281,7 @@ script_fpga_version_task = {
         "arguments": [
             "--lv-ver",
             "#{LV_VERSION}",
+            "--verbose",
             "Builder\\Script_FPGA_Version_VI_Wrapper.vi",
             "--",
             "#{VERSION_VI_PATH}",
@@ -296,6 +297,7 @@ gcli_rt_build_task = {
         "arguments": [
             "--lv-ver",
             "#{LV_VERSION}",
+            "--verbose",
             "Builder\\Build_RT_Application.vi",
             "--",
             "cRIO-9045-RT.lvproj",
