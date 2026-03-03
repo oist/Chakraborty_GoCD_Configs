@@ -388,13 +388,14 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - '#{GIT_DIR}\Builder\Build_RT_Application.vi'
+                - Builder\Build_RT_Application.vi
                 - --
                 - cRIO-9045-RT.lvproj
                 - RT CompactRIO Target
                 - RT Main Application
                 - '%BUILD_TYPE%'
                 - '%IS_DEBUG_BUILD%'
+                working_directory: '#{GIT_DIR}'
           build_release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio

@@ -65,9 +65,10 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - '#{GIT_DIR}\Builder\Script_FPGA_Version_VI_Wrapper.vi'
+                - Builder\Script_FPGA_Version_VI_Wrapper.vi
                 - --
                 - '#{VERSION_VI_PATH}'
+                working_directory: '#{GIT_DIR}'
             - &id005
               exec:
                 run_if: passed

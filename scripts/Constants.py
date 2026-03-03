@@ -282,10 +282,11 @@ script_fpga_version_task = {
             "--lv-ver",
             "#{LV_VERSION}",
             "--verbose",
-            "#{GIT_DIR}\\Builder\\Script_FPGA_Version_VI_Wrapper.vi",
+            "Builder\\Script_FPGA_Version_VI_Wrapper.vi",
             "--",
             "#{VERSION_VI_PATH}",
         ],
+        "working_directory": "#{GIT_DIR}",
     }
 }
 
@@ -298,7 +299,7 @@ gcli_rt_build_task = {
             "--lv-ver",
             "#{LV_VERSION}",
             "--verbose",
-            "#{GIT_DIR}\\Builder\\Build_RT_Application.vi",
+            "Builder\\Build_RT_Application.vi",
             "--",
             "cRIO-9045-RT.lvproj",
             "RT CompactRIO Target",
@@ -306,6 +307,7 @@ gcli_rt_build_task = {
             "%BUILD_TYPE%",
             "%IS_DEBUG_BUILD%",
         ],
+        "working_directory": "#{GIT_DIR}",
     }
 }
 
