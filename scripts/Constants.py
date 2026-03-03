@@ -263,7 +263,7 @@ fpga_build_task = {
             "-Verbosity",
             "Detailed",
             "-ProjectPath",
-            "#{PROJECT_PATH}",
+            '"$PWD\\#{PROJECT_PATH}"',
             "-TargetName",
             "#{FPGA_TARGET_NAME}",
             "-BuildSpecName",
