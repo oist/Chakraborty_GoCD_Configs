@@ -50,14 +50,24 @@ pipelines:
             - &id003
               exec:
                 run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - Get-ChildItem
+                - -Recurse
+                - -Depth
+                - '1'
+            - &id004
+              exec:
+                run_if: passed
                 command: g-cli
                 arguments:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - Builder\Script_FPGA_Version_VI_Wrapper.vi
                 - --
-                - '''#{VERSION_VI_PATH}'''
-            - &id004
+                - '#{VERSION_VI_PATH}'
+            - &id005
               exec:
                 run_if: passed
                 command: LabVIEWCLI.exe
@@ -105,3 +115,4 @@ pipelines:
             - *id002
             - *id003
             - *id004
+            - *id005

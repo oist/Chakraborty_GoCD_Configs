@@ -54,6 +54,20 @@ mklink_fpga_tasks = {
     },
 }
 
+gci_recurse_1_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "powershell",
+        "arguments": [
+            "-Command",
+            "Get-ChildItem",
+            "-Recurse",
+            "-Depth",
+            "1",
+        ],
+    }
+}
+
 
 class PipelineDefinition_FPGA(yaml.YAMLObject):
     yaml_tag = "!PipelineDefinition"
@@ -118,6 +132,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                     create_ppl_dir,
                                     # mklink_fpga_tasks["debug"],
                                     ls_task,
+                                    gci_recurse_1_task,
                                     # ls_currentDir_task,
                                     script_fpga_version_task,
                                     fpga_build_task,

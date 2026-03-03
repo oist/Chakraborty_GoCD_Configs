@@ -283,7 +283,7 @@ script_fpga_version_task = {
             "#{LV_VERSION}",
             "Builder\\Script_FPGA_Version_VI_Wrapper.vi",
             "--",
-            "'#{VERSION_VI_PATH}'",
+            "#{VERSION_VI_PATH}",
         ],
     }
 }
