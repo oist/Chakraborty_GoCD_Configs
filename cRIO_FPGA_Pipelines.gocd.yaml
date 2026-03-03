@@ -65,7 +65,7 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - Builder\Script_FPGA_Version_VI_Wrapper.vi
+                - '#{GIT_DIR}\Builder\Script_FPGA_Version_VI_Wrapper.vi'
                 - --
                 - '#{VERSION_VI_PATH}'
             - &id005

@@ -388,7 +388,7 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - Builder\Build_RT_Application.vi
+                - '#{GIT_DIR}\Builder\Build_RT_Application.vi'
                 - --
                 - cRIO-9045-RT.lvproj
                 - RT CompactRIO Target
