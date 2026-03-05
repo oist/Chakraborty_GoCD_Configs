@@ -118,3 +118,57 @@ pipelines:
             - *id003
             - *id004
             - *id005
+  cRIO_FPGA_Main_noncompile:
+    group: cRIO
+    parameters:
+      GIT_DIR: Chakraborty_cRIO
+      LV_VERSION: '2019'
+    materials:
+      Chakraborty_cRIO:
+        git: git@github.com:oist/Chakraborty_cRIO
+        destination: Chakraborty_cRIO
+        auto_update: false
+        shallow_clone: false
+    stages:
+    - build_fpga:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          build_fpga:
+            timeout: 5
+            elastic_profile_id: labview_2019_x86_fpga
+            artifacts:
+            - build:
+                source: Chakraborty_cRIO/FPGA Bitfiles/cR9045-FPGAMain_tiGh-z7G0kw.lvbitx
+                destination: FPGA Bitfiles
+            tasks:
+            - *id002
+            - *id003
+  cRIO_FPGA_Expansion_noncompile:
+    group: cRIO
+    parameters:
+      GIT_DIR: Chakraborty_cRIO
+      LV_VERSION: '2019'
+    materials:
+      Chakraborty_cRIO:
+        git: git@github.com:oist/Chakraborty_cRIO
+        destination: Chakraborty_cRIO
+        auto_update: false
+        shallow_clone: false
+    stages:
+    - build_fpga:
+        fetch_materials: 'yes'
+        clean_workspace: 'yes'
+        approval: manual
+        jobs:
+          build_fpga:
+            timeout: 5
+            elastic_profile_id: labview_2019_x86_fpga
+            artifacts:
+            - build:
+                source: Chakraborty_cRIO/FPGA Bitfiles/crio-9045-rt_FPGATarget2_Main_yKmXqsdb6fY.lvbitx
+                destination: FPGA Bitfiles
+            tasks:
+            - *id002
+            - *id003

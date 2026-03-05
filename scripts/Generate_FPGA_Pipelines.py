@@ -12,7 +12,6 @@ from Constants import (
     script_fpga_version_task,
     create_ppl_dir,
     ls_task,
-    ls_currentDir_task,
 )
 
 cachedMaterials = {}
@@ -133,9 +132,68 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                     # mklink_fpga_tasks["debug"],
                                     ls_task,
                                     gci_recurse_1_task,
-                                    # ls_currentDir_task,
                                     script_fpga_version_task,
                                     fpga_build_task,
+                                ],
+                            }
+                        },
+                    }
+                }
+            ],
+        }
+
+    @classmethod
+    def to_yaml(cls, dumper, self):
+        data = self.buildData(dumper)
+        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
+
+
+class PipelineDefinition_FPGA_Noncompile(yaml.YAMLObject):
+    yaml_tag = "!PipelineDefinition"
+
+    def __init__(self, pipelineEntry):
+        [name, values] = list(pipelineEntry.items())[0]
+        self.name = name
+        self.gitUrl = values["gitUrl"]
+        self.lv_version = values["lv_version"] if "lv_version" in values else "2019"
+        self.noncompile_artifact_file = values["noncompile_artifact_file"]
+
+    def buildData(self, dumper):
+        gitDirName = directoryFromGitRepo(self.gitUrl, None)
+        materials = generateMaterials(self.gitUrl, None, cachedMaterials)
+
+        targetName = Target.FPGA_Debug
+
+        return {
+            "group": "cRIO",
+            "parameters": {
+                "GIT_DIR": gitDirName,
+                "LV_VERSION": self.lv_version,
+            },
+            "materials": materials,
+            "stages": [
+                {
+                    "build_fpga": {
+                        "fetch_materials": "yes",
+                        "clean_workspace": "yes",
+                        "approval": "manual",
+                        "jobs": {
+                            "build_fpga": {
+                                "timeout": 5,  # Short timeout since this job only copies an existing artifact
+                                "elastic_profile_id": profileId[self.lv_version][
+                                    targetName
+                                ],
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": f"{gitDirName}/FPGA Bitfiles/{self.noncompile_artifact_file}",
+                                            "destination": "FPGA Bitfiles",
+                                        }
+                                    }
+                                ],
+                                "tasks": [
+                                    ls_task,
+                                    gci_recurse_1_task,
                                 ],
                             }
                         },
@@ -156,6 +214,8 @@ def buildYamlObject(pipelineDictionary):
 
 
 if __name__ == "__main__":
+    ENABLE_NONCOMPILE_PIPELINES = True
+
     baseDir = os.path.join(Path.cwd(), "cloned")
     gitUrl = "git@github.com:oist/Chakraborty_cRIO"
 
@@ -184,10 +244,30 @@ if __name__ == "__main__":
         },
     }
 
-    # Build a list of objects describing each pipeline
+    # Build compile pipeline objects
     pipelineDefinitionContent = {}
     for name, values in pipelineEntries.items():
         pipelineDefinitionContent[name] = PipelineDefinition_FPGA({name: values})
+
+    # Append noncompile pipeline objects when enabled
+    if ENABLE_NONCOMPILE_PIPELINES:
+        noncompilePipelineEntries = {
+            "cRIO_FPGA_Main_noncompile": {
+                "gitUrl": gitUrl,
+                "lv_version": "2019",
+                "noncompile_artifact_file": "cR9045-FPGAMain_tiGh-z7G0kw.lvbitx",
+            },
+            "cRIO_FPGA_Expansion_noncompile": {
+                "gitUrl": gitUrl,
+                "lv_version": "2019",
+                "noncompile_artifact_file": "crio-9045-rt_FPGATarget2_Main_yKmXqsdb6fY.lvbitx",
+            },
+        }
+
+        for name, values in noncompilePipelineEntries.items():
+            pipelineDefinitionContent[name] = PipelineDefinition_FPGA_Noncompile(
+                {name: values}
+            )
 
     # Convert the list of pipelines into a YAML object
     yamlObject = buildYamlObject(pipelineDefinitionContent)
