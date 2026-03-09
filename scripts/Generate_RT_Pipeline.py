@@ -59,6 +59,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         self.dependencyPPLNames = values["Dependency PPL Names"]
         self.minVersion = values["minLabVIEWVersion"]
         self.vipkgUrls = values["vipkgUrls"]
+        self.fpga_suffix = values.get(
+            "fpga_suffix", ""
+        )  # Optional suffix for FPGA pipeline names
 
     def buildData(self, dumper):
         targetName = "cRIO_Debug"
@@ -70,12 +73,12 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         # when the upstream FPGA pipelines complete successfully. Set to True if you
         # only want to use the FPGA artifacts without auto-triggering on FPGA changes.
         materials["cRIO_FPGA_Main_material"] = {
-            "pipeline": "cRIO_FPGA_Main",
+            "pipeline": f"cRIO_FPGA_Main{self.fpga_suffix}",
             "stage": "build_fpga",
             "ignore_for_scheduling": False,
         }
         materials["cRIO_FPGA_Expansion_material"] = {
-            "pipeline": "cRIO_FPGA_Expansion",
+            "pipeline": f"cRIO_FPGA_Expansion{self.fpga_suffix}",
             "stage": "build_fpga",
             "ignore_for_scheduling": False,
         }
@@ -397,6 +400,9 @@ if __name__ == "__main__":
             "Dependency PPL Names": depsNames,
             "minLabVIEWVersion": "2019",
             "vipkgUrls": None,
+            # Switch to using the copied bitfiles rather than compiled ones
+            # Comment this to use the compilation pipelines
+            "fpga_suffix": "_noncompile",
         }
     }
 

@@ -107,11 +107,11 @@ pipelines:
         stage: build_ppls
         ignore_for_scheduling: false
       cRIO_FPGA_Main_material:
-        pipeline: cRIO_FPGA_Main
+        pipeline: cRIO_FPGA_Main_noncompile
         stage: build_fpga
         ignore_for_scheduling: false
       cRIO_FPGA_Expansion_material:
-        pipeline: cRIO_FPGA_Expansion
+        pipeline: cRIO_FPGA_Expansion_noncompile
         stage: build_fpga
         ignore_for_scheduling: false
     stages:
@@ -395,6 +395,7 @@ pipelines:
                 - RT Main Application
                 - '%BUILD_TYPE%'
                 - '%IS_DEBUG_BUILD%'
+                - '#{Dependency_PPL_Names}'
                 working_directory: '#{GIT_DIR}'
           build_release:
             timeout: 15
