@@ -134,7 +134,7 @@ pipelines:
             - &id002
               fetch:
                 run_if: passed
-                pipeline: cRIO_FPGA_Main
+                pipeline: cRIO_FPGA_Main_noncompile
                 stage: build_fpga
                 job: build_fpga
                 is_file: false
@@ -143,7 +143,7 @@ pipelines:
             - &id003
               fetch:
                 run_if: passed
-                pipeline: cRIO_FPGA_Expansion
+                pipeline: cRIO_FPGA_Expansion_noncompile
                 stage: build_fpga
                 job: build_fpga
                 is_file: false

@@ -86,8 +86,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
         # FPGA fetch tasks (same bitfiles for both debug and release)
         fpgaFetchTasks = [
-            generateFetchFPGAJob("cRIO_FPGA_Main"),
-            generateFetchFPGAJob("cRIO_FPGA_Expansion"),
+            generateFetchFPGAJob(f"cRIO_FPGA_Main{self.fpga_suffix}"),
+            generateFetchFPGAJob(f"cRIO_FPGA_Expansion{self.fpga_suffix}"),
         ]
 
         pplDepTasks = [
