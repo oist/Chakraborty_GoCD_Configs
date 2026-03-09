@@ -15,6 +15,7 @@ pipelines:
         destination: Chakraborty_cRIO
         auto_update: false
         shallow_clone: false
+        branch: master
     stages:
     - build_fpga:
         fetch_materials: 'yes'
@@ -99,6 +100,7 @@ pipelines:
         destination: Chakraborty_cRIO
         auto_update: false
         shallow_clone: false
+        branch: master
     stages:
     - build_fpga:
         fetch_materials: 'yes'
@@ -129,6 +131,7 @@ pipelines:
         destination: Chakraborty_cRIO
         auto_update: false
         shallow_clone: false
+        branch: master
     stages:
     - build_fpga:
         fetch_materials: 'yes'
@@ -156,6 +159,7 @@ pipelines:
         destination: Chakraborty_cRIO
         auto_update: false
         shallow_clone: false
+        branch: master
     stages:
     - build_fpga:
         fetch_materials: 'yes'
