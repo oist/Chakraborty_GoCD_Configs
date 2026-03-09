@@ -447,6 +447,15 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Release_32\home\"
+            - exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - Get-ChildItem
+                - -Recurse
+                - -Depth
+                - '1'
             - *id027
     - build_packages:
         fetch_materials: 'no'

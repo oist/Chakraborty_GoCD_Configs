@@ -12,6 +12,7 @@ from Constants import (
     script_fpga_version_task,
     create_ppl_dir,
     ls_task,
+    gci_recurse_1_task,
 )
 
 cachedMaterials = {}
@@ -51,20 +52,6 @@ mklink_fpga_tasks = {
             ],
         }
     },
-}
-
-gci_recurse_1_task = {
-    "exec": {
-        "run_if": "passed",
-        "command": "powershell",
-        "arguments": [
-            "-Command",
-            "Get-ChildItem",
-            "-Recurse",
-            "-Depth",
-            "1",
-        ],
-    }
 }
 
 

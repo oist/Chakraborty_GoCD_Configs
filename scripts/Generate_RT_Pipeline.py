@@ -16,6 +16,7 @@ from Constants import (
     gcli_rt_build_task,
     ipkg_build_task_debug,
     ipkg_build_task_release,
+    gci_recurse_1_task,
 )
 
 
@@ -175,6 +176,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + pplDepTasks
                                 + [
                                     create_home_link_task(Target.cRIO_Release),
+                                    gci_recurse_1_task,
                                     gcli_rt_build_task,
                                 ],
                             },

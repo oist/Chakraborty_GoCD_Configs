@@ -205,6 +205,20 @@ ls_currentDir_task = {
     "exec": {"run_if": "passed", "command": "ls", "arguments": ["PPLs\\\\Current"]}
 }
 
+gci_recurse_1_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "powershell",
+        "arguments": [
+            "-Command",
+            "Get-ChildItem",
+            "-Recurse",
+            "-Depth",
+            "1",
+        ],
+    }
+}
+
 fetch_builder_task = {
     "fetch": {
         "run_if": "passed",
