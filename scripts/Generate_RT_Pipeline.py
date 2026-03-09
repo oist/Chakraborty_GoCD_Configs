@@ -66,7 +66,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
     def buildData(self, dumper):
         targetName = "cRIO_Debug"
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
-        materials = generateMaterials(self.gitUrl, self.dependencies, cachedMaterials)
+        materials = generateMaterials(
+            self.gitUrl, self.dependencies, cachedMaterials, branch="build-attempts"
+        )
 
         # Add FPGA pipeline materials
         # ignore_for_scheduling=False means this pipeline will automatically trigger

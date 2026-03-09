@@ -6,7 +6,7 @@ def getPackageRootName(pipelineName):
     return pipelineName.replace(".lvlibp", "")
 
 
-def generateMaterials(gitUrl, dependencies, cachedMaterials):
+def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
     topDir = directoryFromGitRepo(gitUrl, None)
     materials = {
         topDir: {
@@ -14,6 +14,7 @@ def generateMaterials(gitUrl, dependencies, cachedMaterials):
             "destination": topDir,
             "auto_update": False,
             "shallow_clone": False,
+            "branch": branch if branch else "master",
         }
     }
     if dependencies is not None:
