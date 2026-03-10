@@ -162,8 +162,7 @@ pipelines:
                 - Directory
                 - -Path
                 - \"C:\LabVIEW Sources\PPLs\"
-            - &id005
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Acquisition-Objects.lvlibp
@@ -179,8 +178,7 @@ pipelines:
                     AllowUninstallation: false
                     InstallRecommended: false
                     InstallRootDir: null
-            - &id006
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Actor-Framework.lvlibp
@@ -188,8 +186,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Actor-Framework_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id007
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: ADG-Requests.lvlibp
@@ -197,8 +194,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: ADG-Requests_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id008
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: AF_Messages-PPL.lvlibp
@@ -206,8 +202,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: AF_Messages-PPL_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id009
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Baumer-OM70-Modbus.lvlibp
@@ -215,8 +210,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id010
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Communication-Server.lvlibp
@@ -224,8 +218,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Communication-Server_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id011
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: DataStore.lvlibp
@@ -233,8 +226,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: DataStore_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id012
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc-Interface.lvlibp
@@ -242,8 +234,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc-Interface_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id013
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc-Proxy.lvlibp
@@ -251,8 +242,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc-Proxy_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id014
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc_TCP.lvlibp
@@ -260,8 +250,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc_TCP_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id015
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Fanuc_TCPProxy.lvlibp
@@ -269,8 +258,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Fanuc_TCPProxy_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id016
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Measurement-Results.lvlibp
@@ -278,8 +266,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Measurement-Results_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id017
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Motor-Activity-Logging.lvlibp
@@ -287,8 +274,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Motor-Activity-Logging_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id018
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: MResDatatype.lvlibp
@@ -296,8 +282,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: MResDatatype_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id019
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PMX32-2QU.lvlibp
@@ -305,8 +290,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PMX32-2QU_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id020
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: OIST_Error.lvlibp
@@ -314,8 +298,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: OIST_Error_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id021
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PowerSupplies-Serial.lvlibp
@@ -323,8 +306,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PowerSupplies-Serial_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id022
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: PowerSupplyInterface.lvlibp
@@ -332,8 +314,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: PowerSupplyInterface_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id023
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Request-for-Connection.lvlibp
@@ -341,8 +322,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Request-for-Connection_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id024
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Serial-Communication.lvlibp
@@ -350,8 +330,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Serial-Communication_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id025
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: SQLite.lvlibp
@@ -359,8 +338,7 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: SQLite_cRIO_Debug_nipkg
                 configuration: *id001
-            - &id026
-              fetch:
+            - fetch:
                 run_if: passed
                 artifact_origin: external
                 pipeline: Status-Reporting.lvlibp
@@ -381,7 +359,7 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
-            - &id027
+            - &id005
               exec:
                 run_if: passed
                 command: g-cli
@@ -412,28 +390,182 @@ pipelines:
             - *id002
             - *id003
             - *id004
-            - *id005
-            - *id006
-            - *id007
-            - *id008
-            - *id009
-            - *id010
-            - *id011
-            - *id012
-            - *id013
-            - *id014
-            - *id015
-            - *id016
-            - *id017
-            - *id018
-            - *id019
-            - *id020
-            - *id021
-            - *id022
-            - *id023
-            - *id024
-            - *id025
-            - *id026
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Acquisition-Objects.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Acquisition-Objects_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Actor-Framework.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Actor-Framework_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: ADG-Requests.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: ADG-Requests_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: AF_Messages-PPL.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: AF_Messages-PPL_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Baumer-OM70-Modbus.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Baumer-OM70-Modbus_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Communication-Server.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Communication-Server_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: DataStore.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: DataStore_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc-Interface.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Fanuc-Interface_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc-Proxy.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Fanuc-Proxy_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc_TCP.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Fanuc_TCP_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Fanuc_TCPProxy.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Fanuc_TCPProxy_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Measurement-Results.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Measurement-Results_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Motor-Activity-Logging.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Motor-Activity-Logging_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: MResDatatype.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: MResDatatype_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PMX32-2QU.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: PMX32-2QU_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: OIST_Error.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: OIST_Error_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PowerSupplies-Serial.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: PowerSupplies-Serial_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: PowerSupplyInterface.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: PowerSupplyInterface_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Request-for-Connection.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Request-for-Connection_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Serial-Communication.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Serial-Communication_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: SQLite.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: SQLite_cRIO_Release_nipkg
+                configuration: *id001
+            - fetch:
+                run_if: passed
+                artifact_origin: external
+                pipeline: Status-Reporting.lvlibp
+                stage: build_ppls
+                job: cRIO_Release
+                artifact_id: Status-Reporting_cRIO_Release_nipkg
+                configuration: *id001
             - exec:
                 run_if: passed
                 command: powershell
@@ -456,7 +588,7 @@ pipelines:
                 - -Recurse
                 - -Depth
                 - '1'
-            - *id027
+            - *id005
     - build_packages:
         fetch_materials: 'no'
         clean_workspace: 'no'

@@ -65,7 +65,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         )  # Optional suffix for FPGA pipeline names
 
     def buildData(self, dumper):
-        targetName = "cRIO_Debug"
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
         materials = generateMaterials(
             self.gitUrl, self.dependencies, cachedMaterials, branch="build-attempts"
@@ -93,8 +92,12 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             generateFetchFPGAJob(f"cRIO_FPGA_Expansion{self.fpga_suffix}"),
         ]
 
-        pplDepTasks = [
-            generateFetchPPLJob(dependency, targetName)
+        pplDepTasks_debug = [
+            generateFetchPPLJob(dependency, "cRIO_Debug")
+            for dependency in self.dependencies
+        ]
+        pplDepTasks_release = [
+            generateFetchPPLJob(dependency, "cRIO_Release")
             for dependency in self.dependencies
         ]
 
@@ -146,7 +149,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_ppl_dir,
                                 ]
-                                + pplDepTasks
+                                + pplDepTasks_debug
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
                                     gcli_rt_build_task,
@@ -173,7 +176,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_ppl_dir,
                                 ]
-                                + pplDepTasks
+                                + pplDepTasks_release
                                 + [
                                     create_home_link_task(Target.cRIO_Release),
                                     gci_recurse_1_task,
