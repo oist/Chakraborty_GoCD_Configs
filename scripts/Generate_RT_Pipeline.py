@@ -12,6 +12,7 @@ from PipelineGenerationUtils import (
 from Constants import (
     profileId,
     Target,
+    labviewDir,
     create_ppl_dir,
     gcli_rt_build_task,
     ipkg_build_task_debug,
@@ -70,6 +71,11 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             self.gitUrl, self.dependencies, cachedMaterials, branch="build-attempts"
         )
 
+        if self.minVersion != None:
+            lv_version = self.minVersion
+        else:
+            lv_version = "2019"
+
         # Add FPGA pipeline materials
         # ignore_for_scheduling=False means this pipeline will automatically trigger
         # when the upstream FPGA pipelines complete successfully. Set to True if you
@@ -101,10 +107,29 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             for dependency in self.dependencies
         ]
 
-        if self.minVersion != None:
-            lv_version = self.minVersion
-        else:
-            lv_version = "2019"
+        vipkgTasks = []
+        vipkgPluginConfig = {
+            "id": "jp.oist.chakraborty.vi-package-installer",
+            "version": "0.1",
+        }
+        # VIPKG dependencies are the same for debug and release
+        lvdir = labviewDir[lv_version][Target.cRIO_Debug]
+
+        if self.vipkgUrls is not None:
+            for vipkgUrl in self.vipkgUrls:
+                vipkgTasks.append(
+                    {
+                        "plugin": {
+                            "run_if": "passed",
+                            "options": {
+                                "Url": vipkgUrl,
+                                "LabVIEWDirectory": lvdir,
+                                "Verbose": False,
+                            },
+                            "configuration": vipkgPluginConfig,
+                        }
+                    }
+                )
 
         return {
             "group": "cRIO",
@@ -150,6 +175,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     create_ppl_dir,
                                 ]
                                 + pplDepTasks_debug
+                                + vipkgTasks
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
                                     gcli_rt_build_task,
@@ -400,13 +426,18 @@ if __name__ == "__main__":
     depsNames = parseMkFile(mkFilePath, r"RT\+Main\+Application_Deps")
     depsList = list(map(sanitizeForPipelineName, depsNames))
 
+    vipkgReqsPath = find_file("cRIO-9045-RT.vipm_reqs", outputDir)
+    vipkgUrls = None
+    if vipkgReqsPath != None:
+        vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
+
     pipelineEntry = {
         "cRIO_RT_Main_Application_TC": {
             "gitUrl": gitUrl,
             "Dependencies": depsList,
             "Dependency PPL Names": depsNames,
             "minLabVIEWVersion": "2019",
-            "vipkgUrls": None,
+            "vipkgUrls": vipkgUrls,
             # Switch to using the copied bitfiles rather than compiled ones
             # Comment this to use the compilation pipelines
             "fpga_suffix": "_noncompile",
