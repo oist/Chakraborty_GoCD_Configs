@@ -128,11 +128,12 @@ pipelines:
               IS_DEBUG_BUILD: 1
               BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
-            - build:
-                source: builds/cRIO-9045-RT
-                destination: '#{APP_NAME}'
-            tasks:
             - &id003
+              build:
+                source: builds/cRIO-9045-RT/RT CompactRIO Target/**
+                destination: '#{APP_NAME}_#{BUILD_TYPE}'
+            tasks:
+            - &id004
               fetch:
                 run_if: passed
                 pipeline: cRIO_FPGA_Main_noncompile
@@ -141,7 +142,7 @@ pipelines:
                 is_file: false
                 source: FPGA Bitfiles
                 destination: FPGA Bitfiles/
-            - &id004
+            - &id005
               fetch:
                 run_if: passed
                 pipeline: cRIO_FPGA_Expansion_noncompile
@@ -150,7 +151,7 @@ pipelines:
                 is_file: false
                 source: FPGA Bitfiles
                 destination: FPGA Bitfiles/
-            - &id005
+            - &id006
               exec:
                 run_if: passed
                 command: powershell
@@ -359,7 +360,7 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
-            - &id006
+            - &id007
               plugin:
                 run_if: passed
                 options:
@@ -369,7 +370,7 @@ pipelines:
                 configuration: &id002
                   id: jp.oist.chakraborty.vi-package-installer
                   version: '0.1'
-            - &id007
+            - &id008
               plugin:
                 run_if: passed
                 options:
@@ -377,7 +378,7 @@ pipelines:
                   LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
                   Verbose: false
                 configuration: *id002
-            - &id008
+            - &id009
               plugin:
                 run_if: passed
                 options:
@@ -385,7 +386,7 @@ pipelines:
                   LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
                   Verbose: false
                 configuration: *id002
-            - &id009
+            - &id010
               exec:
                 run_if: passed
                 command: powershell
@@ -395,7 +396,7 @@ pipelines:
                 - -Recurse
                 - -Depth
                 - '1'
-            - &id010
+            - &id011
               exec:
                 run_if: passed
                 command: g-cli
@@ -419,13 +420,11 @@ pipelines:
               IS_DEBUG_BUILD: 0
               BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
-            - build:
-                source: builds/cRIO-9045-RT
-                destination: '#{APP_NAME}'
-            tasks:
             - *id003
+            tasks:
             - *id004
             - *id005
+            - *id006
             - fetch:
                 run_if: passed
                 artifact_origin: external
@@ -615,11 +614,11 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Release_32\home\"
-            - *id006
             - *id007
             - *id008
             - *id009
             - *id010
+            - *id011
     - build_packages:
         fetch_materials: 'no'
         clean_workspace: 'no'
@@ -637,7 +636,7 @@ pipelines:
                 run_if: passed
                 stage: build
                 job: build_debug
-                source: '#{APP_NAME}'
+                source: '#{APP_NAME}_#{BUILD_TYPE}'
                 destination: builds
             - exec:
                 run_if: passed
@@ -665,7 +664,7 @@ pipelines:
                 run_if: passed
                 stage: build
                 job: build_release
-                source: '#{APP_NAME}'
+                source: '#{APP_NAME}_#{BUILD_TYPE}'
                 destination: builds
             - exec:
                 run_if: passed
