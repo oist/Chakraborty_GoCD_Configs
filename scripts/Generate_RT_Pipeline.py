@@ -246,7 +246,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "command": "scp",
                                             "arguments": [
-                                                "artifacts/#{APP_NAME}_*/*.ipkg",
+                                                "artifacts/#{APP_NAME}_*/*.ipk",
                                                 "#{PACKAGE_SERVER}:/var/www/packages/",
                                             ],
                                         }
@@ -301,7 +301,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "scp",
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
-                                                "artifacts/*.ipkg",
+                                                "artifacts/*.ipk",
                                                 "#{CRIO_USER}@#{CRIO_HOST}:/tmp/",
                                             ],
                                         }
@@ -317,7 +317,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
                                                 "#{CRIO_USER}@#{CRIO_HOST}",
-                                                "opkg remove tc-crio-app || true; opkg install /tmp/*.ipkg",
+                                                "opkg remove tc-crio-app || true; opkg install /tmp/*.ipk && rm /tmp/*.ipk",
                                             ],
                                         }
                                     },

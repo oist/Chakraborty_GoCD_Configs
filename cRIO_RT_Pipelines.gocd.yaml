@@ -658,7 +658,7 @@ pipelines:
                 run_if: passed
                 command: scp
                 arguments:
-                - artifacts/#{APP_NAME}_*/*.ipkg
+                - artifacts/#{APP_NAME}_*/*.ipk
                 - '#{PACKAGE_SERVER}:/var/www/packages/'
             - exec:
                 run_if: passed
@@ -695,7 +695,7 @@ pipelines:
                 - scp
                 - -o
                 - StrictHostKeyChecking=no
-                - artifacts/*.ipkg
+                - artifacts/*.ipk
                 - '#{CRIO_USER}@#{CRIO_HOST}:/tmp/'
             - exec:
                 run_if: passed
@@ -707,7 +707,7 @@ pipelines:
                 - -o
                 - StrictHostKeyChecking=no
                 - '#{CRIO_USER}@#{CRIO_HOST}'
-                - opkg remove tc-crio-app || true; opkg install /tmp/*.ipkg
+                - opkg remove tc-crio-app || true; opkg install /tmp/*.ipk && rm /tmp/*.ipk
             - exec:
                 run_if: passed
                 command: sshpass
