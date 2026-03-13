@@ -137,7 +137,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         builtFilesArtifactConfig = {
             "build": {
                 "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
-                "destination": "#{APP_NAME}_#{BUILD_TYPE}",
+                "destination": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
             }
         }
 
@@ -226,7 +226,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_debug",
-                                            "source": "#{APP_NAME}_#{BUILD_TYPE}",
+                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
                                             "destination": "builds",
                                         }
                                     },
@@ -252,7 +252,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_release",
-                                            "source": "#{APP_NAME}_#{BUILD_TYPE}",
+                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
                                             "destination": "builds",
                                         }
                                     },
