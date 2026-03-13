@@ -246,7 +246,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "command": "scp",
                                             "arguments": [
-                                                "artifacts/#{APP_NAME}_*/*.ipk",
+                                                "'artifacts/#{APP_NAME}_*/*.ipk'",
                                                 "#{PACKAGE_SERVER}:/var/www/packages/",
                                             ],
                                         }
