@@ -227,6 +227,14 @@ gci_recurse_task = {
     }
 }
 
+find_files_task = {
+    "exec": {
+        "run_if": "any",
+        "command": "find",
+        "arguments": [".", "-type", "f"],
+    }
+}
+
 fetch_builder_task = {
     "fetch": {
         "run_if": "passed",

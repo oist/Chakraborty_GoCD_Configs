@@ -15,8 +15,8 @@ from Constants import (
     labviewDir,
     create_ppl_dir,
     gcli_rt_build_task,
-    gci_recurse_task,
     gci_recurse_1_task,
+    find_files_task,
 )
 
 
@@ -214,6 +214,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         "approval": "success",
                         "jobs": {
                             "publish_to_feed": {
+                                "resources": ["linux"],
                                 "timeout": 5,
                                 "environment_variables": {
                                     "PACKAGE_SERVER": "#{PACKAGE_SERVER}",
@@ -239,7 +240,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "destination": "artifacts",
                                         }
                                     },
-                                    gci_recurse_task,
+                                    find_files_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",
@@ -273,6 +274,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         "approval": "manual",  # Manual approval before deployment
                         "jobs": {
                             "deploy_to_crio": {
+                                "resources": ["linux"],
                                 "timeout": 5,
                                 "environment_variables": {
                                     "CRIO_HOST": "#{CRIO_HOST}",
@@ -288,7 +290,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "destination": "artifacts",
                                         }
                                     },
-                                    gci_recurse_task,
+                                    find_files_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",

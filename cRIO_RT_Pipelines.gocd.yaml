@@ -626,6 +626,8 @@ pipelines:
         approval: success
         jobs:
           publish_to_feed:
+            resources:
+            - linux
             timeout: 5
             environment_variables:
               PACKAGE_SERVER: '#{PACKAGE_SERVER}'
@@ -646,12 +648,12 @@ pipelines:
                 destination: artifacts
             - &id011
               exec:
-                run_if: passed
-                command: powershell
+                run_if: any
+                command: find
                 arguments:
-                - -Command
-                - Get-ChildItem
-                - -Recurse
+                - .
+                - -type
+                - f
             - exec:
                 run_if: passed
                 command: scp
@@ -670,6 +672,8 @@ pipelines:
         approval: manual
         jobs:
           deploy_to_crio:
+            resources:
+            - linux
             timeout: 5
             environment_variables:
               CRIO_HOST: '#{CRIO_HOST}'
