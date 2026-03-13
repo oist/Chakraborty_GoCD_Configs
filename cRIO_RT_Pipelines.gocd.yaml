@@ -129,7 +129,7 @@ pipelines:
               BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
             - build:
-                source: '#{GIT_DIR}\builds\cRIO-9045-RT\RT CompactRIO Target\*\**'
+                source: '#{GIT_DIR}\builds\cRIO-9045-RT\RT CompactRIO Target\**'
                 destination: '#{APP_NAME}_debug'
             tasks:
             - &id003
@@ -420,7 +420,7 @@ pipelines:
               BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
             - build:
-                source: '#{GIT_DIR}\builds\cRIO-9045-RT\RT CompactRIO Target\*\**'
+                source: '#{GIT_DIR}\builds\cRIO-9045-RT\RT CompactRIO Target\**'
                 destination: '#{APP_NAME}_release'
             tasks:
             - *id003

@@ -170,7 +170,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 "artifacts": [
                                     {
                                         "build": {
-                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\*\\**",
+                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
                                             "destination": "#{APP_NAME}_debug",
                                         }
                                     }
@@ -194,7 +194,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 "artifacts": [
                                     {
                                         "build": {
-                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\*\\**",
+                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
                                             "destination": "#{APP_NAME}_release",
                                         }
                                     }
