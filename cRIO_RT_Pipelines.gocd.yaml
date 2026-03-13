@@ -11,7 +11,8 @@ pipelines:
       DEPLOY_BUILD_TYPE: debug
       CRIO_HOST: ''
       CRIO_USER: admin
-      PACKAGE_SERVER: packageserver
+      PACKAGE_SERVER_USER: pkgupload
+      PACKAGE_SERVER: packages.chakraborty.lab
     materials:
       Chakraborty_cRIO:
         git: git@github.com:oist/Chakraborty_cRIO
@@ -659,12 +660,12 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - 'scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER}:/var/www/packages/'
+                - 'scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}:/var/www/packages/'
             - exec:
                 run_if: passed
                 command: ssh
                 arguments:
-                - '#{PACKAGE_SERVER}'
+                - '#{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}'
                 - cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz
     - deploy:
         fetch_materials: 'no'

@@ -144,7 +144,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
                 "CRIO_HOST": "",  # Must be set when triggering deployment
                 "CRIO_USER": "admin",  # Default SSH user for cRIO
-                "PACKAGE_SERVER": "packageserver",  # Hostname/IP of package archive server
+                "PACKAGE_SERVER_USER": "pkgupload",
+                "PACKAGE_SERVER": "packages.chakraborty.lab",  # Hostname/IP of package archive server
             },
             "materials": materials,
             "stages": [
@@ -247,7 +248,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                "scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER}:/var/www/packages/",
+                                                "scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}:/var/www/packages/",
                                             ],
                                         }
                                     },
@@ -256,7 +257,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "command": "ssh",
                                             "arguments": [
-                                                "#{PACKAGE_SERVER}",
+                                                "#{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}",
                                                 "cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz",
                                             ],
                                         }
