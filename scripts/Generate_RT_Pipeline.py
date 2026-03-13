@@ -131,6 +131,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                     }
                 )
 
+        sharedInitialTasks = fpgaFetchTasks + [create_ppl_dir]
+        sharedPostTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
+
         return {
             "group": "cRIO",
             "parameters": {
@@ -170,16 +173,12 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                         }
                                     }
                                 ],
-                                "tasks": fpgaFetchTasks
-                                + [
-                                    create_ppl_dir,
-                                ]
+                                "tasks": sharedInitialTasks
                                 + pplDepTasks_debug
-                                + vipkgTasks
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
-                                    gcli_rt_build_task,
-                                ],
+                                ]
+                                + sharedPostTasks,
                             },
                             "build_release": {
                                 "timeout": 15,
@@ -198,16 +197,12 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                         }
                                     }
                                 ],
-                                "tasks": fpgaFetchTasks
-                                + [
-                                    create_ppl_dir,
-                                ]
+                                "tasks": sharedInitialTasks
                                 + pplDepTasks_release
                                 + [
                                     create_home_link_task(Target.cRIO_Release),
-                                    gci_recurse_1_task,
-                                    gcli_rt_build_task,
-                                ],
+                                ]
+                                + sharedPostTasks,
                             },
                         },
                     }

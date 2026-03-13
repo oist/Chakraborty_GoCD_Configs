@@ -346,29 +346,6 @@ pipelines:
                 job: cRIO_Debug
                 artifact_id: Status-Reporting_cRIO_Debug_nipkg
                 configuration: *id001
-            - plugin:
-                run_if: passed
-                options:
-                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
-                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
-                  Verbose: false
-                configuration: &id002
-                  id: jp.oist.chakraborty.vi-package-installer
-                  version: '0.1'
-            - plugin:
-                run_if: passed
-                options:
-                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
-                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
-                  Verbose: false
-                configuration: *id002
-            - plugin:
-                run_if: passed
-                options:
-                  Url: https://github.com/MediaMongrels-Ltd/LabVIEW-WebSockets-API/releases/download/V2.0.2.41/mediamongrels_ltd_lib_websockets_api-2.0.2.41.vip
-                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
-                  Verbose: false
-                configuration: *id002
             - exec:
                 run_if: passed
                 command: powershell
@@ -383,6 +360,42 @@ pipelines:
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Debug_32\home\"
             - &id006
+              plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration: &id002
+                  id: jp.oist.chakraborty.vi-package-installer
+                  version: '0.1'
+            - &id007
+              plugin:
+                run_if: passed
+                options:
+                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration: *id002
+            - &id008
+              plugin:
+                run_if: passed
+                options:
+                  Url: https://github.com/MediaMongrels-Ltd/LabVIEW-WebSockets-API/releases/download/V2.0.2.41/mediamongrels_ltd_lib_websockets_api-2.0.2.41.vip
+                  LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
+                  Verbose: false
+                configuration: *id002
+            - &id009
+              exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - Get-ChildItem
+                - -Recurse
+                - -Depth
+                - '1'
+            - &id010
               exec:
                 run_if: passed
                 command: g-cli
@@ -602,16 +615,11 @@ pipelines:
                 - PPLs\cRIO-9045\home
                 - -Target
                 - \"C:\LabVIEW Sources\PPLs\cRIO-9045\Release_32\home\"
-            - exec:
-                run_if: passed
-                command: powershell
-                arguments:
-                - -Command
-                - Get-ChildItem
-                - -Recurse
-                - -Depth
-                - '1'
             - *id006
+            - *id007
+            - *id008
+            - *id009
+            - *id010
     - build_packages:
         fetch_materials: 'no'
         clean_workspace: 'no'
