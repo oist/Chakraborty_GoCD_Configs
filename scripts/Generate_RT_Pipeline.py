@@ -134,12 +134,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         sharedInitialTasks = fpgaFetchTasks + [create_ppl_dir]
         sharedPostTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
 
-        builtFilesArtifactConfig = {
-            "build": {
-                "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
-                "destination": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
-            }
-        }
+        builtFilesArtifactConfig = {}
 
         return {
             "group": "cRIO",
@@ -172,7 +167,14 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     "IS_DEBUG_BUILD": 1,
                                     "BUILD_TYPE": "#{BUILD_TYPE}",
                                 },
-                                "artifacts": [builtFilesArtifactConfig],
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\*\\**",
+                                            "destination": "#{APP_NAME}_debug",
+                                        }
+                                    }
+                                ],
                                 "tasks": sharedInitialTasks
                                 + pplDepTasks_debug
                                 + [
@@ -189,7 +191,14 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     "IS_DEBUG_BUILD": 0,
                                     "BUILD_TYPE": "#{BUILD_TYPE}",
                                 },
-                                "artifacts": [builtFilesArtifactConfig],
+                                "artifacts": [
+                                    {
+                                        "build": {
+                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\*\\**",
+                                            "destination": "#{APP_NAME}_release",
+                                        }
+                                    }
+                                ],
                                 "tasks": sharedInitialTasks
                                 + pplDepTasks_release
                                 + [
@@ -226,7 +235,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_debug",
-                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
+                                            "source": "#{APP_NAME}_debug",
                                             "destination": "builds",
                                         }
                                     },
@@ -252,7 +261,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_release",
-                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
+                                            "source": "#{APP_NAME}_release",
                                             "destination": "builds",
                                         }
                                     },
