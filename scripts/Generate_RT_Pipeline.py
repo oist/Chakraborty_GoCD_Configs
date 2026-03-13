@@ -244,10 +244,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     {
                                         "exec": {
                                             "run_if": "passed",
-                                            "command": "scp",
+                                            "command": "bash",
                                             "arguments": [
-                                                "'artifacts/#{APP_NAME}_*/*.ipk'",
-                                                "#{PACKAGE_SERVER}:/var/www/packages/",
+                                                "-lc",
+                                                "scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER}:/var/www/packages/",
                                             ],
                                         }
                                     },
@@ -294,15 +294,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     {
                                         "exec": {
                                             "run_if": "passed",
-                                            "command": "sshpass",
+                                            "command": "bash",
                                             "arguments": [
-                                                "-p",
-                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
-                                                "scp",
-                                                "-o",
-                                                "StrictHostKeyChecking=no",
-                                                "artifacts/*.ipk",
-                                                "#{CRIO_USER}@#{CRIO_HOST}:/tmp/",
+                                                "-lc",
+                                                'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" scp -o StrictHostKeyChecking=no artifacts/*.ipk #{CRIO_USER}@#{CRIO_HOST}:/tmp/',
                                             ],
                                         }
                                     },
