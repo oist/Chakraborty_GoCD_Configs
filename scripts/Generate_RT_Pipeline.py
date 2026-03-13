@@ -15,8 +15,6 @@ from Constants import (
     labviewDir,
     create_ppl_dir,
     gcli_rt_build_task,
-    ipkg_build_task_debug,
-    ipkg_build_task_release,
     gci_recurse_1_task,
 )
 
@@ -178,8 +176,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
                                 ]
-                                + sharedPostTasks
-                                + [ipkg_build_task_debug],
+                                + sharedPostTasks,
                             },
                             "build_release": {
                                 "timeout": 15,
@@ -203,8 +200,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_home_link_task(Target.cRIO_Release),
                                 ]
-                                + sharedPostTasks
-                                + [ipkg_build_task_release],
+                                + sharedPostTasks,
                             },
                         },
                     }

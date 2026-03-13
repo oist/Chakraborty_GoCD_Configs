@@ -412,20 +412,6 @@ pipelines:
                 - '%IS_DEBUG_BUILD%'
                 - '#{Dependency_PPL_Names}'
                 working_directory: '#{GIT_DIR}'
-            - exec:
-                run_if: passed
-                command: LabVIEWCLI.exe
-                arguments:
-                - -OperationName
-                - ExecuteBuildSpec
-                - -Verbosity
-                - Detailed
-                - -ProjectPath
-                - '"C:\LabVIEW Sources\#{GIT_DIR}\cRIO-9045-RT.lvproj"'
-                - -TargetName
-                - RT CompactRIO Target
-                - -BuildSpecName
-                - RT-Package-Debug
           build_release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -634,20 +620,6 @@ pipelines:
             - *id008
             - *id009
             - *id010
-            - exec:
-                run_if: passed
-                command: LabVIEWCLI.exe
-                arguments:
-                - -OperationName
-                - ExecuteBuildSpec
-                - -Verbosity
-                - Detailed
-                - -ProjectPath
-                - '"C:\LabVIEW Sources\#{GIT_DIR}\cRIO-9045-RT.lvproj"'
-                - -TargetName
-                - RT CompactRIO Target
-                - -BuildSpecName
-                - RT-Package-Release
     - publish_to_archive:
         fetch_materials: 'no'
         clean_workspace: 'no'
