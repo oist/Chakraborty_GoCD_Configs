@@ -656,7 +656,7 @@ pipelines:
                 run_if: passed
                 command: scp
                 arguments:
-                - artifacts/*.ipkg
+                - artifacts/#{APP_NAME}_*/*.ipkg
                 - '#{PACKAGE_SERVER}:/var/www/packages/'
             - exec:
                 run_if: passed
