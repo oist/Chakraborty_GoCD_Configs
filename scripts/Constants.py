@@ -341,7 +341,7 @@ ipkg_build_task_debug = {
             "-TargetName",
             "RT CompactRIO Target",
             "-BuildSpecName",
-            "cRIO Package - Debug",
+            "RT-Package-Debug",
         ],
     }
 }
@@ -360,7 +360,7 @@ ipkg_build_task_release = {
             "-TargetName",
             "RT CompactRIO Target",
             "-BuildSpecName",
-            "cRIO Package - Release",
+            "RT-Package-Release",
         ],
     }
 }

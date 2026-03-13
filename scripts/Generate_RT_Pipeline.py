@@ -134,8 +134,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         sharedInitialTasks = fpgaFetchTasks + [create_ppl_dir]
         sharedPostTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
 
-        builtFilesArtifactConfig = {}
-
         return {
             "group": "cRIO",
             "parameters": {
@@ -170,7 +168,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 "artifacts": [
                                     {
                                         "build": {
-                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
+                                            "source": "#{GIT_DIR}\\builds\\RT-Package-Debug\\*",
                                             "destination": "#{APP_NAME}_debug",
                                         }
                                     }
@@ -180,7 +178,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_home_link_task(Target.cRIO_Debug),
                                 ]
-                                + sharedPostTasks,
+                                + sharedPostTasks
+                                + [ipkg_build_task_debug],
                             },
                             "build_release": {
                                 "timeout": 15,
@@ -194,7 +193,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 "artifacts": [
                                     {
                                         "build": {
-                                            "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
+                                            "source": "#{GIT_DIR}\\builds\\RT-Package-Release\\*",
                                             "destination": "#{APP_NAME}_release",
                                         }
                                     }
@@ -204,69 +203,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 + [
                                     create_home_link_task(Target.cRIO_Release),
                                 ]
-                                + sharedPostTasks,
-                            },
-                        },
-                    }
-                },
-                # Package build stage
-                {
-                    "build_packages": {
-                        "fetch_materials": "no",
-                        "clean_workspace": "no",
-                        "approval": "success",
-                        "jobs": {
-                            "package_debug": {
-                                "timeout": 10,
-                                "elastic_profile_id": profileId[lv_version][
-                                    Target.cRIO_Debug
-                                ],
-                                "artifacts": [
-                                    {
-                                        "build": {
-                                            "source": "builds/packages/*.ipkg",
-                                            "destination": "packages",
-                                        }
-                                    }
-                                ],
-                                "tasks": [
-                                    {
-                                        "fetch": {
-                                            "run_if": "passed",
-                                            "stage": "build",
-                                            "job": "build_debug",
-                                            "source": "#{APP_NAME}_debug",
-                                            "destination": "builds",
-                                        }
-                                    },
-                                    ipkg_build_task_debug,
-                                ],
-                            },
-                            "package_release": {
-                                "timeout": 10,
-                                "elastic_profile_id": profileId[lv_version][
-                                    Target.cRIO_Release
-                                ],
-                                "artifacts": [
-                                    {
-                                        "build": {
-                                            "source": "builds/packages/*.ipkg",
-                                            "destination": "packages",
-                                        }
-                                    }
-                                ],
-                                "tasks": [
-                                    {
-                                        "fetch": {
-                                            "run_if": "passed",
-                                            "stage": "build",
-                                            "job": "build_release",
-                                            "source": "#{APP_NAME}_release",
-                                            "destination": "builds",
-                                        }
-                                    },
-                                    ipkg_build_task_release,
-                                ],
+                                + sharedPostTasks
+                                + [ipkg_build_task_release],
                             },
                         },
                     }
