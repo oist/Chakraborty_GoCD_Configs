@@ -223,8 +223,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_debug",
-                                            "source": "#{APP_NAME}_debug\\*.ipkg",
-                                            "is_file": True,
+                                            "source": "#{APP_NAME}_debug",
+                                            "is_file": False,
                                             "destination": "artifacts",
                                         }
                                     },
@@ -233,8 +233,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_release",
-                                            "source": "#{APP_NAME}_release\\*.ipkg",
-                                            "is_file": True,
+                                            "source": "#{APP_NAME}_release",
+                                            "is_file": False,
                                             "destination": "artifacts",
                                         }
                                     },
@@ -283,10 +283,11 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "stage": "build",
                                             "job": "build_#{DEPLOY_BUILD_TYPE}",
-                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}\\*.ipkg",
+                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
                                             "destination": "artifacts",
                                         }
                                     },
+                                    gci_recurse_1_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",

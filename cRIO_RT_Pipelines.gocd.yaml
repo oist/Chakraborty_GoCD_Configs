@@ -634,15 +634,15 @@ pipelines:
                 run_if: passed
                 stage: build
                 job: build_debug
-                source: '#{APP_NAME}_debug\*.ipkg'
-                is_file: true
+                source: '#{APP_NAME}_debug'
+                is_file: false
                 destination: artifacts
             - fetch:
                 run_if: passed
                 stage: build
                 job: build_release
-                source: '#{APP_NAME}_release\*.ipkg'
-                is_file: true
+                source: '#{APP_NAME}_release'
+                is_file: false
                 destination: artifacts
             - *id009
             - exec:
@@ -672,8 +672,9 @@ pipelines:
                 run_if: passed
                 stage: build
                 job: build_#{DEPLOY_BUILD_TYPE}
-                source: '#{APP_NAME}_#{DEPLOY_BUILD_TYPE}\*.ipkg'
+                source: '#{APP_NAME}_#{DEPLOY_BUILD_TYPE}'
                 destination: artifacts
+            - *id009
             - exec:
                 run_if: passed
                 command: sshpass
