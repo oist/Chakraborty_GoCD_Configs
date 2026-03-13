@@ -11,7 +11,10 @@ pipelines:
       DEPLOY_BUILD_TYPE: debug
       CRIO_HOST: ''
       CRIO_USER: admin
-      PACKAGE_SERVER_USER: pkgupload
+      PACKAGE_SERVER_UPLOAD_USER: pkgupload
+      PACKAGE_SERVER_UPLOAD_KEY: ~/.ssh/id_rsa
+      PACKAGE_SERVER_REFRESH_USER: opkg-refresher
+      PACKAGE_SERVER_REFRESH_KEY: ~/.ssh/id_ed25519_opkg_refresh
       PACKAGE_SERVER: packages.chakraborty.lab
     materials:
       Chakraborty_cRIO:
@@ -660,13 +663,14 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - 'scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}:/var/www/packages/'
+                - 'scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_UPLOAD_USER}@#{PACKAGE_SERVER}:/packages/'
             - exec:
                 run_if: passed
                 command: ssh
                 arguments:
-                - '#{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}'
-                - cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz
+                - -T
+                - '-i #{PACKAGE_SERVER_REFRESH_KEY}'
+                - '#{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}'
     - deploy:
         fetch_materials: 'no'
         clean_workspace: 'no'

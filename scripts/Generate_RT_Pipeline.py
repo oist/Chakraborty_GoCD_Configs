@@ -144,7 +144,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
                 "CRIO_HOST": "",  # Must be set when triggering deployment
                 "CRIO_USER": "admin",  # Default SSH user for cRIO
-                "PACKAGE_SERVER_USER": "pkgupload",
+                "PACKAGE_SERVER_UPLOAD_USER": "pkgupload",
+                "PACKAGE_SERVER_UPLOAD_KEY": "~/.ssh/id_rsa",
+                "PACKAGE_SERVER_REFRESH_USER": "opkg-refresher",
+                "PACKAGE_SERVER_REFRESH_KEY": "~/.ssh/id_ed25519_opkg_refresh",
                 "PACKAGE_SERVER": "packages.chakraborty.lab",  # Hostname/IP of package archive server
             },
             "materials": materials,
@@ -248,7 +251,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                "scp artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}:/var/www/packages/",
+                                                # /packages (not e.g. /var/www/pkgupload/packages) because the user is chrooted.
+                                                "scp -i #{PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_UPLOAD_USER}@#{PACKAGE_SERVER}:/packages/",
                                             ],
                                         }
                                     },
@@ -257,8 +261,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "run_if": "passed",
                                             "command": "ssh",
                                             "arguments": [
-                                                "#{PACKAGE_SERVER_USER}@#{PACKAGE_SERVER}",
-                                                "cd /var/www/packages && opkg-make-index . > Packages && gzip -c Packages > Packages.gz",
+                                                "-T",
+                                                "-i #{PACKAGE_SERVER_REFRESH_KEY}",
+                                                "#{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}",
+                                                # No need for a command - the user is bound to a single command which will execute on connection.
                                             ],
                                         }
                                     },
