@@ -209,7 +209,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         },
                     }
                 },
-                # Archive publishing stage (runs automatically after build_packages succeeds)
+                # Archive publishing stage (runs automatically after build succeeds)
                 {
                     "publish_to_archive": {
                         "fetch_materials": "no",
@@ -225,18 +225,30 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     {
                                         "fetch": {
                                             "run_if": "passed",
-                                            "stage": "build_packages",
-                                            "job": "package_release",
-                                            "source": "packages",
+                                            "stage": "build",
+                                            "job": "build_debug",
+                                            "source": "#{APP_NAME}_debug\\*.ipkg",
+                                            "is_file": True,
                                             "destination": "artifacts",
                                         }
                                     },
+                                    {
+                                        "fetch": {
+                                            "run_if": "passed",
+                                            "stage": "build",
+                                            "job": "build_release",
+                                            "source": "#{APP_NAME}_release\\*.ipkg",
+                                            "is_file": True,
+                                            "destination": "artifacts",
+                                        }
+                                    },
+                                    gci_recurse_1_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",
                                             "command": "scp",
                                             "arguments": [
-                                                "artifacts/packages/*.ipkg",
+                                                "artifacts/*.ipkg",
                                                 "#{PACKAGE_SERVER}:/var/www/packages/",
                                             ],
                                         }
@@ -273,9 +285,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     {
                                         "fetch": {
                                             "run_if": "passed",
-                                            "stage": "build_packages",
-                                            "job": "package_#{DEPLOY_BUILD_TYPE}",
-                                            "source": "packages",
+                                            "stage": "build",
+                                            "job": "build_#{DEPLOY_BUILD_TYPE}",
+                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}\\*.ipkg",
                                             "destination": "artifacts",
                                         }
                                     },
@@ -289,7 +301,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "scp",
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
-                                                "artifacts/packages/*.ipkg",
+                                                "artifacts/*.ipkg",
                                                 "#{CRIO_USER}@#{CRIO_HOST}:/tmp/",
                                             ],
                                         }
