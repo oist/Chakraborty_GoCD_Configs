@@ -136,7 +136,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
 
         builtFilesArtifactConfig = {
             "build": {
-                "source": "builds/cRIO-9045-RT/RT CompactRIO Target/**",
+                "source": "#{GIT_DIR}\\builds\\cRIO-9045-RT\\RT CompactRIO Target\\**",
                 "destination": "#{APP_NAME}_#{BUILD_TYPE}",
             }
         }
