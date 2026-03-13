@@ -219,6 +219,14 @@ gci_recurse_1_task = {
     }
 }
 
+gci_recurse_task = {
+    "exec": {
+        "run_if": "passed",
+        "command": "powershell",
+        "arguments": ["-Command", "Get-ChildItem", "-Recurse"],
+    }
+}
+
 fetch_builder_task = {
     "fetch": {
         "run_if": "passed",

@@ -15,6 +15,7 @@ from Constants import (
     labviewDir,
     create_ppl_dir,
     gcli_rt_build_task,
+    gci_recurse_task,
     gci_recurse_1_task,
 )
 
@@ -238,7 +239,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "destination": "artifacts",
                                         }
                                     },
-                                    gci_recurse_1_task,
+                                    gci_recurse_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",
@@ -287,7 +288,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "destination": "artifacts",
                                         }
                                     },
-                                    gci_recurse_1_task,
+                                    gci_recurse_task,
                                     {
                                         "exec": {
                                             "run_if": "passed",

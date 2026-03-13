@@ -644,7 +644,14 @@ pipelines:
                 source: '#{APP_NAME}_release'
                 is_file: false
                 destination: artifacts
-            - *id009
+            - &id011
+              exec:
+                run_if: passed
+                command: powershell
+                arguments:
+                - -Command
+                - Get-ChildItem
+                - -Recurse
             - exec:
                 run_if: passed
                 command: scp
@@ -674,7 +681,7 @@ pipelines:
                 job: build_#{DEPLOY_BUILD_TYPE}
                 source: '#{APP_NAME}_#{DEPLOY_BUILD_TYPE}'
                 destination: artifacts
-            - *id009
+            - *id011
             - exec:
                 run_if: passed
                 command: sshpass
