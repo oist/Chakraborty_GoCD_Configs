@@ -259,11 +259,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                     {
                                         "exec": {
                                             "run_if": "passed",
-                                            "command": "ssh",
+                                            "command": "bash",
                                             "arguments": [
-                                                "-T",
-                                                "-i #{PACKAGE_SERVER_REFRESH_KEY}",
-                                                "#{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}",
+                                                "-lc",
+                                                "ssh -Ti #{PACKAGE_SERVER_REFRESH_KEY} #{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}",
                                                 # No need for a command - the user is bound to a single command which will execute on connection.
                                             ],
                                         }
