@@ -304,22 +304,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" scp -o StrictHostKeyChecking=no artifacts/*.ipk #{CRIO_USER}@#{CRIO_HOST}:/tmp/',
-                                            ],
-                                        }
-                                    },
-                                    {
-                                        "exec": {
-                                            "run_if": "passed",
-                                            "command": "sshpass",
-                                            "arguments": [
-                                                "-p",
-                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
-                                                "ssh",
-                                                "-o",
-                                                "StrictHostKeyChecking=no",
-                                                "#{CRIO_USER}@#{CRIO_HOST}",
-                                                "opkg remove tc-crio-app || true; opkg install /tmp/*.ipk && rm /tmp/*.ipk",
+                                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE#${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no #{CRIO_USER}@#{CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"',
                                             ],
                                         }
                                     },
