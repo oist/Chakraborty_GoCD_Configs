@@ -214,7 +214,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 {
                     "publish_to_archive": {
                         "fetch_materials": "no",
-                        "clean_workspace": "no",
+                        "clean_workspace": "yes",
                         "approval": "success",
                         "jobs": {
                             "publish_to_feed": {
@@ -277,7 +277,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 {
                     "deploy": {
                         "fetch_materials": "no",
-                        "clean_workspace": "no",
+                        "clean_workspace": "yes",
                         "approval": "manual",  # Manual approval before deployment
                         "jobs": {
                             "deploy_to_crio": {

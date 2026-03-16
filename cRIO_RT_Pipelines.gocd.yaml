@@ -626,7 +626,7 @@ pipelines:
             - *id010
     - publish_to_archive:
         fetch_materials: 'no'
-        clean_workspace: 'no'
+        clean_workspace: 'yes'
         approval: success
         jobs:
           publish_to_feed:
@@ -673,7 +673,7 @@ pipelines:
                 - '#{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}'
     - deploy:
         fetch_materials: 'no'
-        clean_workspace: 'no'
+        clean_workspace: 'yes'
         approval: manual
         jobs:
           deploy_to_crio:
