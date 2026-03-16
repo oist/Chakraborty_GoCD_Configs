@@ -334,7 +334,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
                                                 "#{CRIO_USER}@#{CRIO_HOST}",
-                                                "/etc/init.d/niapp restart || systemctl restart niapp",
+                                                "reboot",
                                             ],
                                         }
                                     },
