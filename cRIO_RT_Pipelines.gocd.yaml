@@ -696,7 +696,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - 'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE#${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no #{CRIO_USER}@#{CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
+                - 'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no #{CRIO_USER}@#{CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
             - exec:
                 run_if: passed
                 command: sshpass
