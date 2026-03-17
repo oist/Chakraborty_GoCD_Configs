@@ -67,7 +67,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
     def buildData(self, dumper):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
         materials = generateMaterials(
-            self.gitUrl, self.dependencies, cachedMaterials, branch="build-attempts"
+            self.gitUrl, self.dependencies, cachedMaterials, branch="master"
         )
 
         if self.minVersion != None:

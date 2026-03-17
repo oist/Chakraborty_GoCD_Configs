@@ -23,7 +23,7 @@ pipelines:
         destination: Chakraborty_cRIO
         auto_update: false
         shallow_clone: false
-        branch: build-attempts
+        branch: master
       Acquisition-Objects.lvlibp_pipelineMaterial:
         pipeline: Acquisition-Objects.lvlibp
         stage: build_ppls
