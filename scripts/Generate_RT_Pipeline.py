@@ -264,6 +264,33 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             ],
                                         }
                                     },
+                                    {
+                                        "exec": {
+                                            "run_if": "passed",
+                                            "command": "bash",
+                                            "arguments": [
+                                                "-lc",
+                                                (
+                                                    "set -euo pipefail; "
+                                                    'IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; '
+                                                    'BASE="$(basename "$IPK" .ipk)"; '
+                                                    'VER_ARCH="${BASE#*_}"; '
+                                                    'BUILD_VER_RAW="${VER_ARCH%_*}"; '
+                                                    'BUILD_VER="${BUILD_VER_RAW%-*}.${BUILD_VER_RAW##*-}"; '
+                                                    'TAG="RT-v${BUILD_VER}"; '
+                                                    'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
+                                                    'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
+                                                    'WORKDIR="$(mktemp -d)"; '
+                                                    'trap "rm -rf ${WORKDIR}" EXIT; '
+                                                    'git -C "$WORKDIR" init -q; '
+                                                    'git -C "$WORKDIR" remote add origin "$REPO_URL"; '
+                                                    'git -C "$WORKDIR" fetch --depth=1 origin "$REV"; '
+                                                    'git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; '
+                                                    'git -C "$WORKDIR" push origin "$TAG"'
+                                                ),
+                                            ],
+                                        }
+                                    },
                                 ],
                             }
                         },
