@@ -249,7 +249,11 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "arguments": [
                                                 "-lc",
                                                 # /packages (not e.g. /var/www/pkgupload/packages) because the user is chrooted.
-                                                "scp -i ${PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk ${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/",
+                                                (
+                                                    "scp -i ${PACKAGE_SERVER_UPLOAD_KEY} "
+                                                    "artifacts/#{APP_NAME}_*/*.ipk "
+                                                    "${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/"
+                                                ),
                                             ],
                                         }
                                     },
@@ -259,7 +263,10 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                "ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} ${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}",
+                                                (
+                                                    "ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} "
+                                                    "${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}"
+                                                ),
                                                 # No need for a command - the user is bound to a single command which will execute on connection.
                                             ],
                                         }
@@ -274,9 +281,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                     "set -euo pipefail; "
                                                     'IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; '
                                                     'BASE="$(basename "$IPK" .ipk)"; '
-                                                    'VER_ARCH="${BASE#*_}"; '
-                                                    'BUILD_VER_RAW="${VER_ARCH%_*}"; '
-                                                    'BUILD_VER="${BUILD_VER_RAW%-*}.${BUILD_VER_RAW##*-}"; '
+                                                    "BUILD_VER_RAW=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
+                                                    "BUILD_VER=\"$(printf '%s\\n' \"$BUILD_VER_RAW\" | sed -E 's/^(.*)-([^-]+)$/\\1.\\2/')\"; "
                                                     'TAG="RT-v${BUILD_VER}"; '
                                                     'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
                                                     'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
@@ -323,7 +329,16 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"',
+                                                (
+                                                    'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
+                                                    'BASE="$(basename "$IPK" .ipk)"; '
+                                                    "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
+                                                    "PKG_VER=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
+                                                    'echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; '
+                                                    'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" '
+                                                    "ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "
+                                                    '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
+                                                ),
                                             ],
                                         }
                                     },
