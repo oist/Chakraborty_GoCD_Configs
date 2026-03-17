@@ -141,6 +141,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "Dependency_PPL_Names": dependencyQuotedList,
                 "APP_NAME": "TC_cRIO_Application",
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
+            },
+            "environment_variables": {
+                "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
                 "CRIO_HOST": "",  # Must be set when triggering deployment
                 "CRIO_USER": "admin",  # Default SSH user for cRIO
                 "PACKAGE_SERVER_UPLOAD_USER": "pkgupload",
@@ -148,9 +151,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "PACKAGE_SERVER_REFRESH_USER": "opkg-refresher",
                 "PACKAGE_SERVER_REFRESH_KEY": "~/.ssh/id_ed25519_opkg_refresh",
                 "PACKAGE_SERVER": "packages.chakraborty.lab",  # Hostname/IP of package archive server
-            },
-            "environment_variables": {
-                "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
             },
             "materials": materials,
             "stages": [
@@ -220,9 +220,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                             "publish_to_feed": {
                                 "resources": ["linux"],
                                 "timeout": 5,
-                                "environment_variables": {
-                                    "PACKAGE_SERVER": "#{PACKAGE_SERVER}",
-                                },
                                 "tasks": [
                                     {
                                         "fetch": {
@@ -252,7 +249,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "arguments": [
                                                 "-lc",
                                                 # /packages (not e.g. /var/www/pkgupload/packages) because the user is chrooted.
-                                                "scp -i #{PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_UPLOAD_USER}@#{PACKAGE_SERVER}:/packages/",
+                                                "scp -i ${PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk ${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/",
                                             ],
                                         }
                                     },
@@ -262,7 +259,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                "ssh -Ti #{PACKAGE_SERVER_REFRESH_KEY} #{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}",
+                                                "ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} ${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}",
                                                 # No need for a command - the user is bound to a single command which will execute on connection.
                                             ],
                                         }
@@ -282,10 +279,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                             "deploy_to_crio": {
                                 "resources": ["linux"],
                                 "timeout": 5,
-                                "environment_variables": {
-                                    "CRIO_HOST": "#{CRIO_HOST}",
-                                    "CRIO_USER": "#{CRIO_USER}",
-                                },
                                 "tasks": [
                                     {
                                         "fetch": {
@@ -303,12 +296,13 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                             "command": "bash",
                                             "arguments": [
                                                 "-lc",
-                                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no #{CRIO_USER}@#{CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"',
+                                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"',
                                             ],
                                         }
                                     },
                                     {
                                         "exec": {
+                                            # This may need redirection through bash to correctly set the CRIO_USER and CRIO_HOST
                                             "run_if": "passed",
                                             "command": "sshpass",
                                             "arguments": [
@@ -317,7 +311,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                 "ssh",
                                                 "-o",
                                                 "StrictHostKeyChecking=no",
-                                                "#{CRIO_USER}@#{CRIO_HOST}",
+                                                "${CRIO_USER}@${CRIO_HOST}",
                                                 "reboot",
                                             ],
                                         }

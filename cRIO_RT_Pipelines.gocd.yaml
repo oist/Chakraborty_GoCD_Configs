@@ -8,6 +8,8 @@ pipelines:
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
       DEPLOY_BUILD_TYPE: debug
+    environment_variables:
+      BUILD_TYPE: BUILD
       CRIO_HOST: ''
       CRIO_USER: admin
       PACKAGE_SERVER_UPLOAD_USER: pkgupload
@@ -15,8 +17,6 @@ pipelines:
       PACKAGE_SERVER_REFRESH_USER: opkg-refresher
       PACKAGE_SERVER_REFRESH_KEY: ~/.ssh/id_ed25519_opkg_refresh
       PACKAGE_SERVER: packages.chakraborty.lab
-    environment_variables:
-      BUILD_TYPE: BUILD
     materials:
       Chakraborty_cRIO:
         git: git@github.com:oist/Chakraborty_cRIO
@@ -632,8 +632,6 @@ pipelines:
             resources:
             - linux
             timeout: 5
-            environment_variables:
-              PACKAGE_SERVER: '#{PACKAGE_SERVER}'
             tasks:
             - fetch:
                 run_if: passed
@@ -662,13 +660,13 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - 'scp -i #{PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk #{PACKAGE_SERVER_UPLOAD_USER}@#{PACKAGE_SERVER}:/packages/'
+                - scp -i ${PACKAGE_SERVER_UPLOAD_KEY} artifacts/#{APP_NAME}_*/*.ipk ${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/
             - exec:
                 run_if: passed
                 command: bash
                 arguments:
                 - -lc
-                - 'ssh -Ti #{PACKAGE_SERVER_REFRESH_KEY} #{PACKAGE_SERVER_REFRESH_USER}@#{PACKAGE_SERVER}'
+                - ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} ${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}
     - deploy:
         fetch_materials: 'no'
         clean_workspace: 'yes'
@@ -678,9 +676,6 @@ pipelines:
             resources:
             - linux
             timeout: 5
-            environment_variables:
-              CRIO_HOST: '#{CRIO_HOST}'
-              CRIO_USER: '#{CRIO_USER}'
             tasks:
             - fetch:
                 run_if: passed
@@ -694,7 +689,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - 'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no #{CRIO_USER}@#{CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
+                - IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="${BASE%_*_*}"; VER_ARCH="${BASE##${PKG_NAME}_}"; PKG_VER="${VER_ARCH%_*}"; echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"
             - exec:
                 run_if: passed
                 command: sshpass
@@ -704,5 +699,5 @@ pipelines:
                 - ssh
                 - -o
                 - StrictHostKeyChecking=no
-                - '#{CRIO_USER}@#{CRIO_HOST}'
+                - ${CRIO_USER}@${CRIO_HOST}
                 - reboot
