@@ -7,7 +7,6 @@ pipelines:
       LV_VERSION: '2019'
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
-      BUILD_TYPE: BUILD
       DEPLOY_BUILD_TYPE: debug
       CRIO_HOST: ''
       CRIO_USER: admin
@@ -16,6 +15,8 @@ pipelines:
       PACKAGE_SERVER_REFRESH_USER: opkg-refresher
       PACKAGE_SERVER_REFRESH_KEY: ~/.ssh/id_ed25519_opkg_refresh
       PACKAGE_SERVER: packages.chakraborty.lab
+    environment_variables:
+      BUILD_TYPE: BUILD
     materials:
       Chakraborty_cRIO:
         git: git@github.com:oist/Chakraborty_cRIO
@@ -130,7 +131,6 @@ pipelines:
             elastic_profile_id: labview_2019_x86_crio
             environment_variables:
               IS_DEBUG_BUILD: 1
-              BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
             - build:
                 source: '#{GIT_DIR}\builds\RT-Package-Debug\*'
@@ -421,7 +421,6 @@ pipelines:
             elastic_profile_id: labview_2019_x86_crio
             environment_variables:
               IS_DEBUG_BUILD: 0
-              BUILD_TYPE: '#{BUILD_TYPE}'
             artifacts:
             - build:
                 source: '#{GIT_DIR}\builds\RT-Package-Release\*'

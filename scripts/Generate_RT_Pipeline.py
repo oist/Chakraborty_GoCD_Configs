@@ -140,7 +140,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "LV_VERSION": lv_version,
                 "Dependency_PPL_Names": dependencyQuotedList,
                 "APP_NAME": "TC_cRIO_Application",
-                "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
                 "CRIO_HOST": "",  # Must be set when triggering deployment
                 "CRIO_USER": "admin",  # Default SSH user for cRIO
@@ -149,6 +148,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "PACKAGE_SERVER_REFRESH_USER": "opkg-refresher",
                 "PACKAGE_SERVER_REFRESH_KEY": "~/.ssh/id_ed25519_opkg_refresh",
                 "PACKAGE_SERVER": "packages.chakraborty.lab",  # Hostname/IP of package archive server
+            },
+            "environment_variables": {
+                "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
             },
             "materials": materials,
             "stages": [
@@ -166,7 +168,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 ],
                                 "environment_variables": {
                                     "IS_DEBUG_BUILD": 1,
-                                    "BUILD_TYPE": "#{BUILD_TYPE}",
                                 },
                                 "artifacts": [
                                     {
@@ -190,7 +191,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                 ],
                                 "environment_variables": {
                                     "IS_DEBUG_BUILD": 0,
-                                    "BUILD_TYPE": "#{BUILD_TYPE}",
                                 },
                                 "artifacts": [
                                     {
