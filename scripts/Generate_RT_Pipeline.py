@@ -6,47 +6,19 @@ from FileUtils import directoryFromGitRepo, find_file
 from NameTransformers import parseMkFile, parseVipkgReqsFile, sanitizeForPipelineName
 from PipelineGenerationUtils import (
     generateMaterials,
+    generateRTBuildJob,
     generateFetchPPLJob,
     generateFetchFPGAJob,
 )
 from Constants import (
-    profileId,
     Target,
     labviewDir,
-    create_ppl_dir,
-    gcli_rt_build_task,
-    gci_recurse_1_task,
-    find_files_task,
+    rt_publish_to_feed_stage,
+    rt_deploy_stage,
 )
 
-
-def create_home_link_task(target):
-    targetPathEnd = (
-        "cRIO-9045\\Release_32\\home"
-        if target == Target.cRIO_Release
-        else "cRIO-9045\\Debug_32\\home" if target == Target.cRIO_Debug else None
-    )
-    linkRelPath = "PPLs\\cRIO-9045\\home"
-    return {
-        "exec": {
-            "run_if": "passed",
-            "command": "powershell",
-            "arguments": [
-                "-Command",
-                "New-Item",
-                "-Force",
-                "-ItemType",
-                "Junction",
-                "-Path",
-                linkRelPath,
-                "-Target",
-                f'\\"C:\\LabVIEW Sources\\PPLs\\{targetPathEnd}\\"',
-            ],
-        }
-    }
-
-
 cachedMaterials = {}
+cachedBuildJobs = {}
 
 
 class PipelineDefinition_RTapp(yaml.YAMLObject):
@@ -63,11 +35,13 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         self.fpga_suffix = values.get(
             "fpga_suffix", ""
         )  # Optional suffix for FPGA pipeline names
+        self.branch = values.get("branch", "master")
+        self.prerelease_tag = values.get("prerelease_tag", "")
 
     def buildData(self, dumper):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
         materials = generateMaterials(
-            self.gitUrl, self.dependencies, cachedMaterials, branch="master"
+            self.gitUrl, self.dependencies, cachedMaterials, branch=self.branch
         )
 
         if self.minVersion != None:
@@ -91,11 +65,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         }
 
         dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
-        # FPGA fetch tasks (same bitfiles for both debug and release)
-        fpgaFetchTasks = [
-            generateFetchFPGAJob(f"cRIO_FPGA_Main{self.fpga_suffix}"),
-            generateFetchFPGAJob(f"cRIO_FPGA_Expansion{self.fpga_suffix}"),
-        ]
 
         pplDepTasks_debug = [
             generateFetchPPLJob(dependency, "cRIO_Debug")
@@ -130,8 +99,22 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                     }
                 )
 
-        sharedInitialTasks = fpgaFetchTasks + [create_ppl_dir]
-        sharedPostTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
+        generateRTBuildJob(
+            lv_version,
+            True,
+            pplDepTasks_debug,
+            vipkgTasks,
+            self.fpga_suffix,
+            cachedBuildJobs,
+        )
+        generateRTBuildJob(
+            lv_version,
+            False,
+            pplDepTasks_release,
+            vipkgTasks,
+            self.fpga_suffix,
+            cachedBuildJobs,
+        )
 
         return {
             "group": "cRIO",
@@ -143,7 +126,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
                 # PRERELEASE_TAG: appended to the git tag with a hyphen when non-empty.
                 # Set to e.g. "build-attempts" to produce RT-v1.2.3.4-build-attempts.
-                "PRERELEASE_TAG": "",
+                "PRERELEASE_TAG": self.prerelease_tag,
             },
             "environment_variables": {
                 "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
@@ -164,209 +147,15 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
                         # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
                         "jobs": {
-                            "build_debug": {
-                                "timeout": 15,
-                                "elastic_profile_id": profileId[lv_version][
-                                    Target.cRIO_Debug
-                                ],
-                                "environment_variables": {
-                                    "IS_DEBUG_BUILD": 1,
-                                },
-                                "artifacts": [
-                                    {
-                                        "build": {
-                                            "source": "#{GIT_DIR}\\builds\\RT-Package-Debug\\*",
-                                            "destination": "#{APP_NAME}_debug",
-                                        }
-                                    }
-                                ],
-                                "tasks": sharedInitialTasks
-                                + pplDepTasks_debug
-                                + [
-                                    create_home_link_task(Target.cRIO_Debug),
-                                ]
-                                + sharedPostTasks,
-                            },
-                            "build_release": {
-                                "timeout": 15,
-                                "elastic_profile_id": profileId[lv_version][
-                                    Target.cRIO_Release
-                                ],
-                                "environment_variables": {
-                                    "IS_DEBUG_BUILD": 0,
-                                },
-                                "artifacts": [
-                                    {
-                                        "build": {
-                                            "source": "#{GIT_DIR}\\builds\\RT-Package-Release\\*",
-                                            "destination": "#{APP_NAME}_release",
-                                        }
-                                    }
-                                ],
-                                "tasks": sharedInitialTasks
-                                + pplDepTasks_release
-                                + [
-                                    create_home_link_task(Target.cRIO_Release),
-                                ]
-                                + sharedPostTasks,
-                            },
+                            "build_debug": cachedBuildJobs["build_debug"],
+                            "build_release": cachedBuildJobs["build_release"],
                         },
                     }
                 },
                 # Archive publishing stage (runs automatically after build succeeds)
-                {
-                    "publish_to_archive": {
-                        "fetch_materials": "no",
-                        "clean_workspace": "yes",
-                        "approval": "success",
-                        "jobs": {
-                            "publish_to_feed": {
-                                "resources": ["linux"],
-                                "timeout": 5,
-                                "tasks": [
-                                    {
-                                        "fetch": {
-                                            "run_if": "passed",
-                                            "stage": "build",
-                                            "job": "build_debug",
-                                            "source": "#{APP_NAME}_debug",
-                                            "is_file": False,
-                                            "destination": "artifacts",
-                                        }
-                                    },
-                                    {
-                                        "fetch": {
-                                            "run_if": "passed",
-                                            "stage": "build",
-                                            "job": "build_release",
-                                            "source": "#{APP_NAME}_release",
-                                            "is_file": False,
-                                            "destination": "artifacts",
-                                        }
-                                    },
-                                    find_files_task,
-                                    {
-                                        "exec": {
-                                            "run_if": "passed",
-                                            "command": "bash",
-                                            "arguments": [
-                                                "-lc",
-                                                # /packages (not e.g. /var/www/pkgupload/packages) because the user is chrooted.
-                                                (
-                                                    "scp -i ${PACKAGE_SERVER_UPLOAD_KEY} "
-                                                    "artifacts/#{APP_NAME}_*/*.ipk "
-                                                    "${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/"
-                                                ),
-                                            ],
-                                        }
-                                    },
-                                    {
-                                        "exec": {
-                                            "run_if": "passed",
-                                            "command": "bash",
-                                            "arguments": [
-                                                "-lc",
-                                                (
-                                                    "ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} "
-                                                    "${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}"
-                                                ),
-                                                # No need for a command - the user is bound to a single command which will execute on connection.
-                                            ],
-                                        }
-                                    },
-                                    {
-                                        "exec": {
-                                            "run_if": "passed",
-                                            "command": "bash",
-                                            "arguments": [
-                                                "-lc",
-                                                (
-                                                    "set -euo pipefail; "
-                                                    'IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; '
-                                                    'BASE="$(basename "$IPK" .ipk)"; '
-                                                    "BUILD_VER_RAW=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
-                                                    "BUILD_VER=\"$(printf '%s\\n' \"$BUILD_VER_RAW\" | sed -E 's/^(.*)-([^-]+)$/\\1.\\2/')\"; "
-                                                    "PT='#{PRERELEASE_TAG}'; "
-                                                    'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
-                                                    'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
-                                                    'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
-                                                    'WORKDIR="$(mktemp -d)"; '
-                                                    'trap "rm -rf ${WORKDIR}" EXIT; '
-                                                    'git -C "$WORKDIR" init -q; '
-                                                    'git -C "$WORKDIR" remote add origin "$REPO_URL"; '
-                                                    'git -C "$WORKDIR" fetch --depth=1 origin "$REV"; '
-                                                    'git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; '
-                                                    'git -C "$WORKDIR" push origin "$TAG"'
-                                                ),
-                                            ],
-                                        }
-                                    },
-                                ],
-                            }
-                        },
-                    }
-                },
+                {"publish_to_archive": rt_publish_to_feed_stage},
                 # Deployment stage (independent of publish_to_archive, requires manual approval)
-                {
-                    "deploy": {
-                        "fetch_materials": "no",
-                        "clean_workspace": "yes",
-                        "approval": "manual",  # Manual approval before deployment
-                        "jobs": {
-                            "deploy_to_crio": {
-                                "resources": ["linux"],
-                                "timeout": 5,
-                                "tasks": [
-                                    {
-                                        "fetch": {
-                                            "run_if": "passed",
-                                            "stage": "build",
-                                            "job": "build_#{DEPLOY_BUILD_TYPE}",
-                                            "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
-                                            "destination": "artifacts",
-                                        }
-                                    },
-                                    find_files_task,
-                                    {
-                                        "exec": {
-                                            "run_if": "passed",
-                                            "command": "bash",
-                                            "arguments": [
-                                                "-lc",
-                                                (
-                                                    'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
-                                                    'BASE="$(basename "$IPK" .ipk)"; '
-                                                    "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
-                                                    "PKG_VER=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
-                                                    'echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; '
-                                                    'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" '
-                                                    "ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "
-                                                    '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
-                                                ),
-                                            ],
-                                        }
-                                    },
-                                    {
-                                        "exec": {
-                                            # This may need redirection through bash to correctly set the CRIO_USER and CRIO_HOST
-                                            "run_if": "passed",
-                                            "command": "sshpass",
-                                            "arguments": [
-                                                "-p",
-                                                "{{SECRET:[secrets.json][crio_ssh_password]}}",
-                                                "ssh",
-                                                "-o",
-                                                "StrictHostKeyChecking=no",
-                                                "${CRIO_USER}@${CRIO_HOST}",
-                                                "reboot",
-                                            ],
-                                        }
-                                    },
-                                ],
-                            }
-                        },
-                    }
-                },
+                {"deploy": rt_deploy_stage},
             ],
         }
 
@@ -404,22 +193,34 @@ if __name__ == "__main__":
     if vipkgReqsPath != None:
         vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
 
-    pipelineEntry = {
-        "cRIO_RT_Main_Application_TC": {
-            "gitUrl": gitUrl,
-            "Dependencies": depsList,
-            "Dependency PPL Names": depsNames,
-            "minLabVIEWVersion": "2019",
-            "vipkgUrls": vipkgUrls,
-            # Switch to using the copied bitfiles rather than compiled ones
-            # Comment this to use the compilation pipelines
-            "fpga_suffix": "_noncompile",
-        }
+    pipelineTemplateValue = {
+        "gitUrl": gitUrl,
+        "Dependencies": depsList,
+        "Dependency PPL Names": depsNames,
+        "minLabVIEWVersion": "2019",
+        "vipkgUrls": vipkgUrls,
+        "branch": "master",
+        # Switch to using the copied bitfiles rather than compiled ones
+        # Comment this to use the compilation pipelines
+        "fpga_suffix": "_noncompile",
     }
 
-    # Build a list of objects describing each pipeline (just one)
+    branches = {
+        "TC_cRIO_Application": "master",
+        "TC_cRIO_Application_build-attempts": "build-attempts",
+    }
+
     pipelineDefinitionContent = {
-        "TC_cRIO_Application": PipelineDefinition_RTapp(pipelineEntry)
+        pipeline_name: PipelineDefinition_RTapp(
+            {
+                pipeline_name: {
+                    **pipelineTemplateValue,
+                    "branch": branch,
+                    "prerelease_tag": branch if branch != "master" else "",
+                }
+            }
+        )
+        for pipeline_name, branch in branches.items()
     }
 
     # Convert the list of pipelines into a YAML object

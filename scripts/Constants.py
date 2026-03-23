@@ -282,6 +282,156 @@ gcli_build_task = {
     }
 }
 
+rt_publish_to_feed_stage = {
+    "fetch_materials": "no",
+    "clean_workspace": "yes",
+    "approval": "success",
+    "jobs": {
+        "publish_to_feed": {
+            "resources": ["linux"],
+            "timeout": 5,
+            "tasks": [
+                {
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "build",
+                        "job": "build_debug",
+                        "source": "#{APP_NAME}_debug",
+                        "is_file": False,
+                        "destination": "artifacts",
+                    }
+                },
+                {
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "build",
+                        "job": "build_release",
+                        "source": "#{APP_NAME}_release",
+                        "is_file": False,
+                        "destination": "artifacts",
+                    }
+                },
+                find_files_task,
+                {
+                    "exec": {
+                        "run_if": "passed",
+                        "command": "bash",
+                        "arguments": [
+                            "-lc",
+                            # /packages (not e.g. /var/www/pkgupload/packages) because the user is chrooted.
+                            (
+                                "scp -i ${PACKAGE_SERVER_UPLOAD_KEY} "
+                                "artifacts/#{APP_NAME}_*/*.ipk "
+                                "${PACKAGE_SERVER_UPLOAD_USER}@${PACKAGE_SERVER}:/packages/"
+                            ),
+                        ],
+                    }
+                },
+                {
+                    "exec": {
+                        "run_if": "passed",
+                        "command": "bash",
+                        "arguments": [
+                            "-lc",
+                            (
+                                "ssh -Ti ${PACKAGE_SERVER_REFRESH_KEY} "
+                                "${PACKAGE_SERVER_REFRESH_USER}@${PACKAGE_SERVER}"
+                            ),
+                            # No need for a command - the user is bound to a single command which will execute on connection.
+                        ],
+                    }
+                },
+                {
+                    "exec": {
+                        "run_if": "passed",
+                        "command": "bash",
+                        "arguments": [
+                            "-lc",
+                            (
+                                "set -euo pipefail; "
+                                'IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; '
+                                'BASE="$(basename "$IPK" .ipk)"; '
+                                "BUILD_VER_RAW=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
+                                "BUILD_VER=\"$(printf '%s\\n' \"$BUILD_VER_RAW\" | sed -E 's/^(.*)-([^-]+)$/\\1.\\2/')\"; "
+                                "PT='#{PRERELEASE_TAG}'; "
+                                'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
+                                'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
+                                'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
+                                'WORKDIR="$(mktemp -d)"; '
+                                'trap "rm -rf ${WORKDIR}" EXIT; '
+                                'git -C "$WORKDIR" init -q; '
+                                'git -C "$WORKDIR" remote add origin "$REPO_URL"; '
+                                'git -C "$WORKDIR" fetch --depth=1 origin "$REV"; '
+                                'git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; '
+                                'git -C "$WORKDIR" push origin "$TAG"'
+                            ),
+                        ],
+                    }
+                },
+            ],
+        }
+    },
+}
+
+rt_deploy_stage = {
+    "fetch_materials": "no",
+    "clean_workspace": "yes",
+    "approval": "manual",  # Manual approval before deployment
+    "jobs": {
+        "deploy_to_crio": {
+            "resources": ["linux"],
+            "timeout": 5,
+            "tasks": [
+                {
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "build",
+                        "job": "build_#{DEPLOY_BUILD_TYPE}",
+                        "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
+                        "destination": "artifacts",
+                    }
+                },
+                find_files_task,
+                {
+                    "exec": {
+                        "run_if": "passed",
+                        "command": "bash",
+                        "arguments": [
+                            "-lc",
+                            (
+                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
+                                'BASE="$(basename "$IPK" .ipk)"; '
+                                "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
+                                "PKG_VER=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
+                                'echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; '
+                                'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" '
+                                "ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "
+                                '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
+                            ),
+                        ],
+                    }
+                },
+                {
+                    "exec": {
+                        # This may need redirection through bash to correctly set the CRIO_USER and CRIO_HOST
+                        "run_if": "passed",
+                        "command": "sshpass",
+                        "arguments": [
+                            "-p",
+                            "{{SECRET:[secrets.json][crio_ssh_password]}}",
+                            "ssh",
+                            "-o",
+                            "StrictHostKeyChecking=no",
+                            "${CRIO_USER}@${CRIO_HOST}",
+                            "reboot",
+                        ],
+                    }
+                },
+            ],
+        }
+    },
+}
+
 # ------------------- FPGA Build Tasks -------------------- #
 fpga_build_task = {
     "exec": {

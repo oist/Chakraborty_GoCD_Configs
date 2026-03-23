@@ -1,5 +1,12 @@
 from FileUtils import directoryFromGitRepo
-from Constants import fetch_ppl_configuration
+from Constants import (
+    Target,
+    fetch_ppl_configuration,
+    profileId,
+    create_ppl_dir,
+    gcli_rt_build_task,
+    gci_recurse_1_task,
+)
 
 
 def getPackageRootName(pipelineName):
@@ -28,6 +35,81 @@ def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
                 }
             materials[materialName] = cachedMaterials.get(materialName)
     return materials
+
+
+def generateRTBuildJob(
+    lv_version, isDebug, pplTasks, vipkgTasks, fpgaSuffix, cachedBuildJobs
+):
+    jobName = f"build_{'debug' if isDebug else 'release'}"
+
+    # FPGA fetch tasks (same bitfiles for both debug and release)
+    fpgaFetchTasks = [
+        generateFetchFPGAJob(f"cRIO_FPGA_Main{fpgaSuffix}"),
+        generateFetchFPGAJob(f"cRIO_FPGA_Expansion{fpgaSuffix}"),
+    ]
+
+    initialTasks = fpgaFetchTasks + [create_ppl_dir]
+    postTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
+
+    buildJobs = {}
+    if not jobName in cachedBuildJobs:
+        target = Target.cRIO_Debug if isDebug else Target.cRIO_Release
+        sourceDir = (
+            "#{GIT_DIR}\\builds\\RT-Package-Debug"
+            if isDebug
+            else "#{GIT_DIR}\\builds\\RT-Package-Release"
+        )
+        cachedBuildJobs[jobName] = {
+            "timeout": 15,
+            "elastic_profile_id": profileId[lv_version][target],
+            "environment_variables": {
+                "IS_DEBUG_BUILD": 1 if isDebug else 0,
+            },
+            "artifacts": [
+                {
+                    "build": {
+                        "source": f"{sourceDir}\\*",
+                        "destination": (
+                            "#{APP_NAME}_" + ("debug" if isDebug else "release")
+                        ),
+                    }
+                }
+            ],
+            "tasks": initialTasks
+            + pplTasks
+            + [
+                create_home_link_task(target),
+            ]
+            + postTasks,
+        }
+    buildJobs = cachedBuildJobs.get(jobName)
+    return buildJobs
+
+
+def create_home_link_task(target):
+    targetPathEnd = (
+        "cRIO-9045\\Release_32\\home"
+        if target == Target.cRIO_Release
+        else "cRIO-9045\\Debug_32\\home" if target == Target.cRIO_Debug else None
+    )
+    linkRelPath = "PPLs\\cRIO-9045\\home"
+    return {
+        "exec": {
+            "run_if": "passed",
+            "command": "powershell",
+            "arguments": [
+                "-Command",
+                "New-Item",
+                "-Force",
+                "-ItemType",
+                "Junction",
+                "-Path",
+                linkRelPath,
+                "-Target",
+                f'\\"C:\\LabVIEW Sources\\PPLs\\{targetPathEnd}\\"',
+            ],
+        }
+    }
 
 
 def generateFetchPPLJob(dependency, targetName):
