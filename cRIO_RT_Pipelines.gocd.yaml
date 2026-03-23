@@ -8,6 +8,7 @@ pipelines:
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
       DEPLOY_BUILD_TYPE: debug
+      PRERELEASE_TAG: ''
     environment_variables:
       BUILD_TYPE: BUILD
       CRIO_HOST: ''
@@ -672,7 +673,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - set -euo pipefail; IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; BUILD_VER_RAW="$(printf '%s\n' "$BASE" | sed -E 's/^.*_([^_]*)_[^_]*$/\1/')"; BUILD_VER="$(printf '%s\n' "$BUILD_VER_RAW" | sed -E 's/^(.*)-([^-]+)$/\1.\2/')"; TAG="RT-v${BUILD_VER}"; REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; WORKDIR="$(mktemp -d)"; trap "rm -rf ${WORKDIR}" EXIT; git -C "$WORKDIR" init -q; git -C "$WORKDIR" remote add origin "$REPO_URL"; git -C "$WORKDIR" fetch --depth=1 origin "$REV"; git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; git -C "$WORKDIR" push origin "$TAG"
+                - set -euo pipefail; IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; BUILD_VER_RAW="$(printf '%s\n' "$BASE" | sed -E 's/^.*_([^_]*)_[^_]*$/\1/')"; BUILD_VER="$(printf '%s\n' "$BUILD_VER_RAW" | sed -E 's/^(.*)-([^-]+)$/\1.\2/')"; PT='#{PRERELEASE_TAG}'; TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; WORKDIR="$(mktemp -d)"; trap "rm -rf ${WORKDIR}" EXIT; git -C "$WORKDIR" init -q; git -C "$WORKDIR" remote add origin "$REPO_URL"; git -C "$WORKDIR" fetch --depth=1 origin "$REV"; git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; git -C "$WORKDIR" push origin "$TAG"
     - deploy:
         fetch_materials: 'no'
         clean_workspace: 'yes'

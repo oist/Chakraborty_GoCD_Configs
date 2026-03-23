@@ -141,6 +141,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "Dependency_PPL_Names": dependencyQuotedList,
                 "APP_NAME": "TC_cRIO_Application",
                 "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
+                # PRERELEASE_TAG: appended to the git tag with a hyphen when non-empty.
+                # Set to e.g. "build-attempts" to produce RT-v1.2.3.4-build-attempts.
+                "PRERELEASE_TAG": "",
             },
             "environment_variables": {
                 "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
@@ -283,7 +286,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                                                     'BASE="$(basename "$IPK" .ipk)"; '
                                                     "BUILD_VER_RAW=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
                                                     "BUILD_VER=\"$(printf '%s\\n' \"$BUILD_VER_RAW\" | sed -E 's/^(.*)-([^-]+)$/\\1.\\2/')\"; "
-                                                    'TAG="RT-v${BUILD_VER}"; '
+                                                    "PT='#{PRERELEASE_TAG}'; "
+                                                    'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
                                                     'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
                                                     'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
                                                     'WORKDIR="$(mktemp -d)"; '
