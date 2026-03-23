@@ -486,6 +486,7 @@ gcli_rt_build_task = {
             "RT Main Application",
             "%BUILD_TYPE%",
             "%IS_DEBUG_BUILD%",
+            "#{PRERELEASE_TAG}",
             "#{Dependency_PPL_Names}",
         ],
         "working_directory": "#{GIT_DIR}",
