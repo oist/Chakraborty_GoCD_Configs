@@ -16,7 +16,7 @@ def runCmd(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, shell=False).stdout
 
 
-def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False, timeout=10):
+def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False, timeout=10, branch="master"):
     # Can add --depth 1 but only marginal improvement at the moment...
     # gitCmd = f'wsl git clone -q  -- {gitUrl}'
     gitCmd = ["git", "clone", "-q", "--", gitUrl, destinationDirectory]
@@ -29,10 +29,10 @@ def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False, timeout=10):
             print(f"Directory already exists. Deleting and re-cloning repository")
             shutil.rmtree(destinationDirectory, onerror=remove_readonly)
             return cloneRepo(
-                gitUrl, destinationDirectory, False
+                gitUrl, destinationDirectory, False, timeout, branch
             )  # Don't pass true again, to prevent infinite recursion.
         else:
-            response = updateRepo(destinationDirectory, True)
+            response = updateRepo(destinationDirectory, True, branch)
             return (
                 f"Directory already existed at {destinationDirectory}. Updated the repository\n"
                 + response.strip()
@@ -52,10 +52,10 @@ def cloneRepo(gitUrl, destinationDirectory, forceUpdate=False, timeout=10):
         )
 
 
-def updateRepo(destinationDirectory, useRemote=True):
+def updateRepo(destinationDirectory, useRemote=True, branch="master"):
     with pushd(destinationDirectory):
         if useRemote:
             runCmd(["git", "fetch"])
-        response = runCmd(["git", "reset", "--hard", "origin/master"])
+        response = runCmd(["git", "reset", "--hard", f"origin/{branch}"])
         runCmd(["git", "clean", "-f"])
         return response.strip()
