@@ -13,6 +13,8 @@ from Constants import (
     create_ppl_dir,
     ls_task,
     gci_recurse_1_task,
+    rt_builder_git_dir,
+    rt_builder_material,
 )
 
 cachedMaterials = {}
@@ -88,7 +90,7 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                 "PROJECT_PATH": f"{gitDirName}\\{self.projectFileName}",
                 "VERSION_VI_PATH": self.version_vi_path,
             },
-            "materials": materials,
+            "materials": {**materials, rt_builder_git_dir: rt_builder_material},
             "stages": [
                 {
                     "build_fpga": {

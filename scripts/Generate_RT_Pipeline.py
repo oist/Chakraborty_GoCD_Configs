@@ -13,6 +13,8 @@ from PipelineGenerationUtils import (
 from Constants import (
     Target,
     labviewDir,
+    rt_builder_git_dir,
+    rt_builder_material,
     rt_version_stage,
     rt_publish_to_feed_stage,
     rt_deploy_stage,
@@ -49,6 +51,11 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             lv_version = self.minVersion
         else:
             lv_version = "2019"
+
+        # Add builder repo material — provides LabVIEW_BuildTools/ VIs and scripts/.
+        # ignore_for_scheduling / auto_update are False so the builder repo never
+        # triggers a new pipeline run on its own.
+        materials[rt_builder_git_dir] = rt_builder_material
 
         # Add FPGA pipeline materials
         # ignore_for_scheduling=False means this pipeline will automatically trigger

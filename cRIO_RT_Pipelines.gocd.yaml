@@ -114,6 +114,12 @@ pipelines:
         pipeline: Status-Reporting.lvlibp
         stage: build_ppls
         ignore_for_scheduling: false
+      Chakraborty_cRIO-Builder: &id033
+        git: git@github.com:oist/Chakraborty_cRIO-Builder
+        destination: Chakraborty_cRIO-Builder
+        auto_update: false
+        shallow_clone: true
+        branch: main
       cRIO_FPGA_Main_material:
         pipeline: cRIO_FPGA_Main_noncompile
         stage: build_fpga
@@ -123,7 +129,7 @@ pipelines:
         stage: build_fpga
         ignore_for_scheduling: false
     stages:
-    - &id033
+    - &id034
       version:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
@@ -139,19 +145,22 @@ pipelines:
             - build:
                 source: version.txt
                 destination: version/
+            - build:
+                source: Chakraborty_cRIO-Builder/scripts/*.sh
+                destination: builder_scripts
             tasks:
             - exec:
                 run_if: passed
                 command: bash
                 arguments:
                 - -lc
-                - 'set -euo pipefail; gitversion #{GIT_DIR} /output json /overrideconfig tag-prefix=''#{TAG_PREFIX}'' /overrideconfig semantic-version-format=Loose /nofetch > version.json; jq -r ''"\(.Major).\(.Minor).\(.Patch).\(.CommitsSinceVersionSource)"'' version.json > version.txt; cat version.txt'
+                - bash Chakraborty_cRIO-Builder/scripts/compute_version.sh '#{GIT_DIR}' '#{TAG_PREFIX}'
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
         approval: success
         jobs:
-          build_debug: &id034
+          build_debug: &id035
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
             environment_variables:
@@ -438,7 +447,7 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - Builder\Build_RT_Application.vi
+                - Chakraborty_cRIO-Builder\LabVIEW_BuildTools\RT\Build_RT_Application.vi
                 - --
                 - cRIO-9045-RT.lvproj
                 - RT CompactRIO Target
@@ -447,8 +456,7 @@ pipelines:
                 - '%IS_DEBUG_BUILD%'
                 - '#{PRERELEASE_TAG}'
                 - '#{Dependency_PPL_Names}'
-                working_directory: '#{GIT_DIR}'
-          build_release: &id035
+          build_release: &id036
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
             environment_variables:
@@ -670,7 +678,7 @@ pipelines:
             - *id007
             - *id008
             - *id009
-    - publish_to_archive: &id036
+    - publish_to_archive: &id037
         fetch_materials: 'no'
         clean_workspace: 'yes'
         approval: success
@@ -687,6 +695,13 @@ pipelines:
                 source: version/version.txt
                 destination: version
                 is_file: true
+            - fetch:
+                run_if: passed
+                stage: version
+                job: compute_version
+                source: builder_scripts
+                is_file: false
+                destination: .
             - fetch:
                 run_if: passed
                 stage: build
@@ -726,8 +741,8 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - set -euo pipefail; BUILD_VER="$(cat version/version.txt)"; PT='#{PRERELEASE_TAG}'; TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; WORKDIR="$(mktemp -d)"; trap "rm -rf ${WORKDIR}" EXIT; git -C "$WORKDIR" init -q; git -C "$WORKDIR" remote add origin "$REPO_URL"; git -C "$WORKDIR" fetch --depth=1 origin "$REV"; git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; git -C "$WORKDIR" push origin "$TAG"
-    - deploy: &id037
+                - set -euo pipefail; BUILD_VER="$(cat version/version.txt)"; PT='#{PRERELEASE_TAG}'; TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; bash builder_scripts/tag_rt_release.sh "$REPO_URL" "$REV" "$TAG"
+    - deploy: &id038
         fetch_materials: 'no'
         clean_workspace: 'yes'
         approval: manual
@@ -746,6 +761,13 @@ pipelines:
                 is_file: true
             - fetch:
                 run_if: passed
+                stage: version
+                job: compute_version
+                source: builder_scripts
+                is_file: false
+                destination: .
+            - fetch:
+                run_if: passed
                 stage: build
                 job: build_#{DEPLOY_BUILD_TYPE}
                 source: '#{APP_NAME}_#{DEPLOY_BUILD_TYPE}'
@@ -756,18 +778,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - BUILD_VER="$(cat version/version.txt)"; OPKG_VER="$(printf '%s' "$BUILD_VER" | sed 's/\.\([^.]*\)$/-\1/')"; IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="$(printf '%s\n' "$BASE" | sed -E 's/_[^_]*_[^_]*$//')"; echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${OPKG_VER}"
-            - exec:
-                run_if: passed
-                command: sshpass
-                arguments:
-                - -p
-                - '{{SECRET:[secrets.json][crio_ssh_password]}}'
-                - ssh
-                - -o
-                - StrictHostKeyChecking=no
-                - ${CRIO_USER}@${CRIO_HOST}
-                - reboot
+                - set -euo pipefail; BUILD_VER="$(cat version/version.txt)"; OPKG_VER="$(printf '%s' "$BUILD_VER" | sed 's/\.\([^.]*\)$/-\1/')"; IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="$(printf '%s\n' "$BASE" | sed -E 's/_[^_]*_[^_]*$//')"; echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${OPKG_VER}"
   TC_cRIO_Application_build-attempts:
     group: cRIO
     parameters:
@@ -816,6 +827,7 @@ pipelines:
       Serial-Communication.lvlibp_pipelineMaterial: *id030
       SQLite.lvlibp_pipelineMaterial: *id031
       Status-Reporting.lvlibp_pipelineMaterial: *id032
+      Chakraborty_cRIO-Builder: *id033
       cRIO_FPGA_Main_material:
         pipeline: cRIO_FPGA_Main_noncompile
         stage: build_fpga
@@ -825,13 +837,13 @@ pipelines:
         stage: build_fpga
         ignore_for_scheduling: false
     stages:
-    - *id033
+    - *id034
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
         approval: success
         jobs:
-          build_debug: *id034
-          build_release: *id035
-    - publish_to_archive: *id036
-    - deploy: *id037
+          build_debug: *id035
+          build_release: *id036
+    - publish_to_archive: *id037
+    - deploy: *id038

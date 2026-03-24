@@ -14,6 +14,21 @@ builderMaterial = {
     "ignore_for_scheduling": True,
 }
 
+# Git material for the Chakraborty_cRIO-Builder repository.
+# Contains LabVIEW build VIs (LabVIEW_BuildTools/) and CI bash scripts (scripts/).
+# ignore_for_scheduling=True / auto_update=False: changes to the builder repo do not
+# trigger new pipeline runs. Scripts are published as build artifacts from the version
+# stage so that publish_to_archive and deploy stages (fetch_materials=no) can access
+# them via GoCD fetch tasks without re-checking out all git materials.
+rt_builder_git_dir = "Chakraborty_cRIO-Builder"
+rt_builder_material = {
+    "git": "git@github.com:oist/Chakraborty_cRIO-Builder",
+    "destination": rt_builder_git_dir,
+    "auto_update": False,
+    "shallow_clone": True,
+    "branch": "main",
+}
+
 
 class Target(Enum):
     Windows_32_Release = 0
@@ -315,7 +330,15 @@ rt_version_stage = {
                             "source": "version.txt",
                             "destination": "version/",
                         }
-                    }
+                    },
+                    {
+                        # Publish build scripts so publish_to_archive and deploy stages
+                        # (fetch_materials=no) can access them via GoCD fetch tasks.
+                        "build": {
+                            "source": "Chakraborty_cRIO-Builder/scripts/*.sh",
+                            "destination": "builder_scripts",
+                        }
+                    },
                 ],
                 "tasks": [
                     {
@@ -324,17 +347,9 @@ rt_version_stage = {
                             "command": "bash",
                             "arguments": [
                                 "-lc",
-                                (
-                                    "set -euo pipefail; "
-                                    # GitVersion requires the path to the git checkout; the cRIO
-                                    # material is cloned into #{GIT_DIR} relative to the agent workdir.
-                                    "gitversion #{GIT_DIR} /output json /overrideconfig tag-prefix='#{TAG_PREFIX}' /overrideconfig semantic-version-format=Loose /nofetch > version.json; "
-                                    # Extract the four version components and write all-dots
-                                    # format (e.g. 1.9.0.540) used by LabVIEW and git tagging.
-                                    "jq -r '\"\\(.Major).\\(.Minor).\\(.Patch).\\(.CommitsSinceVersionSource)\"' "
-                                    "version.json > version.txt; "
-                                    "cat version.txt"
-                                ),
+                                # Delegate to compute_version.sh in the builder repo material.
+                                # Produces version.json and version.txt in the agent workdir.
+                                "bash Chakraborty_cRIO-Builder/scripts/compute_version.sh '#{GIT_DIR}' '#{TAG_PREFIX}'",
                             ],
                         }
                     }
@@ -361,6 +376,17 @@ rt_publish_to_feed_stage = {
                         "source": "version/version.txt",
                         "destination": "version",
                         "is_file": True,
+                    }
+                },
+                {
+                    # Fetch CI scripts published as artifacts by the version stage.
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "version",
+                        "job": "compute_version",
+                        "source": "builder_scripts",
+                        "is_file": False,
+                        "destination": ".",
                     }
                 },
                 {
@@ -423,17 +449,14 @@ rt_publish_to_feed_stage = {
                                 "set -euo pipefail; "
                                 # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots)
                                 'BUILD_VER="$(cat version/version.txt)"; '
+                                # PRERELEASE_TAG appended with a hyphen when non-empty
+                                # (e.g. "build-attempts" → RT-v1.2.3.456-build-attempts)
                                 "PT='#{PRERELEASE_TAG}'; "
                                 'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
                                 'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
                                 'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
-                                'WORKDIR="$(mktemp -d)"; '
-                                'trap "rm -rf ${WORKDIR}" EXIT; '
-                                'git -C "$WORKDIR" init -q; '
-                                'git -C "$WORKDIR" remote add origin "$REPO_URL"; '
-                                'git -C "$WORKDIR" fetch --depth=1 origin "$REV"; '
-                                'git -C "$WORKDIR" tag -a "$TAG" "$REV" -m "RT build $TAG"; '
-                                'git -C "$WORKDIR" push origin "$TAG"'
+                                # Delegate git init/fetch/tag/push to the extracted script
+                                'bash builder_scripts/tag_rt_release.sh "$REPO_URL" "$REV" "$TAG"'
                             ),
                         ],
                     }
@@ -463,6 +486,17 @@ rt_deploy_stage = {
                     }
                 },
                 {
+                    # Fetch CI scripts published as artifacts by the version stage.
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "version",
+                        "job": "compute_version",
+                        "source": "builder_scripts",
+                        "is_file": False,
+                        "destination": ".",
+                    }
+                },
+                {
                     "fetch": {
                         "run_if": "passed",
                         "stage": "build",
@@ -479,34 +513,20 @@ rt_deploy_stage = {
                         "arguments": [
                             "-lc",
                             (
+                                "set -euo pipefail; "
                                 # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots);
                                 # convert last dot to hyphen for opkg's MAJOR.MINOR.PATCH-BUILD format.
                                 'BUILD_VER="$(cat version/version.txt)"; '
                                 "OPKG_VER=\"$(printf '%s' \"$BUILD_VER\" | sed 's/\\.\\([^.]*\\)$/-\\1/')\"; "
+                                # Extract package name by stripping _VERSION_BUILDTYPE suffix from IPK filename.
                                 'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
                                 'BASE="$(basename "$IPK" .ipk)"; '
                                 "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
                                 'echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; '
-                                'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" '
-                                "ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "
-                                '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${OPKG_VER}"'
+                                # Inject password from GoCD secret as env var for deploy_crio.sh
+                                "export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; "
+                                'bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${OPKG_VER}"'
                             ),
-                        ],
-                    }
-                },
-                {
-                    "exec": {
-                        # This may need redirection through bash to correctly set the CRIO_USER and CRIO_HOST
-                        "run_if": "passed",
-                        "command": "sshpass",
-                        "arguments": [
-                            "-p",
-                            "{{SECRET:[secrets.json][crio_ssh_password]}}",
-                            "ssh",
-                            "-o",
-                            "StrictHostKeyChecking=no",
-                            "${CRIO_USER}@${CRIO_HOST}",
-                            "reboot",
                         ],
                     }
                 },
@@ -562,7 +582,7 @@ gcli_rt_build_task = {
             "--lv-ver",
             "#{LV_VERSION}",
             "--verbose",
-            "Builder\\Build_RT_Application.vi",
+            f"{rt_builder_git_dir}\\LabVIEW_BuildTools\\RT\\Build_RT_Application.vi",
             "--",
             "cRIO-9045-RT.lvproj",
             "RT CompactRIO Target",
@@ -572,6 +592,5 @@ gcli_rt_build_task = {
             "#{PRERELEASE_TAG}",
             "#{Dependency_PPL_Names}",
         ],
-        "working_directory": "#{GIT_DIR}",
     }
 }
