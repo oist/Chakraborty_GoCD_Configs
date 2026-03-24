@@ -128,6 +128,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 # PRERELEASE_TAG: appended to the git tag with a hyphen when non-empty.
                 # Set to e.g. "build-attempts" to produce RT-v1.2.3.4-build-attempts.
                 "PRERELEASE_TAG": self.prerelease_tag,
+                "TAG_PREFIX": "RT-v",  # Prefix for git tags that GitVersion will use to determine version numbers
             },
             "environment_variables": {
                 "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD

@@ -9,6 +9,7 @@ pipelines:
       APP_NAME: TC_cRIO_Application
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: ''
+      TAG_PREFIX: RT-v
     environment_variables:
       BUILD_TYPE: BUILD
       CRIO_HOST: ''
@@ -144,7 +145,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - set -euo pipefail; gitversion /output json /overrideconfig tag-prefix='RT-v' /overrideconfig semantic-version-format=Loose /nofetch > version.json; jq -r '"\(.Major).\(.Minor).\(.Patch).\(.CommitsSinceVersionSource)"' version.json > version.txt; cat version.txt
+                - 'set -euo pipefail; gitversion #{GIT_DIR} /output json /overrideconfig tag-prefix=''#{TAG_PREFIX}'' /overrideconfig semantic-version-format=Loose /nofetch > version.json; jq -r ''"\(.Major).\(.Minor).\(.Patch).\(.CommitsSinceVersionSource)"'' version.json > version.txt; cat version.txt'
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
@@ -776,6 +777,7 @@ pipelines:
       APP_NAME: TC_cRIO_Application
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: build-attempts
+      TAG_PREFIX: RT-v
     environment_variables:
       BUILD_TYPE: BUILD
       CRIO_HOST: ''
