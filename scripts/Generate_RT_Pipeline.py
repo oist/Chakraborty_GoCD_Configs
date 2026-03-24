@@ -13,6 +13,7 @@ from PipelineGenerationUtils import (
 from Constants import (
     Target,
     labviewDir,
+    rt_version_stage,
     rt_publish_to_feed_stage,
     rt_deploy_stage,
 )
@@ -140,6 +141,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             },
             "materials": materials,
             "stages": [
+                # version stage: runs GitVersion on the Linux agent, publishes version.txt
+                # as a build artifact before the Windows LabVIEW build jobs run.
+                rt_version_stage,
                 {
                     "build": {
                         "fetch_materials": "yes",

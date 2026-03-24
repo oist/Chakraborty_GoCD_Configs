@@ -282,6 +282,68 @@ gcli_build_task = {
     }
 }
 
+# Fetch task inserted into build_debug and build_release jobs to make
+# the version.txt artifact (produced by the version stage) available to
+# the LabVIEW build VI at #{GIT_DIR}\version\version.txt.
+rt_version_fetch_task = {
+    "fetch": {
+        "run_if": "passed",
+        "stage": "version",
+        "job": "compute_version",
+        "source": "version/version.txt",
+        "destination": "#{GIT_DIR}\\version",
+        "is_file": True,
+    }
+}
+
+# Linux-agent stage that runs GitVersion + jq, writes MAJOR.MINOR.PATCH.BUILD
+# to version.txt, and publishes it as a GoCD build artifact.
+# Must be listed before the `build` stage in the pipeline's stages list.
+rt_version_stage = {
+    "version": {
+        "fetch_materials": "yes",
+        "clean_workspace": "yes",
+        "approval": "success",
+        "jobs": {
+            "compute_version": {
+                # Agent must carry both the "jq" and "gitversion" resource tags.
+                "resources": ["linux", "jq", "gitversion"],
+                "timeout": 5,
+                "artifacts": [
+                    {
+                        "build": {
+                            "source": "version.txt",
+                            "destination": "version/",
+                        }
+                    }
+                ],
+                "tasks": [
+                    {
+                        "exec": {
+                            "run_if": "passed",
+                            "command": "bash",
+                            "arguments": [
+                                "-lc",
+                                (
+                                    "set -euo pipefail; "
+                                    # GitVersion reads the git history from the checked-out
+                                    # material and emits structured JSON to stdout.
+                                    "gitversion /output json /nofetch > version.json; "
+                                    # Extract the four version components and write all-dots
+                                    # format (e.g. 1.9.0.540) used by LabVIEW and git tagging.
+                                    "jq -r '\"\\(.Major).\\(.Minor).\\(.Patch).\\(.CommitsSinceVersionSource)\"' "
+                                    "version.json > version.txt; "
+                                    "cat version.txt"
+                                ),
+                            ],
+                        }
+                    }
+                ],
+            }
+        },
+    }
+}
+
 rt_publish_to_feed_stage = {
     "fetch_materials": "no",
     "clean_workspace": "yes",
@@ -291,6 +353,16 @@ rt_publish_to_feed_stage = {
             "resources": ["linux"],
             "timeout": 5,
             "tasks": [
+                {
+                    "fetch": {
+                        "run_if": "passed",
+                        "stage": "version",
+                        "job": "compute_version",
+                        "source": "version/version.txt",
+                        "destination": "version",
+                        "is_file": True,
+                    }
+                },
                 {
                     "fetch": {
                         "run_if": "passed",
@@ -349,10 +421,8 @@ rt_publish_to_feed_stage = {
                             "-lc",
                             (
                                 "set -euo pipefail; "
-                                'IPK="$(ls -1 artifacts/#{APP_NAME}_release/*.ipk | head -n1)"; '
-                                'BASE="$(basename "$IPK" .ipk)"; '
-                                "BUILD_VER_RAW=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
-                                "BUILD_VER=\"$(printf '%s\\n' \"$BUILD_VER_RAW\" | sed -E 's/^(.*)-([^-]+)$/\\1.\\2/')\"; "
+                                # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots)
+                                'BUILD_VER="$(cat version/version.txt)"; '
                                 "PT='#{PRERELEASE_TAG}'; "
                                 'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
                                 'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
@@ -385,6 +455,16 @@ rt_deploy_stage = {
                 {
                     "fetch": {
                         "run_if": "passed",
+                        "stage": "version",
+                        "job": "compute_version",
+                        "source": "version/version.txt",
+                        "destination": "version",
+                        "is_file": True,
+                    }
+                },
+                {
+                    "fetch": {
+                        "run_if": "passed",
                         "stage": "build",
                         "job": "build_#{DEPLOY_BUILD_TYPE}",
                         "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
@@ -399,14 +479,17 @@ rt_deploy_stage = {
                         "arguments": [
                             "-lc",
                             (
+                                # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots);
+                                # convert last dot to hyphen for opkg's MAJOR.MINOR.PATCH-BUILD format.
+                                'BUILD_VER="$(cat version/version.txt)"; '
+                                "OPKG_VER=\"$(printf '%s' \"$BUILD_VER\" | sed 's/\\.\\([^.]*\\)$/-\\1/')\"; "
                                 'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
                                 'BASE="$(basename "$IPK" .ipk)"; '
                                 "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
-                                "PKG_VER=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/^.*_([^_]*)_[^_]*$/\\1/')\"; "
-                                'echo "Deploying ${PKG_NAME}=${PKG_VER} from feed"; '
+                                'echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; '
                                 'sshpass -p "{{SECRET:[secrets.json][crio_ssh_password]}}" '
                                 "ssh -o StrictHostKeyChecking=no ${CRIO_USER}@${CRIO_HOST} "
-                                '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${PKG_VER}"'
+                                '"opkg update && opkg remove ${PKG_NAME} || true; opkg install ${PKG_NAME}=${OPKG_VER}"'
                             ),
                         ],
                     }

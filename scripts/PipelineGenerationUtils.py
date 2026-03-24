@@ -6,6 +6,7 @@ from Constants import (
     create_ppl_dir,
     gcli_rt_build_task,
     gci_recurse_1_task,
+    rt_version_fetch_task,
 )
 
 
@@ -49,7 +50,11 @@ def generateRTBuildJob(
     ]
 
     initialTasks = fpgaFetchTasks + [create_ppl_dir]
-    postTasks = vipkgTasks + [gci_recurse_1_task, gcli_rt_build_task]
+    postTasks = vipkgTasks + [
+        rt_version_fetch_task,
+        gci_recurse_1_task,
+        gcli_rt_build_task,
+    ]
 
     buildJobs = {}
     if not jobName in cachedBuildJobs:
