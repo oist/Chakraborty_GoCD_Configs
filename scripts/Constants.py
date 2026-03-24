@@ -584,7 +584,7 @@ gcli_rt_build_task = {
             "--verbose",
             f"{rt_builder_git_dir}\\LabVIEW_BuildTools\\RT\\Build_RT_Application.vi",
             "--",
-            "cRIO-9045-RT.lvproj",
+            "#{GIT_DIR}\\cRIO-9045-RT.lvproj",
             "RT CompactRIO Target",
             "RT Main Application",
             "%BUILD_TYPE%",
