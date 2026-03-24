@@ -328,7 +328,7 @@ rt_version_stage = {
                                     "set -euo pipefail; "
                                     # GitVersion reads the git history from the checked-out
                                     # material and emits structured JSON to stdout.
-                                    "gitversion /output json /nofetch > version.json; "
+                                    "gitversion /output json /overrideconfig tag-prefix='RT-v' /overrideconfig semantic-version-format=Loose /nofetch > version.json; "
                                     # Extract the four version components and write all-dots
                                     # format (e.g. 1.9.0.540) used by LabVIEW and git tagging.
                                     "jq -r '\"\\(.Major).\\(.Minor).\\(.Patch).\\(.CommitsSinceVersionSource)\"' "

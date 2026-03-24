@@ -144,7 +144,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - set -euo pipefail; gitversion /output json /nofetch > version.json; jq -r '"\(.Major).\(.Minor).\(.Patch).\(.CommitsSinceVersionSource)"' version.json > version.txt; cat version.txt
+                - set -euo pipefail; gitversion /output json /overrideconfig tag-prefix='RT-v' /overrideconfig semantic-version-format=Loose /nofetch > version.json; jq -r '"\(.Major).\(.Minor).\(.Patch).\(.CommitsSinceVersionSource)"' version.json > version.txt; cat version.txt
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
