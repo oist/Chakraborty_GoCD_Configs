@@ -149,7 +149,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                     "build": {
                         "fetch_materials": "yes",
                         "clean_workspace": "yes",
-                        "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
+                        "approval": "success",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
                         # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
                         "jobs": {
                             "build_debug": cachedBuildJobs["build_debug"],

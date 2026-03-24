@@ -303,7 +303,7 @@ rt_version_stage = {
     "version": {
         "fetch_materials": "yes",
         "clean_workspace": "yes",
-        "approval": "success",
+        "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
         "jobs": {
             "compute_version": {
                 # Agent must carry both the "jq" and "gitversion" resource tags.

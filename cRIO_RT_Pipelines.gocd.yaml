@@ -127,7 +127,7 @@ pipelines:
       version:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: success
+        approval: manual
         jobs:
           compute_version:
             resources:
@@ -149,7 +149,7 @@ pipelines:
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           build_debug: &id034
             timeout: 15
@@ -829,7 +829,7 @@ pipelines:
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
-        approval: manual
+        approval: success
         jobs:
           build_debug: *id034
           build_release: *id035
