@@ -445,19 +445,7 @@ rt_publish_to_feed_stage = {
                         "command": "bash",
                         "arguments": [
                             "-lc",
-                            (
-                                "set -euo pipefail; "
-                                # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots)
-                                'BUILD_VER="$(cat version/version.txt)"; '
-                                # PRERELEASE_TAG appended with a hyphen when non-empty
-                                # (e.g. "build-attempts" → RT-v1.2.3.456-build-attempts)
-                                "PT='#{PRERELEASE_TAG}'; "
-                                'TAG="RT-v${BUILD_VER}${PT:+-${PT}}"; '
-                                'REPO_URL="${GO_MATERIAL_URL_CHAKRABORTY_CRIO:?GO_MATERIAL_URL_CHAKRABORTY_CRIO is required}"; '
-                                'REV="${GO_REVISION_CHAKRABORTY_CRIO:?GO_REVISION_CHAKRABORTY_CRIO is required}"; '
-                                # Delegate git init/fetch/tag/push to the extracted script
-                                'bash builder_scripts/tag_rt_release.sh "$REPO_URL" "$REV" "$TAG"'
-                            ),
+                            "bash builder_scripts/tag_rt_release.sh '#{PRERELEASE_TAG}'",
                         ],
                     }
                 },
