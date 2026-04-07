@@ -349,7 +349,7 @@ rt_version_stage = {
                                 # Compute version via the builder-repo Python script.
                                 # The script runs inside the app repo checkout and writes
                                 # the computed version string to ../version.txt.
-                                "set -euo pipefail; cd '#{GIT_DIR}'; python3 ../Chakraborty_cRIO-Builder/scripts/compute_version.py --main-branch '#{MAIN_BRANCH}' --build-number-offset '#{BUILD_NUMBER_OFFSET}' --tag-prefix '#{TAG_PREFIX}' > ../version.txt",
+                                "set -euo pipefail; cd '#{GIT_DIR}'; python3 ../Chakraborty_cRIO-Builder/scripts/calculate_version.py --main-branch '#{MAIN_BRANCH}' --build-number-offset '#{BUILD_NUMBER_OFFSET}' --tag-prefix '#{TAG_PREFIX}' > ../version.txt",
                             ],
                         }
                     }
