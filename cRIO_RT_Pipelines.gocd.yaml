@@ -10,6 +10,8 @@ pipelines:
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: ''
       TAG_PREFIX: RT-v
+      MAIN_BRANCH: master
+      BUILD_NUMBER_OFFSET: '540'
     environment_variables:
       BUILD_TYPE: BUILD
       CRIO_HOST: ''
@@ -154,7 +156,7 @@ pipelines:
                 command: bash
                 arguments:
                 - -lc
-                - bash Chakraborty_cRIO-Builder/scripts/compute_version.sh '#{GIT_DIR}' '#{TAG_PREFIX}'
+                - set -euo pipefail; cd '#{GIT_DIR}'; python3 ../Chakraborty_cRIO-Builder/scripts/compute_version.py --main-branch '#{MAIN_BRANCH}' --build-number-offset '#{BUILD_NUMBER_OFFSET}' --tag-prefix '#{TAG_PREFIX}' > ../version.txt
     - build:
         fetch_materials: 'yes'
         clean_workspace: 'yes'
@@ -789,6 +791,8 @@ pipelines:
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: build-attempts
       TAG_PREFIX: RT-v
+      MAIN_BRANCH: master
+      BUILD_NUMBER_OFFSET: '540'
     environment_variables:
       BUILD_TYPE: BUILD
       CRIO_HOST: ''

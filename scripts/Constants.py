@@ -347,9 +347,10 @@ rt_version_stage = {
                             "command": "bash",
                             "arguments": [
                                 "-lc",
-                                # Delegate to compute_version.sh in the builder repo material.
-                                # Produces version.json and version.txt in the agent workdir.
-                                "bash Chakraborty_cRIO-Builder/scripts/compute_version.sh '#{GIT_DIR}' '#{TAG_PREFIX}'",
+                                # Compute version via the builder-repo Python script.
+                                # The script runs inside the app repo checkout and writes
+                                # the computed version string to ../version.txt.
+                                "set -euo pipefail; cd '#{GIT_DIR}'; python3 ../Chakraborty_cRIO-Builder/scripts/compute_version.py --main-branch '#{MAIN_BRANCH}' --build-number-offset '#{BUILD_NUMBER_OFFSET}' --tag-prefix '#{TAG_PREFIX}' > ../version.txt",
                             ],
                         }
                     }

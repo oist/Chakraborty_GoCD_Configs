@@ -136,6 +136,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 # Set to e.g. "build-attempts" to produce RT-v1.2.3.4-build-attempts.
                 "PRERELEASE_TAG": self.prerelease_tag,
                 "TAG_PREFIX": "RT-v",  # Prefix for git tags that GitVersion will use to determine version numbers
+                "MAIN_BRANCH": "master",
+                "BUILD_NUMBER_OFFSET": "540",
             },
             "environment_variables": {
                 "BUILD_TYPE": "BUILD",  # Can be MAJOR, MINOR, PATCH, or BUILD
