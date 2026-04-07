@@ -321,8 +321,7 @@ rt_version_stage = {
         "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
         "jobs": {
             "compute_version": {
-                # Agent must carry both the "jq" and "gitversion" resource tags.
-                "resources": ["linux", "jq", "gitversion"],
+                "resources": ["linux", "python3"],
                 "timeout": 5,
                 "artifacts": [
                     {

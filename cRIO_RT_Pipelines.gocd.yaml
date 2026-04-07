@@ -140,8 +140,7 @@ pipelines:
           compute_version:
             resources:
             - linux
-            - jq
-            - gitversion
+            - python3
             timeout: 5
             artifacts:
             - build:
