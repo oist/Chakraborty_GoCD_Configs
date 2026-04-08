@@ -427,7 +427,7 @@ pipelines:
                 stage: version
                 job: compute_version
                 source: version/version.txt
-                destination: '#{GIT_DIR}\version'
+                destination: '#{GIT_DIR}'
                 is_file: true
             - &id008
               exec:

@@ -299,14 +299,14 @@ gcli_build_task = {
 
 # Fetch task inserted into build_debug and build_release jobs to make
 # the version.txt artifact (produced by the version stage) available to
-# the LabVIEW build VI at #{GIT_DIR}\version\version.txt.
+# the LabVIEW build VI at #{GIT_DIR}\version.txt.
 rt_version_fetch_task = {
     "fetch": {
         "run_if": "passed",
         "stage": "version",
         "job": "compute_version",
         "source": "version/version.txt",
-        "destination": "#{GIT_DIR}\\version",
+        "destination": "#{GIT_DIR}",
         "is_file": True,
     }
 }
