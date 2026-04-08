@@ -575,7 +575,6 @@ gcli_rt_build_task = {
             "#{GIT_DIR}\\cRIO-9045-RT.lvproj",
             "RT CompactRIO Target",
             "RT Main Application",
-            "%BUILD_TYPE%",
             "%IS_DEBUG_BUILD%",
             "#{PRERELEASE_TAG}",
             "#{Dependency_PPL_Names}",

@@ -13,7 +13,6 @@ pipelines:
       MAIN_BRANCH: master
       BUILD_NUMBER_OFFSET: '540'
     environment_variables:
-      BUILD_TYPE: BUILD
       CRIO_HOST: ''
       CRIO_USER: admin
       PACKAGE_SERVER_UPLOAD_USER: pkgupload
@@ -453,7 +452,6 @@ pipelines:
                 - '#{GIT_DIR}\cRIO-9045-RT.lvproj'
                 - RT CompactRIO Target
                 - RT Main Application
-                - '%BUILD_TYPE%'
                 - '%IS_DEBUG_BUILD%'
                 - '#{PRERELEASE_TAG}'
                 - '#{Dependency_PPL_Names}'
@@ -793,7 +791,6 @@ pipelines:
       MAIN_BRANCH: master
       BUILD_NUMBER_OFFSET: '540'
     environment_variables:
-      BUILD_TYPE: BUILD
       CRIO_HOST: ''
       CRIO_USER: admin
       PACKAGE_SERVER_UPLOAD_USER: pkgupload
