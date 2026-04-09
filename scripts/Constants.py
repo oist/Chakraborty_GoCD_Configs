@@ -484,15 +484,6 @@ rt_deploy_stage = {
                         "destination": ".",
                     }
                 },
-                {
-                    "fetch": {
-                        "run_if": "passed",
-                        "stage": "build",
-                        "job": "build_#{DEPLOY_BUILD_TYPE}",
-                        "source": "#{APP_NAME}_#{DEPLOY_BUILD_TYPE}",
-                        "destination": "artifacts",
-                    }
-                },
                 find_files_task,
                 {
                     "exec": {
@@ -502,18 +493,12 @@ rt_deploy_stage = {
                             "-lc",
                             (
                                 "set -euo pipefail; "
-                                # version.txt contains MAJOR.MINOR.PATCH.BUILD (all dots);
-                                # convert last dot to hyphen for opkg's MAJOR.MINOR.PATCH-BUILD format.
-                                'BUILD_VER="$(cat version/version.txt)"; '
-                                "OPKG_VER=\"$(printf '%s' \"$BUILD_VER\" | sed 's/\\.\\([^.]*\\)$/-\\1/')\"; "
-                                # Extract package name by stripping _VERSION_BUILDTYPE suffix from IPK filename.
-                                'IPK="$(ls -1 artifacts/*.ipk | head -n1)"; '
-                                'BASE="$(basename "$IPK" .ipk)"; '
-                                "PKG_NAME=\"$(printf '%s\\n' \"$BASE\" | sed -E 's/_[^_]*_[^_]*$//')\"; "
-                                'echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; '
-                                # Inject password from GoCD secret as env var for deploy_crio.sh
+                                # Version file is produced by the version stage.
+                                'BUILD_VER="$(tr -d "\\r\\n" < version/version.txt)"; '
+                                'PKG_NAME="#{BASE_PACKAGE_NAME}-#{DEPLOY_BUILD_TYPE}"; '
+                                'echo "Deploying ${PKG_NAME}=${BUILD_VER} from feed"; '
                                 "export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; "
-                                'bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${OPKG_VER}"'
+                                'bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${BUILD_VER}"'
                             ),
                         ],
                     }

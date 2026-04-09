@@ -7,6 +7,7 @@ pipelines:
       LV_VERSION: '2019'
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
+      BASE_PACKAGE_NAME: crio-9045-rt
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: ''
       TAG_PREFIX: RT-v
@@ -765,19 +766,13 @@ pipelines:
                 source: builder_scripts
                 is_file: false
                 destination: .
-            - fetch:
-                run_if: passed
-                stage: build
-                job: build_#{DEPLOY_BUILD_TYPE}
-                source: '#{APP_NAME}_#{DEPLOY_BUILD_TYPE}'
-                destination: artifacts
             - *id010
             - exec:
                 run_if: passed
                 command: bash
                 arguments:
                 - -lc
-                - set -euo pipefail; BUILD_VER="$(cat version/version.txt)"; OPKG_VER="$(printf '%s' "$BUILD_VER" | sed 's/\.\([^.]*\)$/-\1/')"; IPK="$(ls -1 artifacts/*.ipk | head -n1)"; BASE="$(basename "$IPK" .ipk)"; PKG_NAME="$(printf '%s\n' "$BASE" | sed -E 's/_[^_]*_[^_]*$//')"; echo "Deploying ${PKG_NAME}=${OPKG_VER} from feed"; export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${OPKG_VER}"
+                - set -euo pipefail; BUILD_VER="$(tr -d "\r\n" < version/version.txt)"; PKG_NAME="#{BASE_PACKAGE_NAME}-#{DEPLOY_BUILD_TYPE}"; echo "Deploying ${PKG_NAME}=${BUILD_VER} from feed"; export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${BUILD_VER}"
   TC_cRIO_Application_build-attempts:
     group: cRIO
     parameters:
@@ -785,6 +780,7 @@ pipelines:
       LV_VERSION: '2019'
       Dependency_PPL_Names: '"Acquisition Objects.lvlibp" "Actor Framework.lvlibp" "ADG Requests.lvlibp" "AF_Messages-PPL.lvlibp" "Baumer OM70 Modbus.lvlibp" "Communication Server.lvlibp" "DataStore.lvlibp" "Fanuc Interface.lvlibp" "Fanuc Proxy.lvlibp" "Fanuc_TCP.lvlibp" "Fanuc_TCPProxy.lvlibp" "Measurement Results.lvlibp" "Motor Activity Logging.lvlibp" "MResDatatype.lvlibp" "PMX32-2QU.lvlibp" "OIST_Error.lvlibp" "PowerSupplies-Serial.lvlibp" "PowerSupplyInterface.lvlibp" "Request for Connection.lvlibp" "Serial Communication.lvlibp" "SQLite.lvlibp" "Status Reporting.lvlibp"'
       APP_NAME: TC_cRIO_Application
+      BASE_PACKAGE_NAME: crio-9045-rt
       DEPLOY_BUILD_TYPE: debug
       PRERELEASE_TAG: build-attempts
       TAG_PREFIX: RT-v
