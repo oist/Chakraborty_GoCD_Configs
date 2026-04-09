@@ -141,7 +141,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "BUILD_NUMBER_OFFSET": "540",
             },
             "environment_variables": {
-                "CRIO_HOST": "",  # Must be set when triggering deployment
+                "CRIO_HOST": "crio.chakraborty.lab",  # Default deployment host
                 "CRIO_USER": "admin",  # Default SSH user for cRIO
                 "PACKAGE_SERVER_UPLOAD_USER": "pkgupload",
                 "PACKAGE_SERVER_UPLOAD_KEY": "~/.ssh/id_rsa",
