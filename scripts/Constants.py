@@ -461,6 +461,10 @@ rt_deploy_stage = {
     "jobs": {
         "deploy_to_crio": {
             "resources": ["linux"],
+            "environment_variables": {
+                "CRIO_HOST": "crio.chakraborty.lab",
+                "CRIO_USER": "admin",
+            },
             "timeout": 5,
             "tasks": [
                 {
