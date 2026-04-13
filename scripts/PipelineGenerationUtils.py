@@ -58,7 +58,7 @@ def generateRTBuildJob(
 
     buildJobs = {}
     if not jobName in cachedBuildJobs:
-        target = Target.cRIO_Debug if isDebug else Target.cRIO_Release
+        target = Target.FPGA_Debug if isDebug else Target.FPGA_Release
         sourceDir = (
             "#{GIT_DIR}\\builds\\RT-Package-Debug"
             if isDebug
@@ -94,8 +94,8 @@ def generateRTBuildJob(
 def create_home_link_task(target):
     targetPathEnd = (
         "cRIO-9045\\Release_32\\home"
-        if target == Target.cRIO_Release
-        else "cRIO-9045\\Debug_32\\home" if target == Target.cRIO_Debug else None
+        if target == Target.FPGA_Release
+        else "cRIO-9045\\Debug_32\\home" if target == Target.FPGA_Debug else None
     )
     linkRelPath = "PPLs\\cRIO-9045\\home"
     return {

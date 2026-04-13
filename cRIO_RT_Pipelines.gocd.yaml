@@ -161,7 +161,7 @@ pipelines:
         jobs:
           build_debug: &id035
             timeout: 15
-            elastic_profile_id: labview_2019_x86_crio
+            elastic_profile_id: labview_2019_x86_fpga
             environment_variables:
               IS_DEBUG_BUILD: 1
             artifacts:
@@ -456,7 +456,7 @@ pipelines:
                 - '#{Dependency_PPL_Names}'
           build_release: &id036
             timeout: 15
-            elastic_profile_id: labview_2019_x86_crio
+            elastic_profile_id: labview_2019_x86_fpga
             environment_variables:
               IS_DEBUG_BUILD: 0
             artifacts:
