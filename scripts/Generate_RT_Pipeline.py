@@ -132,7 +132,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                 "Dependency_PPL_Names": dependencyQuotedList,
                 "APP_NAME": "TC_cRIO_Application",
                 "BASE_PACKAGE_NAME": "crio-9045-rt",
-                "DEPLOY_BUILD_TYPE": "debug",  # Which build to deploy: "debug" or "release"
+                "DEPLOY_BUILD_TYPE": "debug",  # Allowed values: "debug" or "release"
                 # PRERELEASE_TAG: appended to the git tag with a hyphen when non-empty.
                 # Set to e.g. "build-attempts" to produce RT-v1.2.3.4-build-attempts.
                 "PRERELEASE_TAG": self.prerelease_tag,

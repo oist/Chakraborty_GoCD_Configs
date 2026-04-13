@@ -464,6 +464,8 @@ rt_deploy_stage = {
             "environment_variables": {
                 "CRIO_HOST": "crio.chakraborty.lab",
                 "CRIO_USER": "admin",
+                # Mounted in the Linux deploy container via secret/volume.
+                "CRIO_KNOWN_HOSTS_FILE": "/run/secrets/crio_known_hosts",
             },
             "timeout": 5,
             "tasks": [
@@ -501,8 +503,11 @@ rt_deploy_stage = {
                                 'BUILD_VER="$(tr -d "\\r\\n" < version/version.txt)"; '
                                 'PKG_NAME="#{BASE_PACKAGE_NAME}-#{DEPLOY_BUILD_TYPE}"; '
                                 'echo "Deploying ${PKG_NAME}=${BUILD_VER} from feed"; '
-                                "export CRIO_SSH_PASSWORD='{{SECRET:[secrets.json][crio_ssh_password]}}'; "
-                                'bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${BUILD_VER}"'
+                                'KEY_FILE="$(mktemp)"; '
+                                'trap "rm -f ${KEY_FILE}" EXIT; '
+                                "umask 077; "
+                                "printf '%s\\n' '{{SECRET:[secrets.json][crio_deploy_ssh_private_key]}}' > \"${KEY_FILE}\"; "
+                                'bash builder_scripts/deploy_crio.sh "${CRIO_HOST}" "${CRIO_USER}" "${PKG_NAME}" "${BUILD_VER}" "${KEY_FILE}" "${CRIO_KNOWN_HOSTS_FILE}"'
                             ),
                         ],
                     }
