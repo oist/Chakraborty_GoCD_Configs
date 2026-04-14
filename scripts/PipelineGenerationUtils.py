@@ -1,3 +1,5 @@
+import json
+
 from FileUtils import directoryFromGitRepo
 from Constants import (
     Target,
@@ -39,9 +41,8 @@ def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
 
 
 def generateRTBuildJob(
-    lv_version, isDebug, pplTasks, vipkgTasks, fpgaSuffix, cachedBuildJobs
+    lv_version, isDebug, pplTasks, vipkgTasks, fpgaSuffix, cachedBuildJobs=None
 ):
-    jobName = f"build_{'debug' if isDebug else 'release'}"
 
     # FPGA fetch tasks (same bitfiles for both debug and release)
     fpgaFetchTasks = [
@@ -56,39 +57,45 @@ def generateRTBuildJob(
         gcli_rt_build_task,
     ]
 
-    buildJobs = {}
-    if not jobName in cachedBuildJobs:
-        target = Target.FPGA_Debug if isDebug else Target.FPGA_Release
-        sourceDir = (
-            "#{GIT_DIR}\\builds\\RT-Package-Debug"
-            if isDebug
-            else "#{GIT_DIR}\\builds\\RT-Package-Release"
-        )
-        cachedBuildJobs[jobName] = {
-            "timeout": 15,
-            "elastic_profile_id": profileId[lv_version][target],
-            "environment_variables": {
-                "IS_DEBUG_BUILD": 1 if isDebug else 0,
-            },
-            "artifacts": [
-                {
-                    "build": {
-                        "source": f"{sourceDir}\\*",
-                        "destination": (
-                            "#{APP_NAME}_" + ("debug" if isDebug else "release")
-                        ),
-                    }
+    target = Target.FPGA_Debug if isDebug else Target.FPGA_Release
+    sourceDir = (
+        "#{GIT_DIR}\\builds\\RT-Package-Debug"
+        if isDebug
+        else "#{GIT_DIR}\\builds\\RT-Package-Release"
+    )
+    buildJob = {
+        "timeout": 15,
+        "elastic_profile_id": profileId[lv_version][target],
+        "environment_variables": {
+            "IS_DEBUG_BUILD": 1 if isDebug else 0,
+        },
+        "artifacts": [
+            {
+                "build": {
+                    "source": f"{sourceDir}\\*",
+                    "destination": (
+                        "#{APP_NAME}_" + ("debug" if isDebug else "release")
+                    ),
                 }
-            ],
-            "tasks": initialTasks
-            + pplTasks
-            + [
-                create_home_link_task(target),
-            ]
-            + postTasks,
-        }
-    buildJobs = cachedBuildJobs.get(jobName)
-    return buildJobs
+            }
+        ],
+        "tasks": initialTasks
+        + pplTasks
+        + [
+            create_home_link_task(target),
+        ]
+        + postTasks,
+    }
+
+    if cachedBuildJobs is None:
+        return buildJob
+
+    # Alias jobs only when the full rendered content is identical.
+    jobSignature = json.dumps(buildJob, sort_keys=True, separators=(",", ":"))
+    if jobSignature not in cachedBuildJobs:
+        cachedBuildJobs[jobSignature] = buildJob
+
+    return cachedBuildJobs[jobSignature]
 
 
 def create_home_link_task(target):

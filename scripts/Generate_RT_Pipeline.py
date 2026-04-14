@@ -107,7 +107,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                     }
                 )
 
-        generateRTBuildJob(
+        build_debug = generateRTBuildJob(
             lv_version,
             True,
             pplDepTasks_debug,
@@ -115,7 +115,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             self.fpga_suffix,
             cachedBuildJobs,
         )
-        generateRTBuildJob(
+        build_release = generateRTBuildJob(
             lv_version,
             False,
             pplDepTasks_release,
@@ -159,8 +159,8 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
                         "approval": "success",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
                         # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
                         "jobs": {
-                            "build_debug": cachedBuildJobs["build_debug"],
-                            "build_release": cachedBuildJobs["build_release"],
+                            "build_debug": build_debug,
+                            "build_release": build_release,
                         },
                     }
                 },
