@@ -186,54 +186,51 @@ if __name__ == "__main__":
     baseDir = os.path.join(Path.cwd(), "cloned")
     gitUrl = "git@github.com:oist/Chakraborty_cRIO"
 
-    # Clone the cRIO repository
+    # Clone/update the cRIO repository once, then re-checkout per branch
+    # while reading branch-specific dependency metadata.
     outputDir = directoryFromGitRepo(gitUrl, baseDir)
     forceUpdate = False
     cloneRepo(gitUrl, outputDir, forceUpdate, timeout=20)
 
-    # Read dependencies
-    mkFilePath = find_file("cRIO-9045-RT.mk", outputDir)
-    if mkFilePath is None:
-        raise RuntimeError(
-            f"Could not find cRIO-9045-RT.mk in cloned repository at {outputDir}"
-        )
-    depsNames = parseMkFile(mkFilePath, r"RT\+Main\+Application_Deps")
-    depsList = list(map(sanitizeForPipelineName, depsNames))
-
-    vipkgReqsPath = find_file("cRIO-9045-RT.vipm_reqs", outputDir)
-    vipkgUrls = None
-    if vipkgReqsPath != None:
-        vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
-
-    pipelineTemplateValue = {
-        "gitUrl": gitUrl,
-        "Dependencies": depsList,
-        "Dependency PPL Names": depsNames,
-        "minLabVIEWVersion": "2019",
-        "vipkgUrls": vipkgUrls,
-        "branch": "master",
-        # Switch to using the copied bitfiles rather than compiled ones
-        # Comment this to use the compilation pipelines
-        "fpga_suffix": "_noncompile",
-    }
-
     branches = {
         "TC_cRIO_Application": "master",
         "TC_cRIO_Application_build-attempts": "build-attempts",
+        "TC_cRIO_Application_psu-switch": "psu-switch",
     }
 
-    pipelineDefinitionContent = {
-        pipeline_name: PipelineDefinition_RTapp(
+    pipelineDefinitionContent = {}
+    for pipeline_name, branch in branches.items():
+        cloneRepo(gitUrl, outputDir, forceUpdate=False, timeout=20, branch=branch)
+
+        mkFilePath = find_file("cRIO-9045-RT.mk", outputDir)
+        if mkFilePath is None:
+            raise RuntimeError(
+                f"Could not find cRIO-9045-RT.mk in cloned repository at {outputDir}"
+            )
+        depsNames = parseMkFile(mkFilePath, r"RT\+Main\+Application_Deps")
+        depsList = list(map(sanitizeForPipelineName, depsNames))
+
+        vipkgReqsPath = find_file("cRIO-9045-RT.vipm_reqs", outputDir)
+        vipkgUrls = None
+        if vipkgReqsPath != None:
+            vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
+
+        pipelineDefinitionContent[pipeline_name] = PipelineDefinition_RTapp(
             {
                 pipeline_name: {
-                    **pipelineTemplateValue,
+                    "gitUrl": gitUrl,
+                    "Dependencies": depsList,
+                    "Dependency PPL Names": depsNames,
+                    "minLabVIEWVersion": "2019",
+                    "vipkgUrls": vipkgUrls,
                     "branch": branch,
+                    # Switch to using the copied bitfiles rather than compiled ones
+                    # Comment this to use the compilation pipelines
+                    "fpga_suffix": "_noncompile",
                     "prerelease_tag": branch if branch != "master" else "",
                 }
             }
         )
-        for pipeline_name, branch in branches.items()
-    }
 
     # Convert the list of pipelines into a YAML object
     yamlObject = buildYamlObject(pipelineDefinitionContent)
