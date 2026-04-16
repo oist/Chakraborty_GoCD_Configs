@@ -750,7 +750,7 @@ pipelines:
             - linux
             environment_variables:
               CRIO_HOST: crio.chakraborty.lab
-              CRIO_USER: admin
+              CRIO_USER: crio-deploy
               CRIO_KNOWN_HOSTS_FILE: /run/secrets/crio_known_hosts
             timeout: 5
             tasks:

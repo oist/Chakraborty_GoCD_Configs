@@ -463,7 +463,7 @@ rt_deploy_stage = {
             "resources": ["linux"],
             "environment_variables": {
                 "CRIO_HOST": "crio.chakraborty.lab",
-                "CRIO_USER": "admin",
+                "CRIO_USER": "crio-deploy",
                 # Mounted in the Linux deploy container via secret/volume.
                 "CRIO_KNOWN_HOSTS_FILE": "/run/secrets/crio_known_hosts",
             },
