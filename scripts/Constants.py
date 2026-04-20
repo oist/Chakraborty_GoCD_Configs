@@ -521,18 +521,14 @@ rt_deploy_stage = {
 fpga_build_task = {
     "exec": {
         "run_if": "passed",
-        "command": "LabVIEWCLI.exe",
+        "command": "powershell",
         "arguments": [
-            "-OperationName",
-            "ExecuteBuildSpec",
-            "-Verbosity",
-            "Detailed",
-            "-ProjectPath",
-            '"$PWD\\#{PROJECT_PATH}"',
-            "-TargetName",
-            "#{FPGA_TARGET_NAME}",
-            "-BuildSpecName",
-            "#{FPGA_BUILDSPEC_NAME}",
+            "-NoProfile",
+            "-Command",
+            '$projectPath = (Resolve-Path "#{PROJECT_PATH}").Path; '
+            'if (-not $projectPath) { throw "Project file not found: #{PROJECT_PATH}" }; '
+            '& "LabVIEWCLI.exe" -OperationName ExecuteBuildSpec -Verbosity Detailed -ProjectPath $projectPath -TargetName "#{FPGA_TARGET_NAME}" -BuildSpecName "#{FPGA_BUILDSPEC_NAME}"; '
+            "exit $LASTEXITCODE",
         ],
     }
 }
