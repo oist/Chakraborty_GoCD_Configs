@@ -547,11 +547,10 @@ script_fpga_version_task = {
             "--lv-ver",
             "#{LV_VERSION}",
             "--verbose",
-            "Builder\\Script_FPGA_Version_VI_Wrapper.vi",
+            f"{rt_builder_git_dir}\\LabVIEW_BuildTools\\FPGA\\Script_FPGA_Version_VI_Wrapper.vi",
             "--",
-            "#{VERSION_VI_PATH}",
+            "#{GIT_DIR}\\#{VERSION_VI_PATH}",
         ],
-        "working_directory": "#{GIT_DIR}",
     }
 }
 

@@ -72,10 +72,9 @@ pipelines:
                 - --lv-ver
                 - '#{LV_VERSION}'
                 - --verbose
-                - Builder\Script_FPGA_Version_VI_Wrapper.vi
+                - Chakraborty_cRIO-Builder\LabVIEW_BuildTools\FPGA\Script_FPGA_Version_VI_Wrapper.vi
                 - --
-                - '#{VERSION_VI_PATH}'
-                working_directory: '#{GIT_DIR}'
+                - '#{GIT_DIR}\#{VERSION_VI_PATH}'
             - &id006
               exec:
                 run_if: passed
