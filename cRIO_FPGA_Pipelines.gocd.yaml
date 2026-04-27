@@ -9,7 +9,7 @@ pipelines:
       FPGA_BUILDSPEC_NAME: FPGA Main
       PROJECT_PATH: Chakraborty_cRIO\cRIO-9045-RT.lvproj
       VERSION_VI_PATH: FPGA/FPGA Version Number.vi
-      FPGA_COMPILE_HOSTNAME: fmu-build.chakraborty.lab
+      FPGA_COMPILE_HOSTNAME: build.fmu.unit.oist.jp
       FPGA_COMPILE_USERNAME: fpga_builder
       FPGA_COMPILE_PASSWORD: '{{SECRET:[secrets.json][fpga_builder_password]}}'
     materials:
@@ -103,7 +103,7 @@ pipelines:
       FPGA_BUILDSPEC_NAME: Main
       PROJECT_PATH: Chakraborty_cRIO\cRIO-9045-RT.lvproj
       VERSION_VI_PATH: FPGA Expansion/FPGA Expansion Version Number.vi
-      FPGA_COMPILE_HOSTNAME: fmu-build.chakraborty.lab
+      FPGA_COMPILE_HOSTNAME: build.fmu.unit.oist.jp
       FPGA_COMPILE_USERNAME: fpga_builder
       FPGA_COMPILE_PASSWORD: '{{SECRET:[secrets.json][fpga_builder_password]}}'
     materials:
