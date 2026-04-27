@@ -34,6 +34,8 @@ pipelines:
           build_fpga:
             timeout: 90
             elastic_profile_id: labview_2019_x86_fpga
+            environment_variables:
+              FPGA_BUILDER_PASSWORD: '{{SECRET:[secrets.json][fpga_builder_password]}}'
             artifacts:
             - build:
                 source: FPGA Bitfiles/*.lvbitx
@@ -93,7 +95,6 @@ pipelines:
                 - '#{FPGA_BUILDSPEC_NAME}'
                 - '#{FPGA_COMPILE_HOSTNAME}'
                 - '#{FPGA_COMPILE_USERNAME}'
-                - '#{FPGA_COMPILE_PASSWORD}'
   cRIO_FPGA_Expansion:
     group: cRIO
     parameters:
@@ -123,6 +124,8 @@ pipelines:
           build_fpga:
             timeout: 90
             elastic_profile_id: labview_2019_x86_fpga
+            environment_variables:
+              FPGA_BUILDER_PASSWORD: '{{SECRET:[secrets.json][fpga_builder_password]}}'
             artifacts:
             - build:
                 source: FPGA Bitfiles/*.lvbitx

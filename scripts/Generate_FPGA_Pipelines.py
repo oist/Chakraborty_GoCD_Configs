@@ -111,6 +111,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                 "elastic_profile_id": profileId[self.lv_version][
                                     targetName
                                 ],
+                                "environment_variables": {
+                                    "FPGA_BUILDER_PASSWORD": "{{SECRET:[secrets.json][fpga_builder_password]}}",
+                                },
                                 "artifacts": [
                                     {
                                         "build": {

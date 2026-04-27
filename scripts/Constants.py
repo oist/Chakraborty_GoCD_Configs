@@ -533,7 +533,6 @@ fpga_build_task = {
             "#{FPGA_BUILDSPEC_NAME}",
             "#{FPGA_COMPILE_HOSTNAME}",
             "#{FPGA_COMPILE_USERNAME}",
-            "#{FPGA_COMPILE_PASSWORD}",
         ],
     }
 }
