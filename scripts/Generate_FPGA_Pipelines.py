@@ -89,6 +89,9 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                 "FPGA_BUILDSPEC_NAME": self.buildSpecName,
                 "PROJECT_PATH": f"{gitDirName}\\{self.projectFileName}",
                 "VERSION_VI_PATH": self.version_vi_path,
+                "FPGA_COMPILE_HOSTNAME": "fmu-build.chakraborty.lab",
+                "FPGA_COMPILE_USERNAME": "fpga_builder",
+                "FPGA_COMPILE_PASSWORD": "{{SECRET:[secrets.json][fpga_builder_password]}}",
             },
             "materials": {**materials, rt_builder_git_dir: rt_builder_material},
             "stages": [

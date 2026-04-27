@@ -531,6 +531,9 @@ fpga_build_task = {
             "#{PROJECT_PATH}",
             "#{FPGA_TARGET_NAME}",
             "#{FPGA_BUILDSPEC_NAME}",
+            "#{FPGA_COMPILE_HOSTNAME}",
+            "#{FPGA_COMPILE_USERNAME}",
+            "#{FPGA_COMPILE_PASSWORD}",
         ],
     }
 }
