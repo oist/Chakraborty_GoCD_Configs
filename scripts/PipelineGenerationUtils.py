@@ -40,6 +40,20 @@ def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
     return materials
 
 
+def aliasable(obj, cache):
+    """Deduplicate obj by content so PyYAML can emit an anchor/alias for it.
+
+    Returns the earlier object stored under the same JSON signature if one
+    exists, rather than obj itself, so that repeated calls with equal content
+    share a single object identity (and a single YAML anchor) instead of each
+    producing its own inlined copy.
+    """
+    signature = json.dumps(obj, sort_keys=True, separators=(",", ":"))
+    if signature not in cache:
+        cache[signature] = obj
+    return cache[signature]
+
+
 def generateRTBuildJob(
     lv_version, isDebug, pplTasks, vipkgTasks, fpgaSuffix, cachedBuildJobs=None
 ):
@@ -90,12 +104,7 @@ def generateRTBuildJob(
     if cachedBuildJobs is None:
         return buildJob
 
-    # Alias jobs only when the full rendered content is identical.
-    jobSignature = json.dumps(buildJob, sort_keys=True, separators=(",", ":"))
-    if jobSignature not in cachedBuildJobs:
-        cachedBuildJobs[jobSignature] = buildJob
-
-    return cachedBuildJobs[jobSignature]
+    return aliasable(buildJob, cachedBuildJobs)
 
 
 def create_home_link_task(target):
