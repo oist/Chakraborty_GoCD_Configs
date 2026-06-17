@@ -192,11 +192,7 @@ if __name__ == "__main__":
     forceUpdate = False
     cloneRepo(gitUrl, outputDir, forceUpdate, timeout=20)
 
-    branches = {
-        "TC_cRIO_Application": "master",
-        "TC_cRIO_Application_build-attempts": "build-attempts",
-        "TC_cRIO_Application_psu-switch": "psu-switch",
-    }
+    branches = {"TC_cRIO_Application": "master"}
 
     pipelineDefinitionContent = {}
     for pipeline_name, branch in branches.items():
