@@ -11,7 +11,6 @@ import YamlGenerator as YG
 from YamlGenerator import (
     PipelineDefinition,
     buildYamlObject,
-    findNonDefaultLVPipelines,
     updateMinimumVersions,
     validateCrioOnlyDependencies,
 )
@@ -114,41 +113,97 @@ class PipelineDefinitionTests(unittest.TestCase):
         self.assertIn("*id", out)
 
 
-class FindNonDefaultLVPipelinesTests(unittest.TestCase):
-    def setUp(self):
-        YG.dependencyMaterials.clear()
-
-    def test_filters_to_non_default_versions(self):
-        pdDefault = PipelineDefinition("Ap", _values("A.lvlibp"))
-        pdNonDefault = PipelineDefinition(
-            "Bp", _values("B.lvlibp", minLabVIEWVersion="2021")
-        )
-        names = findNonDefaultLVPipelines(
-            {"Ap": pdDefault, "Bp": pdNonDefault}, Constants.DEFAULT_LV_VERSION
-        )
-        self.assertEqual(set(names), {"Bp"})
-
-
 class UpdateMinimumVersionsTests(unittest.TestCase):
     def setUp(self):
         YG.dependencyMaterials.clear()
 
+    def _pipeline(self, name, minVersion=None, deps=None):
+        pplName = name.rstrip("p") + ".lvlibp"
+        depPplNames = (
+            [d.rstrip("p") + ".lvlibp" for d in deps] if deps is not None else None
+        )
+        return PipelineDefinition(
+            name,
+            _values(
+                pplName,
+                minLabVIEWVersion=minVersion,
+                Dependencies=deps,
+                DependencyPPLNames=depPplNames,
+            ),
+        )
+
     def test_propagates_non_default_version_to_dependents(self):
-        pdDefault = PipelineDefinition("Ap", _values("A.lvlibp"))
-        pdNonDefault = PipelineDefinition(
-            "Bp", _values("B.lvlibp", minLabVIEWVersion="2021")
-        )
-        pdDependent = PipelineDefinition(
-            "Cp",
-            _values("C.lvlibp", Dependencies=["Bp"], DependencyPPLNames=["B.lvlibp"]),
-        )
-        pipelineDict = {"Ap": pdDefault, "Bp": pdNonDefault, "Cp": pdDependent}
+        pipelineDict = {
+            "Ap": self._pipeline("Ap"),
+            "Bp": self._pipeline("Bp", minVersion="2021"),
+            "Cp": self._pipeline("Cp", deps=["Bp"]),
+        }
 
         updated = updateMinimumVersions(pipelineDict)
 
         self.assertIsNone(updated["Ap"].minVersion)
         self.assertEqual(updated["Bp"].minVersion, "2021")
         self.assertEqual(updated["Cp"].minVersion, "2021")
+
+    def test_propagates_transitively_through_a_chain(self):
+        # D -> C -> B(2021): both C and B's caller D must be lifted to 2021.
+        pipelineDict = {
+            "Bp": self._pipeline("Bp", minVersion="2021"),
+            "Cp": self._pipeline("Cp", deps=["Bp"]),
+            "Dp": self._pipeline("Dp", deps=["Cp"]),
+        }
+
+        updateMinimumVersions(pipelineDict)
+
+        self.assertEqual(pipelineDict["Cp"].minVersion, "2021")
+        self.assertEqual(pipelineDict["Dp"].minVersion, "2021")
+
+    def test_takes_highest_among_multiple_dependencies(self):
+        # A caller depending on both a 2019 and a 2021 library is forced to 2021.
+        pipelineDict = {
+            "Ap": self._pipeline("Ap", minVersion="2019"),
+            "Bp": self._pipeline("Bp", minVersion="2021"),
+            "Cp": self._pipeline("Cp", deps=["Ap", "Bp"]),
+        }
+
+        updateMinimumVersions(pipelineDict)
+
+        self.assertEqual(pipelineDict["Cp"].minVersion, "2021")
+
+    def test_explicit_lower_minimum_is_overridden_by_dependency(self):
+        # A caller that pins 2019 but depends on a 2021 library is lifted to 2021.
+        pipelineDict = {
+            "Bp": self._pipeline("Bp", minVersion="2021"),
+            "Cp": self._pipeline("Cp", minVersion="2019", deps=["Bp"]),
+        }
+
+        updateMinimumVersions(pipelineDict)
+
+        self.assertEqual(pipelineDict["Cp"].minVersion, "2021")
+
+    def test_default_pipeline_with_default_dependency_stays_none(self):
+        pipelineDict = {
+            "Ap": self._pipeline("Ap"),
+            "Bp": self._pipeline("Bp", deps=["Ap"]),
+        }
+
+        updateMinimumVersions(pipelineDict)
+
+        self.assertIsNone(pipelineDict["Ap"].minVersion)
+        self.assertIsNone(pipelineDict["Bp"].minVersion)
+
+    def test_dependency_cycle_terminates_and_lifts_both(self):
+        # A <-> B cycle where B requires 2021; the fixpoint must terminate and
+        # raise both to 2021 rather than loop forever.
+        pipelineDict = {
+            "Ap": self._pipeline("Ap", deps=["Bp"]),
+            "Bp": self._pipeline("Bp", minVersion="2021", deps=["Ap"]),
+        }
+
+        updateMinimumVersions(pipelineDict)
+
+        self.assertEqual(pipelineDict["Ap"].minVersion, "2021")
+        self.assertEqual(pipelineDict["Bp"].minVersion, "2021")
 
     def test_no_nondefault_pipelines_returns_dict_unchanged(self):
         pipelineDict = {"Ap": PipelineDefinition("Ap", _values("A.lvlibp"))}

@@ -18,6 +18,7 @@ from Constants import (
     crio_ppl_targets,
     is_windows,
     DEFAULT_LV_VERSION,
+    highest_lv_version,
 )
 from PipelineGenerationUtils import (
     generateMaterials,
@@ -266,53 +267,50 @@ def buildYamlObject(pipelineDictionary):
     return buildYamlObjectBase(pipelineDictionary, common=getCommonSection())
 
 
-def findNonDefaultLVPipelines(pipelineDictionary, defaultVersion):
-    def myfilter(item):
-        return item[1].minVersion is not None and item[1].minVersion != defaultVersion
-
-    return dict(filter(myfilter, pipelineDictionary.items())).keys()
-
-
 def updateMinimumVersions(pipelineDictionary):
-    # This code only works for 2 versions. With multiple non-default versions, needs more care
-    nonDefaultPipelineNames = findNonDefaultLVPipelines(
-        pipelineDictionary, DEFAULT_LV_VERSION
-    )
-    if len(nonDefaultPipelineNames) == 0:
-        return pipelineDictionary
-    pipelinesToUpdate = set(nonDefaultPipelineNames)
-    newElements = []
+    # A pipeline must build with a LabVIEW version at least as high as every
+    # version required transitively by its dependencies: a PPL built in a newer
+    # LabVIEW cannot be consumed by an older build. So each pipeline's effective
+    # version is the highest of its own minimum and those of all its
+    # dependencies, and that version is forced onto the caller.
+    def resolvedVersion(pipeline):
+        if pipeline.minVersion is not None:
+            return pipeline.minVersion
+        return DEFAULT_LV_VERSION
 
-    def dependsOnElems(dependenciesToInclude):
-        def innerFilter(item):
-            itemDependencies = item[1].dependencies
-            if itemDependencies is None:
-                return False
-            return (
-                set(itemDependencies) & set(dependenciesToInclude)
-                and item[0] not in dependenciesToInclude
+    effective = {name: resolvedVersion(p) for name, p in pipelineDictionary.items()}
+
+    # Fixpoint: repeatedly lift each pipeline to the highest version among itself
+    # and its dependencies until nothing changes. Versions only ever rise and are
+    # bounded by the highest version in play, so this terminates even if the
+    # dependency graph contains a cycle. Dependencies that aren't generated
+    # pipelines (absent from the dict) contribute nothing and are skipped.
+    changed = True
+    while changed:
+        changed = False
+        for name, pipeline in pipelineDictionary.items():
+            if pipeline.dependencies is None:
+                continue
+            candidates = [effective[name]]
+            candidates.extend(
+                effective[dep] for dep in pipeline.dependencies if dep in effective
             )
+            highest = highest_lv_version(candidates)
+            if highest != effective[name]:
+                effective[name] = highest
+                changed = True
 
-        return innerFilter
-
-    while True:
-        newElements = dict(
-            filter(dependsOnElems(pipelinesToUpdate), pipelineDictionary.items())
-        ).keys()
-        pipelinesToUpdate.update(newElements)
-        if len(newElements) == 0:
-            break
-    print("Updating target LabVIEW versions for " + str(pipelinesToUpdate))
-
-    def updateVers(name, pipeline):
-        if name in pipelinesToUpdate:
-            pipeline.minVersion = "2021"
-        return pipeline
-
-    # Seems like the comprehension here forces the function to iterate over the items
-    # Calling the function without creating the dictionary leaves it unexecuted
-    newDict = {k: updateVers(k, v) for k, v in pipelineDictionary.items()}
-    return newDict
+    # Only bump above the default: pipelines that resolve to the default keep
+    # their existing minVersion (typically None) so the generated YAML is
+    # unchanged for them.
+    updated = []
+    for name, pipeline in pipelineDictionary.items():
+        if effective[name] != resolvedVersion(pipeline):
+            pipeline.minVersion = effective[name]
+            updated.append(name)
+    if updated:
+        print("Updating target LabVIEW versions for " + str(set(updated)))
+    return pipelineDictionary
 
 
 def validateCrioOnlyDependencies(pipelineDictionary):

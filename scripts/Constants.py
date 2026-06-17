@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 
 # Simple constants
@@ -10,6 +11,46 @@ vipkg_plugin_configuration = {
 
 # LabVIEW version used when a pipeline/library doesn't pin a specific one.
 DEFAULT_LV_VERSION = "2019"
+
+
+_version_token = re.compile(r"\d+|\D+")
+
+
+def version_sort_key(version):
+    """Natural-sort key ordering LabVIEW version strings low-to-high.
+
+    LabVIEW has used several naming schemes: dotted (8.0, 8.2), year (2015,
+    2019), year + service pack (2019SP1) and year + quarter (2026Q1, 2026Q3).
+    Splitting into alternating numeric / non-numeric runs and comparing the
+    numeric runs as integers orders them all correctly:
+
+        8.0 < 8.2 < 2015 < 2019 < 2019SP1 < 2026Q1 < 2026Q3
+
+    A bare year sorts before its service-pack / quarter variants because the
+    shorter key compares as smaller (2019 < 2019SP1). Each token carries a type
+    rank (numeric runs 0, text runs 1) so numeric and text runs are never
+    compared against each other.
+    """
+    key = []
+    for token in _version_token.findall(version):
+        if token.isdigit():
+            key.append((0, int(token)))
+        else:
+            key.append((1, token))
+    return key
+
+
+def highest_lv_version(versions):
+    """Return the highest LabVIEW version from an iterable of version strings.
+
+    Ordering follows version_sort_key, so the historical naming schemes compare
+    correctly. Returns None for an empty iterable. Isolated here so the ordering
+    can evolve without touching callers.
+    """
+    versions = list(versions)
+    if not versions:
+        return None
+    return max(versions, key=version_sort_key)
 
 # Names defined in the Zip_PPL_Builder config file
 zipPipelineName = "Zip_PPL_Builder"
