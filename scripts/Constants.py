@@ -81,8 +81,6 @@ targetPathEnds = {
     "Windows_64_Debug": "Windows\\Debug_64",
     "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
     "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
-    "cRIO_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
-    "cRIO_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
     "FPGA_Release": "cRIO-9045\\Release_32\\home\\lvuser\\natinst\\bin",
     "FPGA_Debug": "cRIO-9045\\Debug_32\\home\\lvuser\\natinst\\bin",
 }

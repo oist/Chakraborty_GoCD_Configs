@@ -7,7 +7,7 @@ import time
 import yaml
 
 from GitTools import cloneRepo
-from FileUtils import find_file, pushd, directoryFromGitRepo
+from FileUtils import find_file, directoryFromGitRepo
 from YamlGenerator import PipelineDefinition, buildYamlObject, updateMinimumVersions
 from NameTransformers import (
     sanitizeForPipelineName,
@@ -158,9 +158,6 @@ if __name__ == "__main__":
     flat_dict = {k: v for d in list_dicts for k, v in d.items()}
     # printFlatDict(flat_dict)
     # print("------")
-    no_deps_entries = {k: v for k, v in flat_dict.items() if v["Dependencies"] == None}
-    deps_entries = {k: v for k, v in flat_dict.items() if v["Dependencies"] != None}
-
     pipelineDefinitionContent = []
     for k, v in flat_dict.items():
         pipelineDefinitionContent.append({k: PipelineDefinition(k, v)})

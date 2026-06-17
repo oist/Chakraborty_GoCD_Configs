@@ -19,43 +19,6 @@ from Constants import (
 
 cachedMaterials = {}
 
-mklink_fpga_tasks = {
-    "debug": {
-        "exec": {
-            "run_if": "passed",
-            "command": "powershell",
-            "arguments": [
-                "-Command",
-                "New-Item",
-                "-Force",
-                "-ItemType",
-                "Junction",
-                "-Path",
-                "PPLs\\cRIO-9045\\home",  # relative path?
-                "-Target",
-                f'\\"C:\\LabVIEW Sources\\PPLs\\cRIO-9045\\Debug_32\\home\\"',
-            ],
-        }
-    },
-    "release": {
-        "exec": {
-            "run_if": "passed",
-            "command": "powershell",
-            "arguments": [
-                "-Command",
-                "New-Item",
-                "-Force",
-                "-ItemType",
-                "Junction",
-                "-Path",
-                "PPLs\\cRIO-9045\\home",  # relative path?
-                "-Target",
-                f'\\"C:\\LabVIEW Sources\\PPLs\\cRIO-9045\\Release_32\\home\\"',
-            ],
-        }
-    },
-}
-
 
 class PipelineDefinition_FPGA(yaml.YAMLObject):
     yaml_tag = "!PipelineDefinition"
@@ -124,7 +87,6 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
                                 ],
                                 "tasks": [
                                     create_ppl_dir,
-                                    # mklink_fpga_tasks["debug"],
                                     ls_task,
                                     gci_recurse_1_task,
                                     script_fpga_version_task,
