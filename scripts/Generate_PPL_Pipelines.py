@@ -29,25 +29,24 @@ def get_libraries_and_urls(path):
     print("Getting libraries and URLs from file: " + str(path))
     matcher = re.compile(r"^(.*?)_REPO\s?:=\s?(.*)$")
     repos = {}
-    file = open(path)
-    for line in file.readlines():
-        if line.startswith("#"):
-            continue
-        line = line.strip()
-        match = matcher.match(line)
-        if match:
-            libraryName = match.group(1)
-            repoUrl = match.group(2)
-            pipelineName = sanitizeForPipelineName(libraryName)
-            userLibraryName = parseMkfileTargetToName(libraryName)
-            if repoUrl.startswith("oist/"):
-                repoUrl = "git@github.com:" + repoUrl
-            repos[pipelineName] = {
-                "url": repoUrl,
-                "filename": userLibraryName + ".lvlib",
-            }
+    with open(path) as file:
+        for line in file:
+            if line.startswith("#"):
+                continue
+            line = line.strip()
+            match = matcher.match(line)
+            if match:
+                libraryName = match.group(1)
+                repoUrl = match.group(2)
+                pipelineName = sanitizeForPipelineName(libraryName)
+                userLibraryName = parseMkfileTargetToName(libraryName)
+                if repoUrl.startswith("oist/"):
+                    repoUrl = "git@github.com:" + repoUrl
+                repos[pipelineName] = {
+                    "url": repoUrl,
+                    "filename": userLibraryName + ".lvlib",
+                }
 
-    file.close()
     print("Parsed repository list")
     print()
     return repos
@@ -100,9 +99,8 @@ def handleUrl(gitUrl, libNames, baseDir):
         PPL_Name = libName + "p"
         minLabVIEWVersion = None
         if minVerPath is not None:
-            f = open(minVerPath, "r")
-            content = f.read()
-            f.close()
+            with open(minVerPath, "r") as f:
+                content = f.read()
             if content in allowedVersionStrings:
                 minLabVIEWVersion = content
             else:
@@ -131,13 +129,8 @@ def handleUrl(gitUrl, libNames, baseDir):
     return retVals
 
 
-def printFlatDict(flat_dict):
-    for key, value in flat_dict.items():
-        print(key, ":", value)
-
-
 if __name__ == "__main__":
-    this_dir = os.path.dirname((lambda x: x).__code__.co_filename)
+    this_dir = os.path.dirname(os.path.abspath(__file__))
     repoListPath = Path(this_dir, "repoList.txt")
     entries = get_libraries_and_urls(repoListPath)
     unique_repo_urls = set(d["url"] for d in entries.values())
@@ -159,8 +152,6 @@ if __name__ == "__main__":
     toc_end = time.perf_counter()
     print(f"Cloned all repositories in {toc_end-tic_start:0.2f} seconds")
     pipelineEntriesByName = dict(itertools.chain.from_iterable(perRepoEntries))
-    # printFlatDict(pipelineEntriesByName)
-    # print("------")
     # Sort to ensure the same order on repeated execution
     # This also helps reduce git diffs
     pipelineDict = dict(

@@ -28,6 +28,7 @@ from PipelineGenerationUtils import (
     generateVipkgTask,
     quoteDependencyNames,
     aliasable,
+    buildYamlObject as buildYamlObjectBase,
 )
 
 
@@ -262,12 +263,7 @@ class PipelineDefinition(BasePipelineDefinition):
 
 
 def buildYamlObject(pipelineDictionary):
-    full_yaml_object = {
-        "format_version": 10,
-        "common": getCommonSection(),
-        "pipelines": pipelineDictionary,
-    }
-    return full_yaml_object
+    return buildYamlObjectBase(pipelineDictionary, common=getCommonSection())
 
 
 def findNonDefaultLVPipelines(pipelineDictionary, defaultVersion):

@@ -11,7 +11,7 @@ def sanitizeForPipelineName(target: str) -> str:
     # Must be "only letters, numbers, hyphens, underscores, and periods. Max 255 chars."
     # Can be mixed case.
     pipelineName = target.replace("+", "-").replace(" ", "-")[0:255]
-    if re.match(r"^[A-z0-9_.-]*$", pipelineName) is None:
+    if re.match(r"^[A-Za-z0-9_.-]*$", pipelineName) is None:
         print("Invalid pipeline name generated: " + pipelineName)
     return pipelineName
 
@@ -25,13 +25,13 @@ def parseDependencyList(depString: str) -> list:
 
 def parseMkFile(mkFilePath, buildObjectName):
     depVarName = buildObjectName.replace(" ", r"\+").replace(".lvlib", "_Deps")
-    f = open(mkFilePath, "r")
-    # print(f"Reading dependencies for {buildObjectName} from {mkFilePath}")
-    content = f.readlines()  # Read all lines (not just first)
+    # Match <depVarName> := (.*)
+    depMatcher = re.compile(depVarName + r"[ ]?:=[ ]?(.*)$")
+    with open(mkFilePath, "r") as f:
+        # print(f"Reading dependencies for {buildObjectName} from {mkFilePath}")
+        content = f.readlines()  # Read all lines (not just first)
     for line in content:
-        # Match <depVarName>_Deps := (.*)
-        matchStr = depVarName + r"[ ]?:=[ ]?(.*)$"
-        matchedDeps = re.match(matchStr, line.strip())
+        matchedDeps = depMatcher.match(line.strip())
         if matchedDeps:
             return parseDependencyList(matchedDeps.group(1))
     print(
@@ -41,9 +41,9 @@ def parseMkFile(mkFilePath, buildObjectName):
 
 
 def parseVipkgReqsFile(vipkgReqsPath):
-    f = open(vipkgReqsPath, "r")
-    # print(f"Reading VI package requirements from {vipkgReqsPath}")
-    content = f.readlines()  # Read all lines (not just first)
+    with open(vipkgReqsPath, "r") as f:
+        # print(f"Reading VI package requirements from {vipkgReqsPath}")
+        content = f.readlines()  # Read all lines (not just first)
     vipkgUrls = []
     for line in content:
         line = line.strip()

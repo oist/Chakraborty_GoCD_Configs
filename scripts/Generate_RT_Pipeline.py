@@ -12,6 +12,7 @@ from PipelineGenerationUtils import (
     generateVipkgTask,
     quoteDependencyNames,
     BasePipelineDefinition,
+    buildYamlObject,
 )
 from Constants import (
     Target,
@@ -155,11 +156,6 @@ class PipelineDefinition_RTapp(BasePipelineDefinition):
                 {"deploy": rt_deploy_stage},
             ],
         }
-
-
-def buildYamlObject(pipelineDictionary):
-    full_yaml_object = {"format_version": 10, "pipelines": pipelineDictionary}
-    return full_yaml_object
 
 
 if __name__ == "__main__":

@@ -31,6 +31,14 @@ class BasePipelineDefinition(yaml.YAMLObject):
         return dumper.represent_mapping("tag:yaml.org,2002:map", data)
 
 
+def buildYamlObject(pipelineDictionary, common=None):
+    full_yaml_object = {"format_version": 10}
+    if common is not None:
+        full_yaml_object["common"] = common
+    full_yaml_object["pipelines"] = pipelineDictionary
+    return full_yaml_object
+
+
 def getPackageRootName(pipelineName):
     return pipelineName.replace(".lvlibp", "")
 
@@ -89,13 +97,13 @@ def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
     if dependencies is not None:
         for dep in dependencies:
             materialName = dep + "_pipelineMaterial"
-            if not materialName in cachedMaterials:
+            if materialName not in cachedMaterials:
                 cachedMaterials[materialName] = {
                     "pipeline": dep,
                     "stage": "build_ppls",
                     "ignore_for_scheduling": False,
                 }
-            materials[materialName] = cachedMaterials.get(materialName)
+            materials[materialName] = cachedMaterials[materialName]
     return materials
 
 
@@ -166,13 +174,14 @@ def generateRTBuildJob(
     return aliasable(buildJob, cachedBuildJobs)
 
 
+home_link_target_paths = {
+    Target.FPGA_Release: "cRIO-9045\\Release_32\\home",
+    Target.FPGA_Debug: "cRIO-9045\\Debug_32\\home",
+}
+
+
 def create_home_link_task(target):
-    targetPathEnd = (
-        "cRIO-9045\\Release_32\\home"
-        if target == Target.FPGA_Release
-        else "cRIO-9045\\Debug_32\\home" if target == Target.FPGA_Debug else None
-    )
-    return make_junction_task("PPLs\\cRIO-9045\\home", targetPathEnd)
+    return make_junction_task("PPLs\\cRIO-9045\\home", home_link_target_paths[target])
 
 
 def generateFetchPPLJob(dependency, targetName):

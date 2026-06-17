@@ -3,7 +3,11 @@ import yaml
 from pathlib import Path
 from GitTools import cloneRepo
 from FileUtils import directoryFromGitRepo
-from PipelineGenerationUtils import generateMaterials, BasePipelineDefinition
+from PipelineGenerationUtils import (
+    generateMaterials,
+    BasePipelineDefinition,
+    buildYamlObject,
+)
 from Constants import (
     Target,
     profileId,
@@ -146,11 +150,6 @@ class PipelineDefinition_FPGA_Noncompile(BasePipelineDefinition):
                 }
             ],
         }
-
-
-def buildYamlObject(pipelineDictionary):
-    full_yaml_object = {"format_version": 10, "pipelines": pipelineDictionary}
-    return full_yaml_object
 
 
 if __name__ == "__main__":
