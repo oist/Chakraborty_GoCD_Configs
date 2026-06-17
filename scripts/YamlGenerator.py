@@ -15,6 +15,8 @@ from Constants import (
     profileId,
     Target,
     targetPathEnds,
+    ppl_targets,
+    is_windows,
 )
 from PipelineGenerationUtils import (
     generateMaterials,
@@ -45,10 +47,8 @@ def get_mklink_task(target):
 
 
 mklink_tasks = {}
-for target in Target._member_names_:
-    if target == "FPGA_Debug" or target == "FPGA_Release":
-        continue  # FPGA pipelines are generated separately since they have different parameters and build steps
-    mklink_tasks[target] = get_mklink_task(target)
+for target in ppl_targets:
+    mklink_tasks[target.name] = get_mklink_task(target.name)
 
 PPLJobTasks_NoDeps = [fetch_builder_task, expand_builder_task, ls_task, gcli_build_task]
 
@@ -102,13 +102,12 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
 nipkgConfigOptions = {"options": {"PackagePath": "NIPKGs/*.nipkg"}}
 
 environmentVariables = {}
-for target in Target.__members__:
-    targetT = Target[target]
+for targetT in ppl_targets:
     is64Bit = targetT in [Target.Windows_64_Debug, Target.Windows_64_Release]
     environmentVariables[targetT] = {
-        "TARGET_NAME": target,
+        "TARGET_NAME": targetT.name,
         "BUILD_TYPE": "BUILD",  # Probably set this elsewhere
-        "TARGET_SYSTEM": "Windows" if targetT.value < 4 else "cRIO",
+        "TARGET_SYSTEM": "Windows" if is_windows(targetT) else "cRIO",
         "IS_DEBUG_BUILD": targetT.value % 2,
         "BITNESS_FLAG": "--x64 -v" if is64Bit else "-v",
         "RELEASE_NOTES": "",
@@ -117,10 +116,8 @@ for target in Target.__members__:
 
 def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
     ppl_job_list = {}
-    for target in Target.__members__:
-        if target == "FPGA_Debug" or target == "FPGA_Release":
-            continue  # FPGA pipelines are generated separately since they have different parameters and build steps
-        targetT = Target[target]
+    for targetT in ppl_targets:
+        target = targetT.name
         packageId = f"{packageRootName}_{target}_nipkg"
         ppl_job_list[target] = {
             "timeout": 15,
@@ -178,10 +175,8 @@ def get_fetch_built_ppl_task(target):
 
 
 git_tag_tasks = [fetch_builder_task, expand_builder_task]
-for target in Target._member_names_:
-    if target == "FPGA_Debug" or target == "FPGA_Release":
-        continue  # FPGA pipelines are generated separately since they have different parameters and build steps
-    git_tag_tasks.append(get_fetch_built_ppl_task(target))
+for target in ppl_targets:
+    git_tag_tasks.append(get_fetch_built_ppl_task(target.name))
 git_tag_tasks.append(
     {"exec": {"run_if": "passed", "command": "dir", "arguments": ["*"]}}
 )

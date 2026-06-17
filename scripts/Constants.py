@@ -41,6 +41,31 @@ class Target(Enum):
     FPGA_Debug = 7
 
 
+# Canonical target groupings. PPL pipelines build for the four Windows targets
+# plus the two cRIO targets; FPGA targets are handled by the FPGA generator.
+# Centralising these lists keeps the build target set in one place instead of
+# re-deriving it (with ad-hoc FPGA skips) at each loop that fans out over targets.
+windows_targets = [
+    Target.Windows_32_Release,
+    Target.Windows_32_Debug,
+    Target.Windows_64_Release,
+    Target.Windows_64_Debug,
+]
+crio_ppl_targets = [
+    Target.cRIO_Release,
+    Target.cRIO_Debug,
+]
+ppl_targets = windows_targets + crio_ppl_targets
+
+
+def is_windows(target):
+    return target in windows_targets
+
+
+def is_crio(target):
+    return target in crio_ppl_targets
+
+
 # The names here are used for the G-CLI call directly.
 class BuildType(Enum):
     MAJOR = 0
