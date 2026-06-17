@@ -15,6 +15,7 @@ from Constants import (
     Target,
     targetPathEnds,
     ppl_targets,
+    crio_ppl_targets,
     is_windows,
     DEFAULT_LV_VERSION,
 )
@@ -26,6 +27,7 @@ from PipelineGenerationUtils import (
     make_junction_task,
     generateVipkgTask,
     quoteDependencyNames,
+    aliasable,
 )
 
 
@@ -88,9 +90,12 @@ for targetT in ppl_targets:
     }
 
 
-def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
+def generatePPLJobList(
+    packageRootName, lv_version, dependencies, vipkgUrls, crioOnly=False
+):
     ppl_job_list = {}
-    for targetT in ppl_targets:
+    targets = crio_ppl_targets if crioOnly else ppl_targets
+    for targetT in targets:
         target = targetT.name
         packageId = f"{packageRootName}_{target}_nipkg"
         ppl_job_list[target] = {
@@ -121,7 +126,9 @@ def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
     return ppl_job_list
 
 
-def generatePPLStage(packageRootName, lv_version, dependencies, vipkgUrls):
+def generatePPLStage(
+    packageRootName, lv_version, dependencies, vipkgUrls, crioOnly=False
+):
     return {
         "build_ppls": {
             "fetch_materials": "yes",
@@ -129,7 +136,7 @@ def generatePPLStage(packageRootName, lv_version, dependencies, vipkgUrls):
             "approval": "manual",  # Set to "manual" to prevent auto-scheduling, "success" to allow autotriggering
             # Git material is set not to autoupdate, so this controls if pipelines are triggered by PPL dependencies
             "jobs": generatePPLJobList(
-                packageRootName, lv_version, dependencies, vipkgUrls
+                packageRootName, lv_version, dependencies, vipkgUrls, crioOnly
             ),
         }
     }
@@ -148,36 +155,49 @@ def get_fetch_built_ppl_task(target):
     }
 
 
-git_tag_tasks = [fetch_builder_task, expand_builder_task]
-for target in ppl_targets:
-    git_tag_tasks.append(get_fetch_built_ppl_task(target.name))
-git_tag_tasks.append(
-    {"exec": {"run_if": "passed", "command": "dir", "arguments": ["*"]}}
-)
-git_tag_tasks.append(
-    {
-        "exec": {
-            "run_if": "passed",
-            "command": "py",
-            "arguments": ["-3", "-u", "PPL_Builder/publish_github.py"],
+def generateGitTagTasks(targets):
+    tasks = [fetch_builder_task, expand_builder_task]
+    for target in targets:
+        tasks.append(get_fetch_built_ppl_task(target.name))
+    tasks.append({"exec": {"run_if": "passed", "command": "dir", "arguments": ["*"]}})
+    tasks.append(
+        {
+            "exec": {
+                "run_if": "passed",
+                "command": "py",
+                "arguments": ["-3", "-u", "PPL_Builder/publish_github.py"],
+            }
+        }
+    )
+    return tasks
+
+
+def generateGitTagStage(targets):
+    return {
+        "git_tag": {
+            "approval": "success",
+            "fetch_materials": "yes",
+            "environment_variables": {
+                "GITHUB_RELEASE_TOKEN": "{{SECRET:[secrets.json][github_publishing_token]}}",
+                "PPL_NAME": "#{PPL_Name}",
+                "RELEASE_NOTES": "",
+            },
+            "resources": ["powershell"],
+            # Single job, so no need for jobs entry
+            "tasks": generateGitTagTasks(targets),
         }
     }
-)
 
-git_tag_stage = {
-    "git_tag": {
-        "approval": "success",
-        "fetch_materials": "yes",
-        "environment_variables": {
-            "GITHUB_RELEASE_TOKEN": "{{SECRET:[secrets.json][github_publishing_token]}}",
-            "PPL_NAME": "#{PPL_Name}",
-            "RELEASE_NOTES": "",
-        },
-        "resources": ["powershell"],
-        # Single job, so no need for jobs entry
-        "tasks": git_tag_tasks,
-    }
-}
+
+# crioOnly only ever selects between two target sets (full vs. cRIO-only), so
+# this cache lets every pipeline sharing a target set alias back to a single
+# git_tag_stage object instead of each inlining its own copy.
+cachedGitTagStages = {}
+
+
+def get_git_tag_stage(crioOnly):
+    targets = crio_ppl_targets if crioOnly else ppl_targets
+    return aliasable(generateGitTagStage(targets), cachedGitTagStages)
 
 
 # Defines all of the 'common' parts of the pipeline config file
@@ -207,6 +227,7 @@ class PipelineDefinition(BasePipelineDefinition):
         self.dependencyPPLNames = values["Dependency PPL Names"]
         self.minVersion = values.get("minLabVIEWVersion")
         self.vipkgUrls = values.get("vipkgUrls")
+        self.crioOnly = values.get("crioOnly", False)
 
     def buildData(self, dumper):
         materials = {"builder": builderMaterial} | generateMaterials(
@@ -233,8 +254,9 @@ class PipelineDefinition(BasePipelineDefinition):
                     lv_version,
                     self.dependencies,
                     self.vipkgUrls,
+                    self.crioOnly,
                 ),
-                git_tag_stage,
+                get_git_tag_stage(self.crioOnly),
             ],
         }
 
@@ -295,3 +317,18 @@ def updateMinimumVersions(pipelineDictionary):
     # Calling the function without creating the dictionary leaves it unexecuted
     newDict = {k: updateVers(k, v) for k, v in pipelineDictionary.items()}
     return newDict
+
+
+def validateCrioOnlyDependencies(pipelineDictionary):
+    # A cRIO-only library never builds Windows-target PPLs, so a pipeline
+    # that still builds Windows targets can't fetch a Windows PPL from it.
+    for name, pipeline in pipelineDictionary.items():
+        if pipeline.crioOnly or pipeline.dependencies is None:
+            continue
+        for dependency in pipeline.dependencies:
+            dependencyPipeline = pipelineDictionary.get(dependency)
+            if dependencyPipeline is not None and dependencyPipeline.crioOnly:
+                raise ValueError(
+                    f"{name} builds Windows targets but depends on "
+                    f"{dependency}, which is marked cRIO-only"
+                )

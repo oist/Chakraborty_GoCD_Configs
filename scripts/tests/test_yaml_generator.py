@@ -13,6 +13,7 @@ from YamlGenerator import (
     buildYamlObject,
     findNonDefaultLVPipelines,
     updateMinimumVersions,
+    validateCrioOnlyDependencies,
 )
 
 
@@ -25,6 +26,7 @@ def _values(
     DependencyPPLNames=None,
     minLabVIEWVersion=None,
     vipkgUrls=None,
+    crioOnly=False,
 ):
     return {
         "artifactId": artifactId or (PPL_Name.replace(".lvlibp", "") + "_nipkg"),
@@ -35,6 +37,7 @@ def _values(
         "Dependency PPL Names": DependencyPPLNames,
         "minLabVIEWVersion": minLabVIEWVersion,
         "vipkgUrls": vipkgUrls,
+        "crioOnly": crioOnly,
     }
 
 
@@ -44,9 +47,10 @@ def _dump(pipelineDict):
 
 class PipelineDefinitionTests(unittest.TestCase):
     def setUp(self):
-        # dependencyMaterials is a module-level cache keyed by dependency
-        # pipeline name; clear it so tests don't leak state into each other.
+        # dependencyMaterials/cachedGitTagStages are module-level caches;
+        # clear them so tests don't leak state into each other.
         YG.dependencyMaterials.clear()
+        YG.cachedGitTagStages.clear()
 
     def test_dumps_as_plain_mapping(self):
         pd = PipelineDefinition("Ap", _values("A.lvlibp"))
@@ -149,6 +153,96 @@ class UpdateMinimumVersionsTests(unittest.TestCase):
     def test_no_nondefault_pipelines_returns_dict_unchanged(self):
         pipelineDict = {"Ap": PipelineDefinition("Ap", _values("A.lvlibp"))}
         self.assertIs(updateMinimumVersions(pipelineDict), pipelineDict)
+
+
+class CrioOnlyTests(unittest.TestCase):
+    def setUp(self):
+        YG.dependencyMaterials.clear()
+        YG.cachedGitTagStages.clear()
+
+    def test_crio_only_pipeline_builds_only_crio_targets(self):
+        pd = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=True))
+        reparsed = yaml.safe_load(_dump({"Ap": pd}).replace("!PipelineDefinition", ""))
+        jobs = reparsed["pipelines"]["Ap"]["stages"][0]["build_ppls"]["jobs"]
+        self.assertEqual(set(jobs.keys()), {t.name for t in Constants.crio_ppl_targets})
+
+    def test_non_crio_only_pipeline_still_builds_all_targets(self):
+        pd = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=False))
+        reparsed = yaml.safe_load(_dump({"Ap": pd}).replace("!PipelineDefinition", ""))
+        jobs = reparsed["pipelines"]["Ap"]["stages"][0]["build_ppls"]["jobs"]
+        self.assertEqual(set(jobs.keys()), {t.name for t in Constants.ppl_targets})
+
+    def test_git_tag_stage_only_fetches_crio_artifacts_for_crio_only(self):
+        pd = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=True))
+        reparsed = yaml.safe_load(_dump({"Ap": pd}).replace("!PipelineDefinition", ""))
+        git_tag_tasks = reparsed["pipelines"]["Ap"]["stages"][1]["git_tag"]["tasks"]
+        fetched_jobs = {
+            t["fetch"]["job"]
+            for t in git_tag_tasks
+            if "fetch" in t and t["fetch"].get("stage") == "build_ppls"
+        }
+        self.assertEqual(fetched_jobs, {t.name for t in Constants.crio_ppl_targets})
+
+    def test_git_tag_stage_fetches_all_targets_when_not_crio_only(self):
+        pd = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=False))
+        reparsed = yaml.safe_load(_dump({"Ap": pd}).replace("!PipelineDefinition", ""))
+        git_tag_tasks = reparsed["pipelines"]["Ap"]["stages"][1]["git_tag"]["tasks"]
+        fetched_jobs = {
+            t["fetch"]["job"]
+            for t in git_tag_tasks
+            if "fetch" in t and t["fetch"].get("stage") == "build_ppls"
+        }
+        self.assertEqual(fetched_jobs, {t.name for t in Constants.ppl_targets})
+
+    def test_git_tag_stage_aliases_across_pipelines_with_same_target_set(self):
+        # Regression-style test for the point-2 cache requirement: every
+        # cRIO-only pipeline should share one git_tag_stage object (and every
+        # full-target pipeline should share a different one), so PyYAML
+        # anchors it once instead of inlining a copy per pipeline.
+        stageA = YG.get_git_tag_stage(True)
+        stageB = YG.get_git_tag_stage(True)
+        stageFull = YG.get_git_tag_stage(False)
+        self.assertIs(stageA, stageB)
+        self.assertIsNot(stageA, stageFull)
+
+
+class ValidateCrioOnlyDependenciesTests(unittest.TestCase):
+    def setUp(self):
+        YG.dependencyMaterials.clear()
+
+    def test_raises_when_windows_pipeline_depends_on_crio_only(self):
+        pdCrioOnly = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=True))
+        pdWindows = PipelineDefinition(
+            "Bp",
+            _values(
+                "B.lvlibp", Dependencies=["Ap"], DependencyPPLNames=["A.lvlibp"]
+            ),
+        )
+        with self.assertRaises(ValueError):
+            validateCrioOnlyDependencies({"Ap": pdCrioOnly, "Bp": pdWindows})
+
+    def test_allows_crio_only_pipeline_to_depend_on_crio_only(self):
+        pdCrioOnly = PipelineDefinition("Ap", _values("A.lvlibp", crioOnly=True))
+        pdAlsoCrioOnly = PipelineDefinition(
+            "Bp",
+            _values(
+                "B.lvlibp",
+                Dependencies=["Ap"],
+                DependencyPPLNames=["A.lvlibp"],
+                crioOnly=True,
+            ),
+        )
+        # Should not raise.
+        validateCrioOnlyDependencies({"Ap": pdCrioOnly, "Bp": pdAlsoCrioOnly})
+
+    def test_allows_normal_dependencies(self):
+        pdA = PipelineDefinition("Ap", _values("A.lvlibp"))
+        pdB = PipelineDefinition(
+            "Bp",
+            _values("B.lvlibp", Dependencies=["Ap"], DependencyPPLNames=["A.lvlibp"]),
+        )
+        # Should not raise.
+        validateCrioOnlyDependencies({"Ap": pdA, "Bp": pdB})
 
 
 if __name__ == "__main__":

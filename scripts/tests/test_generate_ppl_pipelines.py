@@ -18,6 +18,7 @@ class GenerateEntryTests(unittest.TestCase):
             None,
             None,
             None,
+            False,
         )
         self.assertEqual(name, "Foop")
         self.assertEqual(
@@ -31,6 +32,7 @@ class GenerateEntryTests(unittest.TestCase):
                 "Dependency PPL Names": None,
                 "minLabVIEWVersion": None,
                 "vipkgUrls": None,
+                "crioOnly": False,
             },
         )
 
@@ -44,11 +46,26 @@ class GenerateEntryTests(unittest.TestCase):
             ["Foo.lvlibp"],
             "2021",
             ["http://example.com/pkg.vip"],
+            False,
         )
         self.assertEqual(values["Dependencies"], ["Foop"])
         self.assertEqual(values["Dependency PPL Names"], ["Foo.lvlibp"])
         self.assertEqual(values["minLabVIEWVersion"], "2021")
         self.assertEqual(values["vipkgUrls"], ["http://example.com/pkg.vip"])
+
+    def test_crio_only_flag_passed_through(self):
+        _, values = generateEntry(
+            "Foop",
+            "git@github.com:oist/Foo",
+            "Foo/Foo.lvlib",
+            "Foo.lvlibp",
+            None,
+            None,
+            None,
+            None,
+            True,
+        )
+        self.assertTrue(values["crioOnly"])
 
     def test_entries_flatten_into_a_dict_via_chain(self):
         # Mirrors how __main__ flattens pool.starmap results: a list of
@@ -57,11 +74,11 @@ class GenerateEntryTests(unittest.TestCase):
 
         entryA = generateEntry(
             "Foop", "git@github.com:oist/Foo", "Foo/Foo.lvlib", "Foo.lvlibp",
-            None, None, None, None,
+            None, None, None, None, False,
         )
         entryB = generateEntry(
             "Barp", "git@github.com:oist/Bar", "Bar/Bar.lvlib", "Bar.lvlibp",
-            ["Foop"], ["Foo.lvlibp"], None, None,
+            ["Foop"], ["Foo.lvlibp"], None, None, False,
         )
         perRepoEntries = [[entryA], [entryB]]
 

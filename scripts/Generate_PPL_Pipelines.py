@@ -9,7 +9,12 @@ import yaml
 
 from GitTools import cloneRepo
 from FileUtils import find_file, directoryFromGitRepo
-from YamlGenerator import PipelineDefinition, buildYamlObject, updateMinimumVersions
+from YamlGenerator import (
+    PipelineDefinition,
+    buildYamlObject,
+    updateMinimumVersions,
+    validateCrioOnlyDependencies,
+)
 from NameTransformers import (
     sanitizeForPipelineName,
     parseMkfileTargetToName,
@@ -57,6 +62,7 @@ def generateEntry(
     DependencyPPLNames,
     minLabVIEWVersion,
     vipkgUrls,
+    crioOnly,
 ):
     return pipelineName, {
         "artifactId": pipelineName + "_nipkg",
@@ -67,6 +73,7 @@ def generateEntry(
         "Dependency PPL Names": DependencyPPLNames,
         "minLabVIEWVersion": minLabVIEWVersion,
         "vipkgUrls": vipkgUrls,
+        "crioOnly": crioOnly,
     }
 
 
@@ -88,6 +95,7 @@ def handleUrl(gitUrl, libNames, baseDir):
         mkFilePath = find_file(libName.replace(".lvlib", ".mk"), outputDir)
         minVerPath = find_file(libName.replace(".lvlib", ".min_lv_version"), outputDir)
         vipkgReqsPath = find_file(libName.replace(".lvlib", ".vipm_reqs"), outputDir)
+        crioOnlyPath = find_file(libName.replace(".lvlib", ".crio_only"), outputDir)
         pipelineName = sanitizeForPipelineName(libName) + "p"
         PPL_Name = libName + "p"
         minLabVIEWVersion = None
@@ -117,6 +125,7 @@ def handleUrl(gitUrl, libNames, baseDir):
                 depsNames,
                 minLabVIEWVersion,
                 vipkgUrls,
+                crioOnlyPath is not None,
             )
         )
     return retVals
@@ -159,6 +168,7 @@ if __name__ == "__main__":
             (k, PipelineDefinition(k, v)) for k, v in pipelineEntriesByName.items()
         )
     )
+    validateCrioOnlyDependencies(pipelineDict)
     updateMinimumVersions(pipelineDict)
 
     # The behaviour of the sort might depend on Python version -
