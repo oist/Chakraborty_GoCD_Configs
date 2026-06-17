@@ -3,7 +3,7 @@ import yaml
 from pathlib import Path
 from GitTools import cloneRepo
 from FileUtils import directoryFromGitRepo
-from PipelineGenerationUtils import generateMaterials
+from PipelineGenerationUtils import generateMaterials, BasePipelineDefinition
 from Constants import (
     Target,
     profileId,
@@ -15,27 +15,22 @@ from Constants import (
     gci_recurse_1_task,
     rt_builder_git_dir,
     rt_builder_material,
+    DEFAULT_LV_VERSION,
 )
 
 cachedMaterials = {}
 
 
-class PipelineDefinition_FPGA(yaml.YAMLObject):
-    yaml_tag = "!PipelineDefinition"
-
+class PipelineDefinition_FPGA(BasePipelineDefinition):
     def __init__(self, pipelineEntry):
         [name, values] = list(pipelineEntry.items())[0]
         self.name = name
         self.gitUrl = values["gitUrl"]
         self.targetName = values["targetName"]
         self.buildSpecName = values["buildSpecName"]
-        self.lv_version = values["lv_version"] if "lv_version" in values else "2019"
-        self.version_vi_path = (
-            values["version_VI_path"] if "version_VI_path" in values else None
-        )
-        self.projectFileName = (
-            values["projectFileName"] if "projectFileName" in values else None
-        )
+        self.lv_version = values.get("lv_version", DEFAULT_LV_VERSION)
+        self.version_vi_path = values.get("version_VI_path")
+        self.projectFileName = values.get("projectFileName")
 
     def buildData(self, dumper):
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
@@ -99,20 +94,13 @@ class PipelineDefinition_FPGA(yaml.YAMLObject):
             ],
         }
 
-    @classmethod
-    def to_yaml(cls, dumper, self):
-        data = self.buildData(dumper)
-        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
 
-
-class PipelineDefinition_FPGA_Noncompile(yaml.YAMLObject):
-    yaml_tag = "!PipelineDefinition"
-
+class PipelineDefinition_FPGA_Noncompile(BasePipelineDefinition):
     def __init__(self, pipelineEntry):
         [name, values] = list(pipelineEntry.items())[0]
         self.name = name
         self.gitUrl = values["gitUrl"]
-        self.lv_version = values["lv_version"] if "lv_version" in values else "2019"
+        self.lv_version = values.get("lv_version", DEFAULT_LV_VERSION)
         self.noncompile_artifact_file = values["noncompile_artifact_file"]
 
     def buildData(self, dumper):
@@ -159,11 +147,6 @@ class PipelineDefinition_FPGA_Noncompile(yaml.YAMLObject):
             ],
         }
 
-    @classmethod
-    def to_yaml(cls, dumper, self):
-        data = self.buildData(dumper)
-        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
-
 
 def buildYamlObject(pipelineDictionary):
     full_yaml_object = {"format_version": 10, "pipelines": pipelineDictionary}
@@ -187,7 +170,7 @@ if __name__ == "__main__":
             "gitUrl": gitUrl,
             "targetName": "FPGA Target",
             "buildSpecName": "FPGA Main",
-            "lv_version": "2019",
+            "lv_version": DEFAULT_LV_VERSION,
             "version_VI_path": "FPGA/FPGA Version Number.vi",
             "projectFileName": "cRIO-9045-RT.lvproj",
         },
@@ -195,7 +178,7 @@ if __name__ == "__main__":
             "gitUrl": gitUrl,
             "targetName": "FPGA Target 2",
             "buildSpecName": "Main",
-            "lv_version": "2019",
+            "lv_version": DEFAULT_LV_VERSION,
             "version_VI_path": "FPGA Expansion/FPGA Expansion Version Number.vi",
             "projectFileName": "cRIO-9045-RT.lvproj",
         },
@@ -211,12 +194,12 @@ if __name__ == "__main__":
         noncompilePipelineEntries = {
             "cRIO_FPGA_Main_noncompile": {
                 "gitUrl": gitUrl,
-                "lv_version": "2019",
+                "lv_version": DEFAULT_LV_VERSION,
                 "noncompile_artifact_file": "cR9045-FPGAMain_tiGh-z7G0kw.lvbitx",
             },
             "cRIO_FPGA_Expansion_noncompile": {
                 "gitUrl": gitUrl,
-                "lv_version": "2019",
+                "lv_version": DEFAULT_LV_VERSION,
                 "noncompile_artifact_file": "crio-9045-rt_FPGATarget2_Main_yKmXqsdb6fY.lvbitx",
             },
         }

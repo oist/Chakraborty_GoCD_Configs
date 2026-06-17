@@ -1,4 +1,3 @@
-import yaml
 from FileUtils import directoryFromGitRepo
 from Constants import (
     dir_job,
@@ -17,33 +16,21 @@ from Constants import (
     targetPathEnds,
     ppl_targets,
     is_windows,
+    DEFAULT_LV_VERSION,
 )
 from PipelineGenerationUtils import (
     generateMaterials,
     generateFetchPPLJob,
     getPackageRootName,
+    BasePipelineDefinition,
+    make_junction_task,
+    generateVipkgTask,
+    quoteDependencyNames,
 )
 
 
 def get_mklink_task(target):
-    targetPathEnd = targetPathEnds[target]
-    return {
-        "exec": {
-            "run_if": "passed",
-            "command": "powershell",
-            "arguments": [
-                "-Command",
-                "New-Item",
-                "-Force",
-                "-ItemType",
-                "Junction",
-                "-Path",
-                "PPLs\\Current",  # relative path?
-                "-Target",
-                f'\\"C:\\LabVIEW Sources\\PPLs\\{targetPathEnd}\\"',
-            ],
-        }
-    }
+    return make_junction_task("PPLs\\Current", targetPathEnds[target])
 
 
 mklink_tasks = {}
@@ -76,20 +63,7 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
         targetT = Target[targetName]
         for vipkgUrl in vipkgUrls:
             vipkgTasks.append(
-                {
-                    "plugin": {
-                        "run_if": "passed",
-                        "options": {
-                            "Url": vipkgUrl,
-                            "LabVIEWDirectory": labviewDir[lv_version][targetT],
-                            "Verbose": False,
-                        },
-                        "configuration": {
-                            "id": "jp.oist.chakraborty.vi-package-installer",
-                            "version": "0.1",
-                        },
-                    }
-                }
+                generateVipkgTask(vipkgUrl, labviewDir[lv_version][targetT])
             )
     return (
         [fetch_builder_task, expand_builder_task]
@@ -222,9 +196,7 @@ def getCommonSection():
 dependencyMaterials = {}
 
 
-class PipelineDefinition(yaml.YAMLObject):
-    yaml_tag = "!PipelineDefinition"
-
+class PipelineDefinition(BasePipelineDefinition):
     def __init__(self, pipelineName, values):
         self.name = pipelineName
         self.artifactId = values["artifactId"]
@@ -240,15 +212,11 @@ class PipelineDefinition(yaml.YAMLObject):
         materials = {"builder": builderMaterial} | generateMaterials(
             self.gitUrl, self.dependencies, dependencyMaterials
         )
-        if self.dependencies != None:
-            dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
-        else:
-            dependencyQuotedList = ""
+        dependencyQuotedList = quoteDependencyNames(self.dependencyPPLNames)
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
-        if self.minVersion != None:
-            lv_version = self.minVersion
-        else:
-            lv_version = "2019"
+        lv_version = (
+            self.minVersion if self.minVersion is not None else DEFAULT_LV_VERSION
+        )
         return {
             "group": "PPLs",
             "parameters": {
@@ -270,11 +238,6 @@ class PipelineDefinition(yaml.YAMLObject):
             ],
         }
 
-    @classmethod
-    def to_yaml(cls, dumper, self):
-        data = self.buildData(dumper)
-        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
-
 
 def buildYamlObject(pipelineDictionary):
     full_yaml_object = {
@@ -287,14 +250,16 @@ def buildYamlObject(pipelineDictionary):
 
 def findNonDefaultLVPipelines(pipelineDictionary, defaultVersion):
     def myfilter(item):
-        return item[1].minVersion != None and item[1].minVersion != defaultVersion
+        return item[1].minVersion is not None and item[1].minVersion != defaultVersion
 
     return dict(filter(myfilter, pipelineDictionary.items())).keys()
 
 
 def updateMinimumVersions(pipelineDictionary):
     # This code only works for 2 versions. With multiple non-default versions, needs more care
-    nonDefaultPipelineNames = findNonDefaultLVPipelines(pipelineDictionary, "2019")
+    nonDefaultPipelineNames = findNonDefaultLVPipelines(
+        pipelineDictionary, DEFAULT_LV_VERSION
+    )
     if len(nonDefaultPipelineNames) == 0:
         return pipelineDictionary
     pipelinesToUpdate = set(nonDefaultPipelineNames)
@@ -303,7 +268,7 @@ def updateMinimumVersions(pipelineDictionary):
     def dependsOnElems(dependenciesToInclude):
         def innerFilter(item):
             itemDependencies = item[1].dependencies
-            if itemDependencies == None:
+            if itemDependencies is None:
                 return False
             return (
                 set(itemDependencies) & set(dependenciesToInclude)

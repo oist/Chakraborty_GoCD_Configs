@@ -1,4 +1,5 @@
 #! python3
+import itertools
 import multiprocessing
 import re
 import os
@@ -47,7 +48,7 @@ def get_libraries_and_urls(path):
     return repos
 
 
-def generateEntryDictionary(
+def generateEntry(
     pipelineName,
     gitUrl,
     libPath,
@@ -57,17 +58,15 @@ def generateEntryDictionary(
     minLabVIEWVersion,
     vipkgUrls,
 ):
-    return {
-        pipelineName: {
-            "artifactId": pipelineName + "_nipkg",
-            "gitUrl": gitUrl,
-            "libPath": libPath,
-            "PPL_Name": PPL_Name,
-            "Dependencies": Dependencies,
-            "Dependency PPL Names": DependencyPPLNames,
-            "minLabVIEWVersion": minLabVIEWVersion,
-            "vipkgUrls": vipkgUrls,
-        }
+    return pipelineName, {
+        "artifactId": pipelineName + "_nipkg",
+        "gitUrl": gitUrl,
+        "libPath": libPath,
+        "PPL_Name": PPL_Name,
+        "Dependencies": Dependencies,
+        "Dependency PPL Names": DependencyPPLNames,
+        "minLabVIEWVersion": minLabVIEWVersion,
+        "vipkgUrls": vipkgUrls,
     }
 
 
@@ -92,7 +91,7 @@ def handleUrl(gitUrl, libNames, baseDir):
         pipelineName = sanitizeForPipelineName(libName) + "p"
         PPL_Name = libName + "p"
         minLabVIEWVersion = None
-        if minVerPath != None:
+        if minVerPath is not None:
             f = open(minVerPath, "r")
             content = f.read()
             f.close()
@@ -103,13 +102,13 @@ def handleUrl(gitUrl, libNames, baseDir):
         depsNames = None
         depsList = None
         vipkgUrls = None
-        if mkFilePath != None:
+        if mkFilePath is not None:
             depsNames = parseMkFile(mkFilePath, libName)
             depsList = list(map(sanitizeForPipelineName, depsNames))
-        if vipkgReqsPath != None:
+        if vipkgReqsPath is not None:
             vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
         retVals.append(
-            generateEntryDictionary(
+            generateEntry(
                 pipelineName,
                 gitUrl,
                 libPath,
@@ -126,10 +125,6 @@ def handleUrl(gitUrl, libNames, baseDir):
 def printFlatDict(flat_dict):
     for key, value in flat_dict.items():
         print(key, ":", value)
-
-
-def flatten_dict(input):
-    return {k: v for d in input for k, v in d.items()}
 
 
 if __name__ == "__main__":
@@ -150,20 +145,20 @@ if __name__ == "__main__":
         for keyname, value in urlToLibDict.items()
     )
     with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-        results = pool.starmap(handleUrl, generator)
+        perRepoEntries = pool.starmap(handleUrl, generator)
 
     toc_end = time.perf_counter()
     print(f"Cloned all repositories in {toc_end-tic_start:0.2f} seconds")
-    list_dicts = [item for sublist in results for item in sublist]
-    flat_dict = {k: v for d in list_dicts for k, v in d.items()}
-    # printFlatDict(flat_dict)
+    pipelineEntriesByName = dict(itertools.chain.from_iterable(perRepoEntries))
+    # printFlatDict(pipelineEntriesByName)
     # print("------")
-    pipelineDefinitionContent = []
-    for k, v in flat_dict.items():
-        pipelineDefinitionContent.append({k: PipelineDefinition(k, v)})
     # Sort to ensure the same order on repeated execution
     # This also helps reduce git diffs
-    pipelineDict = dict(sorted(flatten_dict(pipelineDefinitionContent).items()))
+    pipelineDict = dict(
+        sorted(
+            (k, PipelineDefinition(k, v)) for k, v in pipelineEntriesByName.items()
+        )
+    )
     updateMinimumVersions(pipelineDict)
 
     # The behaviour of the sort might depend on Python version -

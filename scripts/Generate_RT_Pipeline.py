@@ -9,6 +9,9 @@ from PipelineGenerationUtils import (
     generateRTBuildJob,
     generateFetchPPLJob,
     generateFetchFPGAJob,
+    generateVipkgTask,
+    quoteDependencyNames,
+    BasePipelineDefinition,
 )
 from Constants import (
     Target,
@@ -18,15 +21,14 @@ from Constants import (
     rt_version_stage,
     rt_publish_to_feed_stage,
     rt_deploy_stage,
+    DEFAULT_LV_VERSION,
 )
 
 cachedMaterials = {}
 cachedBuildJobs = {}
 
 
-class PipelineDefinition_RTapp(yaml.YAMLObject):
-    yaml_tag = "!PipelineDefinition"
-
+class PipelineDefinition_RTapp(BasePipelineDefinition):
     def __init__(self, pipelineEntry):
         [name, values] = list(pipelineEntry.items())[0]
         self.name = name
@@ -47,10 +49,9 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             self.gitUrl, self.dependencies, cachedMaterials, branch=self.branch
         )
 
-        if self.minVersion != None:
-            lv_version = self.minVersion
-        else:
-            lv_version = "2019"
+        lv_version = (
+            self.minVersion if self.minVersion is not None else DEFAULT_LV_VERSION
+        )
 
         # Add builder repo material — provides LabVIEW_BuildTools/ VIs and scripts/.
         # ignore_for_scheduling / auto_update are False so the builder repo never
@@ -72,7 +73,7 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             "ignore_for_scheduling": False,
         }
 
-        dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
+        dependencyQuotedList = quoteDependencyNames(self.dependencyPPLNames)
 
         pplDepTasks_debug = [
             generateFetchPPLJob(dependency, "cRIO_Debug")
@@ -84,28 +85,12 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
         ]
 
         vipkgTasks = []
-        vipkgPluginConfig = {
-            "id": "jp.oist.chakraborty.vi-package-installer",
-            "version": "0.1",
-        }
         # VIPKG dependencies are the same for debug and release
         lvdir = labviewDir[lv_version][Target.cRIO_Debug]
 
         if self.vipkgUrls is not None:
             for vipkgUrl in self.vipkgUrls:
-                vipkgTasks.append(
-                    {
-                        "plugin": {
-                            "run_if": "passed",
-                            "options": {
-                                "Url": vipkgUrl,
-                                "LabVIEWDirectory": lvdir,
-                                "Verbose": False,
-                            },
-                            "configuration": vipkgPluginConfig,
-                        }
-                    }
-                )
+                vipkgTasks.append(generateVipkgTask(vipkgUrl, lvdir))
 
         build_debug = generateRTBuildJob(
             lv_version,
@@ -171,11 +156,6 @@ class PipelineDefinition_RTapp(yaml.YAMLObject):
             ],
         }
 
-    @classmethod
-    def to_yaml(cls, dumper, self):
-        data = self.buildData(dumper)
-        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
-
 
 def buildYamlObject(pipelineDictionary):
     full_yaml_object = {"format_version": 10, "pipelines": pipelineDictionary}
@@ -208,7 +188,7 @@ if __name__ == "__main__":
 
         vipkgReqsPath = find_file("cRIO-9045-RT.vipm_reqs", outputDir)
         vipkgUrls = None
-        if vipkgReqsPath != None:
+        if vipkgReqsPath is not None:
             vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
 
         pipelineDefinitionContent[pipeline_name] = PipelineDefinition_RTapp(
@@ -217,7 +197,7 @@ if __name__ == "__main__":
                     "gitUrl": gitUrl,
                     "Dependencies": depsList,
                     "Dependency PPL Names": depsNames,
-                    "minLabVIEWVersion": "2019",
+                    "minLabVIEWVersion": DEFAULT_LV_VERSION,
                     "vipkgUrls": vipkgUrls,
                     "branch": branch,
                     # Switch to using the copied bitfiles rather than compiled ones

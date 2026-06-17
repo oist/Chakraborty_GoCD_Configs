@@ -3,6 +3,14 @@ from enum import Enum
 # Simple constants
 via_plugin_version = "0.2.2.3"
 
+vipkg_plugin_configuration = {
+    "id": "jp.oist.chakraborty.vi-package-installer",
+    "version": "0.1",
+}
+
+# LabVIEW version used when a pipeline/library doesn't pin a specific one.
+DEFAULT_LV_VERSION = "2019"
+
 # Names defined in the Zip_PPL_Builder config file
 zipPipelineName = "Zip_PPL_Builder"
 zipPipelineStageName = "Zip"

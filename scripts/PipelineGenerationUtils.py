@@ -1,4 +1,5 @@
 import json
+import yaml
 
 from FileUtils import directoryFromGitRepo
 from Constants import (
@@ -9,11 +10,69 @@ from Constants import (
     gcli_rt_build_task,
     gci_recurse_1_task,
     rt_version_fetch_task,
+    vipkg_plugin_configuration,
 )
+
+
+class BasePipelineDefinition(yaml.YAMLObject):
+    yaml_tag = "!PipelineDefinition"
+
+    def __init_subclass__(cls, **kwargs):
+        # yaml.YAMLObjectMetaclass only auto-registers a dumper representer for
+        # classes that declare yaml_tag in their own body, so concrete subclasses
+        # that inherit yaml_tag from here would otherwise dump as a generic
+        # python/object instead of a plain mapping. Register them explicitly.
+        super().__init_subclass__(**kwargs)
+        cls.yaml_dumper.add_representer(cls, cls.to_yaml)
+
+    @classmethod
+    def to_yaml(cls, dumper, self):
+        data = self.buildData(dumper)
+        return dumper.represent_mapping("tag:yaml.org,2002:map", data)
 
 
 def getPackageRootName(pipelineName):
     return pipelineName.replace(".lvlibp", "")
+
+
+def quoteDependencyNames(names):
+    if names is None:
+        return ""
+    return '"' + '" "'.join(names) + '"'
+
+
+def make_junction_task(linkRelPath, targetPathEnd):
+    return {
+        "exec": {
+            "run_if": "passed",
+            "command": "powershell",
+            "arguments": [
+                "-Command",
+                "New-Item",
+                "-Force",
+                "-ItemType",
+                "Junction",
+                "-Path",
+                linkRelPath,
+                "-Target",
+                f'\\"C:\\LabVIEW Sources\\PPLs\\{targetPathEnd}\\"',
+            ],
+        }
+    }
+
+
+def generateVipkgTask(vipkgUrl, labviewDirectory):
+    return {
+        "plugin": {
+            "run_if": "passed",
+            "options": {
+                "Url": vipkgUrl,
+                "LabVIEWDirectory": labviewDirectory,
+                "Verbose": False,
+            },
+            "configuration": vipkg_plugin_configuration,
+        }
+    }
 
 
 def generateMaterials(gitUrl, dependencies, cachedMaterials, branch=None):
@@ -113,24 +172,7 @@ def create_home_link_task(target):
         if target == Target.FPGA_Release
         else "cRIO-9045\\Debug_32\\home" if target == Target.FPGA_Debug else None
     )
-    linkRelPath = "PPLs\\cRIO-9045\\home"
-    return {
-        "exec": {
-            "run_if": "passed",
-            "command": "powershell",
-            "arguments": [
-                "-Command",
-                "New-Item",
-                "-Force",
-                "-ItemType",
-                "Junction",
-                "-Path",
-                linkRelPath,
-                "-Target",
-                f'\\"C:\\LabVIEW Sources\\PPLs\\{targetPathEnd}\\"',
-            ],
-        }
-    }
+    return make_junction_task("PPLs\\cRIO-9045\\home", targetPathEnd)
 
 
 def generateFetchPPLJob(dependency, targetName):
