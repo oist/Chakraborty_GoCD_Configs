@@ -27,7 +27,7 @@ class PipelineDefinitionFPGATests(unittest.TestCase):
             "version_VI_path": "FPGA/FPGA Version Number.vi",
             "projectFileName": "cRIO-9045-RT.lvproj",
         }
-        pd = PipelineDefinition_FPGA({"cRIO_FPGA_Main": values})
+        pd = PipelineDefinition_FPGA("cRIO_FPGA_Main", values)
         out = _dump({"cRIO_FPGA_Main": pd})
         self.assertNotIn("python/object", out)
         reparsed = yaml.safe_load(out.replace("!PipelineDefinition", ""))
@@ -44,7 +44,7 @@ class PipelineDefinitionFPGATests(unittest.TestCase):
             "lv_version": "2021",
             "projectFileName": "cRIO-9045-RT.lvproj",
         }
-        pd = PipelineDefinition_FPGA({"cRIO_FPGA_Main": values})
+        pd = PipelineDefinition_FPGA("cRIO_FPGA_Main", values)
         reparsed = yaml.safe_load(
             _dump({"cRIO_FPGA_Main": pd}).replace("!PipelineDefinition", "")
         )
@@ -60,7 +60,7 @@ class PipelineDefinitionFPGANoncompileTests(unittest.TestCase):
             "gitUrl": "git@github.com:oist/Chakraborty_cRIO",
             "noncompile_artifact_file": "cR9045-FPGAMain.lvbitx",
         }
-        pd = PipelineDefinition_FPGA_Noncompile({"cRIO_FPGA_Main_noncompile": values})
+        pd = PipelineDefinition_FPGA_Noncompile("cRIO_FPGA_Main_noncompile", values)
         out = _dump({"cRIO_FPGA_Main_noncompile": pd})
         self.assertNotIn("python/object", out)
         reparsed = yaml.safe_load(out.replace("!PipelineDefinition", ""))

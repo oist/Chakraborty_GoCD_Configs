@@ -26,8 +26,7 @@ cachedMaterials = {}
 
 
 class PipelineDefinition_FPGA(BasePipelineDefinition):
-    def __init__(self, pipelineEntry):
-        [name, values] = list(pipelineEntry.items())[0]
+    def __init__(self, name, values):
         self.name = name
         self.gitUrl = values["gitUrl"]
         self.targetName = values["targetName"]
@@ -100,8 +99,7 @@ class PipelineDefinition_FPGA(BasePipelineDefinition):
 
 
 class PipelineDefinition_FPGA_Noncompile(BasePipelineDefinition):
-    def __init__(self, pipelineEntry):
-        [name, values] = list(pipelineEntry.items())[0]
+    def __init__(self, name, values):
         self.name = name
         self.gitUrl = values["gitUrl"]
         self.lv_version = values.get("lv_version", DEFAULT_LV_VERSION)
@@ -186,7 +184,7 @@ if __name__ == "__main__":
     # Build compile pipeline objects
     pipelineDefinitionContent = {}
     for name, values in pipelineEntries.items():
-        pipelineDefinitionContent[name] = PipelineDefinition_FPGA({name: values})
+        pipelineDefinitionContent[name] = PipelineDefinition_FPGA(name, values)
 
     # Append noncompile pipeline objects when enabled
     if ENABLE_NONCOMPILE_PIPELINES:
@@ -205,7 +203,7 @@ if __name__ == "__main__":
 
         for name, values in noncompilePipelineEntries.items():
             pipelineDefinitionContent[name] = PipelineDefinition_FPGA_Noncompile(
-                {name: values}
+                name, values
             )
 
     # Convert the list of pipelines into a YAML object

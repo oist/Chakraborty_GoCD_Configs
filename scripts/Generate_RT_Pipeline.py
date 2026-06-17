@@ -30,8 +30,7 @@ cachedBuildJobs = {}
 
 
 class PipelineDefinition_RTapp(BasePipelineDefinition):
-    def __init__(self, pipelineEntry):
-        [name, values] = list(pipelineEntry.items())[0]
+    def __init__(self, name, values):
         self.name = name
         self.gitUrl = values["gitUrl"]
         self.dependencies = values["Dependencies"]
@@ -188,20 +187,19 @@ if __name__ == "__main__":
             vipkgUrls = parseVipkgReqsFile(vipkgReqsPath)
 
         pipelineDefinitionContent[pipeline_name] = PipelineDefinition_RTapp(
+            pipeline_name,
             {
-                pipeline_name: {
-                    "gitUrl": gitUrl,
-                    "Dependencies": depsList,
-                    "Dependency PPL Names": depsNames,
-                    "minLabVIEWVersion": DEFAULT_LV_VERSION,
-                    "vipkgUrls": vipkgUrls,
-                    "branch": branch,
-                    # Switch to using the copied bitfiles rather than compiled ones
-                    # Comment this to use the compilation pipelines
-                    "fpga_suffix": "_noncompile",
-                    "prerelease_tag": branch if branch != "master" else "",
-                }
-            }
+                "gitUrl": gitUrl,
+                "Dependencies": depsList,
+                "Dependency PPL Names": depsNames,
+                "minLabVIEWVersion": DEFAULT_LV_VERSION,
+                "vipkgUrls": vipkgUrls,
+                "branch": branch,
+                # Switch to using the copied bitfiles rather than compiled ones
+                # Comment this to use the compilation pipelines
+                "fpga_suffix": "_noncompile",
+                "prerelease_tag": branch if branch != "master" else "",
+            },
         )
 
     # Convert the list of pipelines into a YAML object
