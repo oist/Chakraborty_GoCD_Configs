@@ -7,6 +7,14 @@ import subprocess
 from FileUtils import pushd
 
 
+@contextlib.contextmanager
+def pushd(new_dir):
+    prev_dir = os.getcwd()
+    os.chdir(new_dir)
+    yield
+    os.chdir(prev_dir)
+
+
 def remove_readonly(func, path, excinfo):
     os.chmod(path, stat.S_IWRITE)
     func(path)
