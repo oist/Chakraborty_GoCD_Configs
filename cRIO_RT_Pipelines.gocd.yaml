@@ -385,7 +385,7 @@ pipelines:
               plugin:
                 run_if: passed
                 options:
-                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
+                  Url: https://download.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_jsontext/jdp_science_jsontext-1.9.1.125.vip
                   LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
                   Verbose: false
                 configuration: &id002
@@ -395,7 +395,7 @@ pipelines:
               plugin:
                 run_if: passed
                 options:
-                  Url: https://ftp.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
+                  Url: https://download.ni.com/evaluation/labview/lvtn/vipm/packages/jdp_science_lib_common_utilities/jdp_science_lib_common_utilities-1.4.2.19.vip
                   LabVIEWDirectory: C:\Program Files (x86)\National Instruments\LabVIEW 2019
                   Verbose: false
                 configuration: *id002
