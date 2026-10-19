@@ -311,13 +311,24 @@ for k, v in mklink_tasks.items():
 namedAnchors |= commonDefinitions
 
 
+def describeNode(node, maxLength=300):
+    # One-line preview of a node
+    text = " ".join(yaml.serialize(node, width=999999).split())
+    return text if len(text) <= maxLength else text[:maxLength] + "..."
+
+
 class PipelineDumper(yaml.Dumper):
     def generate_anchor(self, node):
         # represented_objects maps id(object) to its node while the document is serialized
         for name, obj in namedAnchors.items():
             if self.represented_objects.get(id(obj)) is node:
                 return name
-        return super().generate_anchor(node)
+        # return super().generate_anchor(node)
+        # Rather than falling back to a numbered &idNNN anchor, require each shared object to be named.
+        raise ValueError(
+            "An object is written in more than one place but has no name in namedAnchors: "
+            + describeNode(node)
+        )
 
 
 def buildYamlObject(pipelineDictionary):
