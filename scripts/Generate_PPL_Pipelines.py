@@ -180,7 +180,8 @@ if __name__ == "__main__":
     # print(yaml.dump(yamlObject, sort_keys=False))
 
     outputFilePath = "./LabVIEW_PPL-Pipelines.gocd.yaml"
-    with open(outputFilePath, "w") as outputFile:
+    # newline="" prevents Windows translating each "\r\n" line break into "\r\r\n"
+    with open(outputFilePath, "w", newline="") as outputFile:
         yaml.dump(
             yamlObject,
             outputFile,
