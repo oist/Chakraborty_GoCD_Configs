@@ -10,6 +10,7 @@ from Constants import (
     fetch_builder_task,
     expand_builder_task,
     gcli_build_task,
+    print_labview_logs_task,
     builderMaterial,
     labviewDir,
     profileId,
@@ -48,7 +49,13 @@ mklink_tasks = {}
 for target in Target._member_names_:
     mklink_tasks[target] = get_mklink_task(target)
 
-PPLJobTasks_NoDeps = [fetch_builder_task, expand_builder_task, ls_task, gcli_build_task]
+PPLJobTasks_NoDeps = [
+    fetch_builder_task,
+    expand_builder_task,
+    ls_task,
+    gcli_build_task,
+    print_labview_logs_task,
+]
 
 ppl_build_artifact = {
     "build": {"source": "PPLs/Current/#{PPL_Name}", "destination": "#{PPL_Name}"}
@@ -93,7 +100,7 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
         [fetch_builder_task, expand_builder_task]
         + pplDepTasks
         + vipkgTasks
-        + [ls_task, gcli_build_task]
+        + [ls_task, gcli_build_task, print_labview_logs_task]
     )
 
 
@@ -273,6 +280,11 @@ class PipelineDefinition(yaml.YAMLObject):
     def to_yaml(cls, dumper, self):
         data = self.buildData(dumper)
         return dumper.represent_mapping("tag:yaml.org,2002:map", data)
+
+
+# These tasks are named, not numbered.
+# This allows reduced churn in the output yaml when changing jobs/tasks.
+namedAnchors = {"print_labview_logs_task": print_labview_logs_task}
 
 
 class PipelineDumper(yaml.Dumper):

@@ -89,6 +89,17 @@ common:
       - '%TARGET_SYSTEM%'
       - '%BUILD_TYPE%'
       - '#{Dependency_PPL_Names}'
+  - &print_labview_logs_task
+    exec:
+      run_if: failed
+      command: powershell
+      arguments:
+      - -NoProfile
+      - -NonInteractive
+      - -ExecutionPolicy
+      - Bypass
+      - -File
+      - PPL_Builder\Print-LabVIEWLogs.ps1
   mklink_task_Windows_32_Release: &id003
     exec:
       run_if: passed
@@ -267,6 +278,7 @@ pipelines:
                 - PPLs\\Current
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -300,6 +312,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -333,6 +346,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -366,6 +380,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -399,6 +414,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -432,6 +448,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - &id025
       git_tag:
         approval: success
@@ -645,6 +662,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -672,6 +690,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -699,6 +718,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -726,6 +746,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -753,6 +774,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -780,6 +802,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Acquisition-Objects.lvlibp:
     group: PPLs
@@ -878,6 +901,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -937,6 +961,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -996,6 +1021,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1055,6 +1081,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1114,6 +1141,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1173,6 +1201,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Actor-Framework.lvlibp:
     group: PPLs
@@ -1414,6 +1443,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -1441,6 +1471,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1468,6 +1499,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1495,6 +1527,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1522,6 +1555,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1549,6 +1583,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Communication-Server.lvlibp:
     group: PPLs
@@ -1629,6 +1664,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -1680,6 +1716,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1731,6 +1768,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1782,6 +1820,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1833,6 +1872,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -1884,6 +1924,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Cooler.lvlibp:
     group: PPLs
@@ -1934,6 +1975,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -1961,6 +2003,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -1988,6 +2031,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2015,6 +2059,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2042,6 +2087,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2069,6 +2115,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Countdown-Actor.lvlibp:
     group: PPLs
@@ -2131,6 +2178,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -2166,6 +2214,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2201,6 +2250,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2236,6 +2286,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2271,6 +2322,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2306,6 +2358,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Dantec-LDV-Processor.lvlibp:
     group: PPLs
@@ -2380,6 +2433,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -2423,6 +2477,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2466,6 +2521,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2509,6 +2565,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2552,6 +2609,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2595,6 +2653,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Dantec-Processor-Interface.lvlibp:
     group: PPLs
@@ -2645,6 +2704,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -2672,6 +2732,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2699,6 +2760,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2726,6 +2788,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2753,6 +2816,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2780,6 +2844,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   DataStore.lvlibp:
     group: PPLs
@@ -2839,6 +2904,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -2874,6 +2940,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2909,6 +2976,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -2944,6 +3012,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -2979,6 +3048,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3014,6 +3084,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   DiskLogger.lvlibp:
     group: PPLs
@@ -3064,6 +3135,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -3091,6 +3163,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3118,6 +3191,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3145,6 +3219,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3172,6 +3247,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3199,6 +3275,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   ErrorHandling.lvlibp:
     group: PPLs
@@ -3249,6 +3326,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -3276,6 +3354,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3303,6 +3382,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3330,6 +3410,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3357,6 +3438,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3384,6 +3466,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Experiment-Settings.lvlibp:
     group: PPLs
@@ -3455,6 +3538,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -3498,6 +3582,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3541,6 +3626,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3584,6 +3670,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3627,6 +3714,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3670,6 +3758,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fake-Comm-Server.lvlibp:
     group: PPLs
@@ -3759,6 +3848,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -3818,6 +3908,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3877,6 +3968,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -3936,6 +4028,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -3995,6 +4088,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4054,6 +4148,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   FakeStage.lvlibp:
     group: PPLs
@@ -4107,6 +4202,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4134,6 +4230,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4161,6 +4258,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4188,6 +4286,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4215,6 +4314,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4242,6 +4342,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc-Interface.lvlibp:
     group: PPLs
@@ -4292,6 +4393,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4319,6 +4421,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4346,6 +4449,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4373,6 +4477,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4400,6 +4505,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4427,6 +4533,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc-Proxy.lvlibp:
     group: PPLs
@@ -4480,6 +4587,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4507,6 +4615,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4534,6 +4643,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4561,6 +4671,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4588,6 +4699,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4615,6 +4727,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc_FOCAS.lvlibp:
     group: PPLs
@@ -4665,6 +4778,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4692,6 +4806,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4719,6 +4834,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4746,6 +4862,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4773,6 +4890,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -4800,6 +4918,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc_NSProxy.lvlibp:
     group: PPLs
@@ -4871,6 +4990,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -4914,6 +5034,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -4957,6 +5078,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5000,6 +5122,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5043,6 +5166,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5086,6 +5210,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc_TCP.lvlibp:
     group: PPLs
@@ -5136,6 +5261,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -5163,6 +5289,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5190,6 +5317,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5217,6 +5345,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5244,6 +5373,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5271,6 +5401,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Fanuc_TCPProxy.lvlibp:
     group: PPLs
@@ -5330,6 +5461,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -5365,6 +5497,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5400,6 +5533,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5435,6 +5569,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5470,6 +5605,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5505,6 +5641,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   GX_Balance.lvlibp:
     group: PPLs
@@ -5555,6 +5692,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -5582,6 +5720,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5609,6 +5748,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5636,6 +5776,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5663,6 +5804,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -5690,6 +5832,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   HW-Probes.lvlibp:
     group: PPLs
@@ -5928,6 +6071,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -5955,6 +6099,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -5982,6 +6127,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6009,6 +6155,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6036,6 +6183,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6063,6 +6211,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Innova-Laser.lvlibp:
     group: PPLs
@@ -6125,6 +6274,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -6160,6 +6310,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6195,6 +6346,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6230,6 +6382,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6265,6 +6418,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6300,6 +6454,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   LTC2983_Lib.lvlibp:
     group: PPLs
@@ -6407,6 +6562,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -6474,6 +6630,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6541,6 +6698,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6608,6 +6766,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6675,6 +6834,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -6742,6 +6902,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Laser-Interface.lvlibp:
     group: PPLs
@@ -6895,6 +7056,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -6930,6 +7092,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -6965,6 +7128,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7000,6 +7164,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7035,6 +7200,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7070,6 +7236,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   MSE-LDV.lvlibp:
     group: PPLs
@@ -7150,6 +7317,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -7201,6 +7369,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7252,6 +7421,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7303,6 +7473,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7354,6 +7525,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7405,6 +7577,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Mean-Value-Plotting.lvlibp:
     group: PPLs
@@ -7464,6 +7637,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -7499,6 +7673,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7534,6 +7709,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7569,6 +7745,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7604,6 +7781,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -7639,6 +7817,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Measurement-Actors.lvlibp:
     group: PPLs
@@ -7743,6 +7922,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -7818,6 +7998,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7893,6 +8074,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -7968,6 +8150,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8043,6 +8226,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8118,6 +8302,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Measurement-Results.lvlibp:
     group: PPLs
@@ -8280,6 +8465,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -8323,6 +8509,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -8366,6 +8553,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -8409,6 +8597,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8452,6 +8641,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8495,6 +8685,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Motor-Activity-Logging.lvlibp:
     group: PPLs
@@ -8575,6 +8766,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -8626,6 +8818,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -8677,6 +8870,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -8728,6 +8922,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8779,6 +8974,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -8830,6 +9026,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Motor-Controller.lvlibp:
     group: PPLs
@@ -8901,6 +9098,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -8944,6 +9142,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -8987,6 +9186,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9030,6 +9230,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9073,6 +9274,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9116,6 +9318,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Motor-Ramping-Calculations.lvlibp:
     group: PPLs
@@ -9278,6 +9481,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -9321,6 +9525,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9364,6 +9569,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9407,6 +9613,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9450,6 +9657,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9493,6 +9701,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   OIST_Error.lvlibp:
     group: PPLs
@@ -9649,6 +9858,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -9684,6 +9894,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9719,6 +9930,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9754,6 +9966,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9789,6 +10002,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9824,6 +10038,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   PopoutPanel.lvlibp:
     group: PPLs
@@ -9874,6 +10089,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -9901,6 +10117,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9928,6 +10145,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -9955,6 +10173,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -9982,6 +10201,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10009,6 +10229,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   PowerSupplies-Arduino.lvlibp:
     group: PPLs
@@ -10171,6 +10392,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -10214,6 +10436,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10257,6 +10480,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10300,6 +10524,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10343,6 +10568,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10386,6 +10612,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   PowerSupplyInterface.lvlibp:
     group: PPLs
@@ -10436,6 +10663,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -10463,6 +10691,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10490,6 +10719,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10517,6 +10747,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10544,6 +10775,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10571,6 +10803,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   ProjectUtilities.lvlibp:
     group: PPLs
@@ -10715,6 +10948,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -10742,6 +10976,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10769,6 +11004,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -10796,6 +11032,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10823,6 +11060,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -10850,6 +11088,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Result-Graph.lvlibp:
     group: PPLs
@@ -10948,6 +11187,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -11015,6 +11255,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11082,6 +11323,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11149,6 +11391,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11216,6 +11459,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11283,6 +11527,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   SPI-Communicator.lvlibp:
     group: PPLs
@@ -11809,6 +12054,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -11843,6 +12089,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11877,6 +12124,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -11911,6 +12159,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11945,6 +12194,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -11979,6 +12229,7 @@ pipelines:
                   version: '0.1'
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   Step-Scheduler.lvlibp:
     group: PPLs
@@ -12038,6 +12289,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -12073,6 +12325,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12108,6 +12361,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12143,6 +12397,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12178,6 +12433,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12213,6 +12469,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   String-Logging.lvlibp:
     group: PPLs
@@ -12357,6 +12614,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -12384,6 +12642,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12411,6 +12670,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12438,6 +12698,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12465,6 +12726,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12492,6 +12754,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   TCP_Serial.lvlibp:
     group: PPLs
@@ -12542,6 +12805,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -12569,6 +12833,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12596,6 +12861,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12623,6 +12889,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12650,6 +12917,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12677,6 +12945,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025
   TranslationStage.lvlibp:
     group: PPLs
@@ -12830,6 +13099,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_32_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86
@@ -12865,6 +13135,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12900,6 +13171,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           Windows_64_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x64
@@ -12935,6 +13207,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Release:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -12970,6 +13243,7 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
           cRIO_Debug:
             timeout: 15
             elastic_profile_id: labview_2019_x86_crio
@@ -13005,4 +13279,5 @@ pipelines:
             - *id012
             - *id004
             - *id005
+            - *print_labview_logs_task
     - *id025

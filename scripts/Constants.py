@@ -237,3 +237,20 @@ gcli_build_task = {
         ],
     }
 }
+
+# Prints LabVIEW's log files if an earlier task failed (e.g. LabVIEW crashed during the G-CLI build).
+# The script is part of the PPL_Builder repository, so it arrives with fetch_builder_task/expand_builder_task.
+print_labview_logs_task = {
+    "exec": {
+        "run_if": "failed",
+        "command": "powershell",
+        "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "PPL_Builder\\Print-LabVIEWLogs.ps1",
+        ],
+    }
+}
