@@ -8,7 +8,12 @@ import yaml
 
 from GitTools import cloneRepo
 from FileUtils import find_file, pushd, directoryFromGitRepo
-from YamlGenerator import PipelineDefinition, buildYamlObject, updateMinimumVersions
+from YamlGenerator import (
+    PipelineDefinition,
+    PipelineDumper,
+    buildYamlObject,
+    updateMinimumVersions,
+)
 from NameTransformers import (
     sanitizeForPipelineName,
     parseMkfileTargetToName,
@@ -177,6 +182,11 @@ if __name__ == "__main__":
     outputFilePath = "./LabVIEW_PPL-Pipelines.gocd.yaml"
     with open(outputFilePath, "w") as outputFile:
         yaml.dump(
-            yamlObject, outputFile, sort_keys=False, width=999999, line_break="\r\n"
+            yamlObject,
+            outputFile,
+            Dumper=PipelineDumper,
+            sort_keys=False,
+            width=999999,
+            line_break="\r\n",
         )
     print(str(os.path.getsize(outputFilePath)) + " bytes")

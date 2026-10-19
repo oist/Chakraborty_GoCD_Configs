@@ -275,6 +275,15 @@ class PipelineDefinition(yaml.YAMLObject):
         return dumper.represent_mapping("tag:yaml.org,2002:map", data)
 
 
+class PipelineDumper(yaml.Dumper):
+    def generate_anchor(self, node):
+        # represented_objects maps id(object) to its node while the document is serialized
+        for name, obj in namedAnchors.items():
+            if self.represented_objects.get(id(obj)) is node:
+                return name
+        return super().generate_anchor(node)
+
+
 def buildYamlObject(pipelineDictionary):
     full_yaml_object = {
         "format_version": 10,
