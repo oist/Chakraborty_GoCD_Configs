@@ -22,6 +22,9 @@ from PipelineGenerationUtils import (
     generateMaterials,
     generateFetchPPLJob,
     getPackageRootName,
+    fetchPPLBases,
+    MergeKey,
+    MERGE,
 )
 
 
@@ -121,15 +124,26 @@ for target in Target.__members__:
     }
 
 
+# The parts of a PPL build job which depend only on the LabVIEW version and target, merged into each job.
+jobBases = {}
+for lv_version in profileId:
+    for targetT in Target:
+        jobBases[(lv_version, targetT)] = {
+            "timeout": 15,
+            "elastic_profile_id": profileId[lv_version][targetT],
+            # Written in full in the first base using them. If bases for several LabVIEW versions
+            # are written, the others alias it (see the environment_<target> names in namedAnchors).
+            "environment_variables": environmentVariables[targetT],
+        }
+
+
 def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
     ppl_job_list = {}
     for target in Target.__members__:
         targetT = Target[target]
         packageId = f"{packageRootName}_{target}_nipkg"
         ppl_job_list[target] = {
-            "timeout": 15,
-            "elastic_profile_id": profileId[lv_version][targetT],
-            "environment_variables": environmentVariables[targetT],
+            MERGE: jobBases[(lv_version, targetT)],
             "artifacts": [
                 ppl_build_artifact,
                 nipkg_build_artifact,
@@ -224,13 +238,17 @@ commonDefinitions = {
     "nipkg_store_configuration": nipkgConfigOptions,
     "builder_material": builderMaterial,
 }
-for target in Target:
-    commonDefinitions["environment_" + target.name] = environmentVariables[target]
+for target, base in fetchPPLBases.items():
+    commonDefinitions["fetch_ppl_base_" + target] = base
 commonDefinitions["git_tag_stage"] = git_tag_stage
 
 
+def jobBaseName(lv_version, targetT):
+    return f"job_base_{lv_version}_{targetT.name}"
+
+
 # Defines all of the 'common' parts of the pipeline config file
-def getCommonSection():
+def getCommonSection(lv_versions):
     commonSection = {
         "via_plugin_version": via_plugin_version,
         "dir_job": dir_job,
@@ -239,7 +257,12 @@ def getCommonSection():
     }
     for k, v in mklink_tasks.items():
         commonSection["mklink_task_" + k] = v
-    return commonSection | commonDefinitions
+    commonSection |= commonDefinitions
+    # Only the job bases for LabVIEW versions used by a pipeline, to avoid unused definitions
+    for (lv_version, targetT), base in jobBases.items():
+        if lv_version in lv_versions:
+            commonSection[jobBaseName(lv_version, targetT)] = base
+    return commonSection
 
 
 class PipelineDefinition(yaml.YAMLObject):
@@ -256,6 +279,9 @@ class PipelineDefinition(yaml.YAMLObject):
         self.minVersion = values.get("minLabVIEWVersion")
         self.vipkgUrls = values.get("vipkgUrls")
 
+    def labviewVersion(self):
+        return self.minVersion if self.minVersion != None else "2019"
+
     def buildData(self, dumper):
         materials = {"builder": builderMaterial} | generateMaterials(
             self.gitUrl, self.dependencies
@@ -265,10 +291,7 @@ class PipelineDefinition(yaml.YAMLObject):
         else:
             dependencyQuotedList = ""
         gitDirName = directoryFromGitRepo(self.gitUrl, None)
-        if self.minVersion != None:
-            lv_version = self.minVersion
-        else:
-            lv_version = "2019"
+        lv_version = self.labviewVersion()
         return {
             "group": "PPLs",
             "parameters": {
@@ -309,6 +332,12 @@ namedAnchors = {
 for k, v in mklink_tasks.items():
     namedAnchors["mklink_task_" + k] = v
 namedAnchors |= commonDefinitions
+for (lv_version, targetT), base in jobBases.items():
+    namedAnchors[jobBaseName(lv_version, targetT)] = base
+# Not listed in commonDefinitions: the variables are only anchored (in a job base) when
+# bases for more than one LabVIEW version share them, and are otherwise written inline.
+for targetT in Target:
+    namedAnchors["environment_" + targetT.name] = environmentVariables[targetT]
 
 
 def describeNode(node, maxLength=300):
@@ -330,11 +359,24 @@ class PipelineDumper(yaml.Dumper):
             + describeNode(node)
         )
 
+    def ignore_aliases(self, data):
+        # MERGE is a single shared object, but must be written as a plain '<<' each time, not aliased
+        return isinstance(data, MergeKey) or super().ignore_aliases(data)
+
+
+# The merge tag makes the key '<<' resolve as a merge key, so it is written unquoted
+PipelineDumper.add_representer(
+    MergeKey,
+    lambda dumper, data: dumper.represent_scalar("tag:yaml.org,2002:merge", "<<"),
+)
+
 
 def buildYamlObject(pipelineDictionary):
     full_yaml_object = {
         "format_version": 10,
-        "common": getCommonSection(),
+        "common": getCommonSection(
+            {p.labviewVersion() for p in pipelineDictionary.values()}
+        ),
         "pipelines": pipelineDictionary,
     }
     return full_yaml_object
