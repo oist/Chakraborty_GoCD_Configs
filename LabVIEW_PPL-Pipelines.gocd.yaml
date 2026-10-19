@@ -100,6 +100,18 @@ common:
       - Bypass
       - -File
       - PPL_Builder\Print-LabVIEWLogs.ps1
+  - &create_crash_dump_dir_task
+    exec:
+      run_if: any
+      command: powershell
+      arguments:
+      - -Command
+      - New-Item
+      - -Force
+      - -ItemType
+      - Directory
+      - -Path
+      - LabVIEW-Crash-Dumps
   mklink_task_Windows_32_Release: &mklink_task_Windows_32_Release
     exec:
       run_if: passed
@@ -219,6 +231,10 @@ common:
     build:
       source: NIPKGs/*
       destination: '#{PPL_Name}'
+  crash_dumps_artifact: &crash_dumps_artifact
+    build:
+      source: LabVIEW-Crash-Dumps
+      destination: '#{PPL_Name}/crash-dumps'
   nipkg_store_configuration: &nipkg_store_configuration
     options:
       PackagePath: NIPKGs/*.nipkg
@@ -420,6 +436,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -437,11 +454,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -459,11 +478,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -481,11 +502,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -503,11 +526,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_cRIO_Release_nipkg
                 store_id: cicwin
@@ -525,11 +550,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADC_StreamDatatypes_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -547,6 +574,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   ADG-Requests.lvlibp:
     group: PPLs
@@ -574,6 +602,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -584,6 +613,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -594,6 +624,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -604,6 +635,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -614,6 +646,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_cRIO_Release_nipkg
                 store_id: cicwin
@@ -624,6 +657,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ADG-Requests_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -660,6 +694,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -677,11 +712,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -699,11 +736,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -721,11 +760,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -743,11 +784,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_cRIO_Release_nipkg
                 store_id: cicwin
@@ -765,11 +808,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: AF_Messages-PPL_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -787,6 +832,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Acquisition-Objects.lvlibp:
     group: PPLs
@@ -834,6 +880,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -867,11 +914,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -905,11 +954,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -943,11 +994,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -981,11 +1034,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1019,11 +1074,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Acquisition-Objects_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1057,6 +1114,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Actor-Framework.lvlibp:
     group: PPLs
@@ -1084,6 +1142,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1094,6 +1153,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1104,6 +1164,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1114,6 +1175,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1124,6 +1186,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1134,6 +1197,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Actor-Framework_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1166,6 +1230,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1176,6 +1241,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1186,6 +1252,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1196,6 +1263,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1206,6 +1274,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1216,6 +1285,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Baumer-OM70-Modbus_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1252,6 +1322,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1269,11 +1340,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1291,11 +1364,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1313,11 +1388,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1335,11 +1412,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1357,11 +1436,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Brainbox-Serial-over-TCP_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1379,6 +1460,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Communication-Server.lvlibp:
     group: PPLs
@@ -1422,6 +1504,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1451,11 +1534,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1485,11 +1570,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1519,11 +1606,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1553,11 +1642,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1587,11 +1678,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Communication-Server_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1621,6 +1714,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Cooler.lvlibp:
     group: PPLs
@@ -1652,6 +1746,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1669,11 +1764,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1691,11 +1788,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1713,11 +1812,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1735,11 +1836,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1757,11 +1860,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Cooler_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1779,6 +1884,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Countdown-Actor.lvlibp:
     group: PPLs
@@ -1814,6 +1920,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -1835,11 +1942,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -1861,11 +1970,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -1887,11 +1998,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -1913,11 +2026,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_cRIO_Release_nipkg
                 store_id: cicwin
@@ -1939,11 +2054,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Countdown-Actor_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -1965,6 +2082,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Dantec-LDV-Processor.lvlibp:
     group: PPLs
@@ -2004,6 +2122,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2029,11 +2148,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2059,11 +2180,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2089,11 +2212,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2119,11 +2244,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_cRIO_Release_nipkg
                 store_id: cicwin
@@ -2149,11 +2276,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-LDV-Processor_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -2179,6 +2308,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Dantec-Processor-Interface.lvlibp:
     group: PPLs
@@ -2210,6 +2340,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2227,11 +2358,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2249,11 +2382,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2271,11 +2406,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2293,11 +2430,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_cRIO_Release_nipkg
                 store_id: cicwin
@@ -2315,11 +2454,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Dantec-Processor-Interface_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -2337,6 +2478,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   DataStore.lvlibp:
     group: PPLs
@@ -2372,6 +2514,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2393,11 +2536,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2419,11 +2564,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2445,11 +2592,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2471,11 +2620,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_cRIO_Release_nipkg
                 store_id: cicwin
@@ -2497,11 +2648,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DataStore_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -2523,6 +2676,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   DiskLogger.lvlibp:
     group: PPLs
@@ -2554,6 +2708,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2571,11 +2726,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2593,11 +2750,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2615,11 +2774,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2637,11 +2798,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_cRIO_Release_nipkg
                 store_id: cicwin
@@ -2659,11 +2822,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: DiskLogger_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -2681,6 +2846,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   ErrorHandling.lvlibp:
     group: PPLs
@@ -2712,6 +2878,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2729,11 +2896,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2751,11 +2920,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2773,11 +2944,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2795,11 +2968,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_cRIO_Release_nipkg
                 store_id: cicwin
@@ -2817,11 +2992,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ErrorHandling_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -2839,6 +3016,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Experiment-Settings.lvlibp:
     group: PPLs
@@ -2878,6 +3056,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -2903,11 +3082,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -2933,11 +3114,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -2963,11 +3146,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -2993,11 +3178,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3023,11 +3210,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Experiment-Settings_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3053,6 +3242,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fake-Comm-Server.lvlibp:
     group: PPLs
@@ -3100,6 +3290,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -3133,11 +3324,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -3171,11 +3364,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -3209,11 +3404,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -3247,11 +3444,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3285,11 +3484,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fake-Comm-Server_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3323,6 +3524,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   FakeStage.lvlibp:
     group: PPLs
@@ -3354,6 +3556,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -3371,11 +3574,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -3393,11 +3598,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -3415,11 +3622,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -3437,11 +3646,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3459,11 +3670,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: FakeStage_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3481,6 +3694,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc-Interface.lvlibp:
     group: PPLs
@@ -3512,6 +3726,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -3529,11 +3744,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -3551,11 +3768,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -3573,11 +3792,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -3595,11 +3816,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3617,11 +3840,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Interface_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3639,6 +3864,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc-Proxy.lvlibp:
     group: PPLs
@@ -3670,6 +3896,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -3687,11 +3914,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -3709,11 +3938,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -3731,11 +3962,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -3753,11 +3986,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3775,11 +4010,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc-Proxy_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3797,6 +4034,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc_FOCAS.lvlibp:
     group: PPLs
@@ -3828,6 +4066,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -3845,11 +4084,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -3867,11 +4108,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -3889,11 +4132,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -3911,11 +4156,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_cRIO_Release_nipkg
                 store_id: cicwin
@@ -3933,11 +4180,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_FOCAS_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -3955,6 +4204,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc_NSProxy.lvlibp:
     group: PPLs
@@ -3994,6 +4244,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4019,11 +4270,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4049,11 +4302,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4079,11 +4334,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4109,11 +4366,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4139,11 +4398,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_NSProxy_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4169,6 +4430,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc_TCP.lvlibp:
     group: PPLs
@@ -4200,6 +4462,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4217,11 +4480,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4239,11 +4504,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4261,11 +4528,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4283,11 +4552,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4305,11 +4576,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCP_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4327,6 +4600,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Fanuc_TCPProxy.lvlibp:
     group: PPLs
@@ -4362,6 +4636,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4383,11 +4658,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4409,11 +4686,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4435,11 +4714,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4461,11 +4742,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4487,11 +4770,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Fanuc_TCPProxy_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4513,6 +4798,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   GX_Balance.lvlibp:
     group: PPLs
@@ -4544,6 +4830,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4561,11 +4848,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4583,11 +4872,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4605,11 +4896,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4627,11 +4920,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4649,11 +4944,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: GX_Balance_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4671,6 +4968,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   HW-Probes.lvlibp:
     group: PPLs
@@ -4698,6 +4996,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4708,6 +5007,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4718,6 +5018,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4728,6 +5029,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4738,6 +5040,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4748,6 +5051,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: HW-Probes_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4780,6 +5084,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4790,6 +5095,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4800,6 +5106,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4810,6 +5117,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4820,6 +5128,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4830,6 +5139,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Hot-Wire-Temperature-Correction_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4866,6 +5176,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -4883,11 +5194,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -4905,11 +5218,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -4927,11 +5242,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -4949,11 +5266,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_cRIO_Release_nipkg
                 store_id: cicwin
@@ -4971,11 +5290,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ISEL_TranslationStage_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -4993,6 +5314,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Innova-Laser.lvlibp:
     group: PPLs
@@ -5028,6 +5350,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -5049,11 +5372,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -5075,11 +5400,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -5101,11 +5428,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -5127,11 +5456,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_cRIO_Release_nipkg
                 store_id: cicwin
@@ -5153,11 +5484,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Innova-Laser_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -5179,6 +5512,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   LTC2983_Lib.lvlibp:
     group: PPLs
@@ -5230,6 +5564,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -5267,11 +5602,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -5309,11 +5646,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -5351,11 +5690,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -5393,11 +5734,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_cRIO_Release_nipkg
                 store_id: cicwin
@@ -5435,11 +5778,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: LTC2983_Lib_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -5477,6 +5822,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Laser-Interface.lvlibp:
     group: PPLs
@@ -5504,6 +5850,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -5514,6 +5861,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -5524,6 +5872,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -5534,6 +5883,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -5544,6 +5894,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_cRIO_Release_nipkg
                 store_id: cicwin
@@ -5554,6 +5905,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Laser-Interface_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -5594,6 +5946,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -5615,11 +5968,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -5641,11 +5996,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -5667,11 +6024,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -5693,11 +6052,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_cRIO_Release_nipkg
                 store_id: cicwin
@@ -5719,11 +6080,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MResDatatype_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -5745,6 +6108,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   MSE-LDV.lvlibp:
     group: PPLs
@@ -5788,6 +6152,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -5817,11 +6182,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -5851,11 +6218,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -5885,11 +6254,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -5919,11 +6290,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_cRIO_Release_nipkg
                 store_id: cicwin
@@ -5953,11 +6326,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: MSE-LDV_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -5987,6 +6362,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Mean-Value-Plotting.lvlibp:
     group: PPLs
@@ -6022,6 +6398,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -6043,11 +6420,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -6069,11 +6448,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -6095,11 +6476,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -6121,11 +6504,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_cRIO_Release_nipkg
                 store_id: cicwin
@@ -6147,11 +6532,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Mean-Value-Plotting_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -6173,6 +6560,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Measurement-Actors.lvlibp:
     group: PPLs
@@ -6228,6 +6616,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -6269,11 +6658,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -6315,11 +6706,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -6361,11 +6754,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -6407,11 +6802,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_cRIO_Release_nipkg
                 store_id: cicwin
@@ -6453,11 +6850,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Actors_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -6499,6 +6898,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Measurement-Results.lvlibp:
     group: PPLs
@@ -6526,6 +6926,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -6536,6 +6937,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -6546,6 +6948,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -6556,6 +6959,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -6566,6 +6970,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_cRIO_Release_nipkg
                 store_id: cicwin
@@ -6576,6 +6981,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurement-Results_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -6620,6 +7026,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -6645,11 +7052,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -6675,11 +7084,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -6705,11 +7116,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -6735,11 +7148,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_cRIO_Release_nipkg
                 store_id: cicwin
@@ -6765,11 +7180,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Measurements_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -6795,6 +7212,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Motor-Activity-Logging.lvlibp:
     group: PPLs
@@ -6838,6 +7256,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -6867,11 +7286,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -6901,11 +7322,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -6935,11 +7358,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -6969,11 +7394,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7003,11 +7430,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Activity-Logging_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7037,6 +7466,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Motor-Controller.lvlibp:
     group: PPLs
@@ -7076,6 +7506,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7101,11 +7532,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7131,11 +7564,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7161,11 +7596,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7191,11 +7628,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7221,11 +7660,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Controller_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7251,6 +7692,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Motor-Ramping-Calculations.lvlibp:
     group: PPLs
@@ -7278,6 +7720,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7288,6 +7731,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7298,6 +7742,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7308,6 +7753,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7318,6 +7764,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7328,6 +7775,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Motor-Ramping-Calculations_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7372,6 +7820,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7397,11 +7846,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7427,11 +7878,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7457,11 +7910,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7487,11 +7942,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7517,11 +7974,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: NS_ServerClient_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7547,6 +8006,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   OIST_Error.lvlibp:
     group: PPLs
@@ -7574,6 +8034,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7584,6 +8045,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7594,6 +8056,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7604,6 +8067,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7614,6 +8078,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7624,6 +8089,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: OIST_Error_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7664,6 +8130,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7685,11 +8152,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7711,11 +8180,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7737,11 +8208,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7763,11 +8236,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7789,11 +8264,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PMX32-2QU_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7815,6 +8292,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   PopoutPanel.lvlibp:
     group: PPLs
@@ -7846,6 +8324,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -7863,11 +8342,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -7885,11 +8366,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -7907,11 +8390,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -7929,11 +8414,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_cRIO_Release_nipkg
                 store_id: cicwin
@@ -7951,11 +8438,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PopoutPanel_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -7973,6 +8462,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   PowerSupplies-Arduino.lvlibp:
     group: PPLs
@@ -8000,6 +8490,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8010,6 +8501,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8020,6 +8512,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8030,6 +8523,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8040,6 +8534,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8050,6 +8545,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Arduino_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8094,6 +8590,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8119,11 +8616,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8149,11 +8648,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8179,11 +8680,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8209,11 +8712,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8239,11 +8744,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplies-Serial_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8269,6 +8776,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   PowerSupplyInterface.lvlibp:
     group: PPLs
@@ -8300,6 +8808,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8317,11 +8826,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8339,11 +8850,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8361,11 +8874,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8383,11 +8898,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8405,11 +8922,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: PowerSupplyInterface_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8427,6 +8946,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   ProjectUtilities.lvlibp:
     group: PPLs
@@ -8454,6 +8974,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8464,6 +8985,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8474,6 +8996,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8484,6 +9007,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8494,6 +9018,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8504,6 +9029,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: ProjectUtilities_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8540,6 +9066,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8557,11 +9084,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8579,11 +9108,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8601,11 +9132,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8623,11 +9156,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8645,11 +9180,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Request-for-Connection_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8667,6 +9204,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Result-Graph.lvlibp:
     group: PPLs
@@ -8718,6 +9256,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -8755,11 +9294,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -8797,11 +9338,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -8839,11 +9382,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -8881,11 +9426,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_cRIO_Release_nipkg
                 store_id: cicwin
@@ -8923,11 +9470,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Result-Graph_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -8965,6 +9514,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   SPI-Communicator.lvlibp:
     group: PPLs
@@ -8992,6 +9542,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9002,6 +9553,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9012,6 +9564,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9022,6 +9575,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9032,6 +9586,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9042,6 +9597,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Communicator_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9074,6 +9630,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9084,6 +9641,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9094,6 +9652,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9104,6 +9663,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9114,6 +9674,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9124,6 +9685,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SPI-Functions_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9156,6 +9718,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9166,6 +9729,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9176,6 +9740,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9186,6 +9751,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9196,6 +9762,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9206,6 +9773,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SQLite_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9238,6 +9806,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9248,6 +9817,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9258,6 +9828,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9268,6 +9839,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9278,6 +9850,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9288,6 +9861,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Serial-Communication_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9320,6 +9894,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9330,6 +9905,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9340,6 +9916,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9350,6 +9927,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9360,6 +9938,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9370,6 +9949,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Simple-Logger_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9402,6 +9982,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9430,11 +10011,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9463,11 +10046,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9496,11 +10081,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9529,11 +10116,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9562,11 +10151,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Status-Reporting_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9595,6 +10186,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   Step-Scheduler.lvlibp:
     group: PPLs
@@ -9630,6 +10222,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9651,11 +10244,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9677,11 +10272,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9703,11 +10300,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9729,11 +10328,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9755,11 +10356,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: Step-Scheduler_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9781,6 +10384,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   String-Logging.lvlibp:
     group: PPLs
@@ -9808,6 +10412,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9818,6 +10423,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9828,6 +10434,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9838,6 +10445,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9848,6 +10456,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9858,6 +10467,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: String-Logging_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -9894,6 +10504,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -9911,11 +10522,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -9933,11 +10546,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -9955,11 +10570,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -9977,11 +10594,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_cRIO_Release_nipkg
                 store_id: cicwin
@@ -9999,11 +10618,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: SubpanelEnabledActor_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -10021,6 +10642,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   TCP_Serial.lvlibp:
     group: PPLs
@@ -10052,6 +10674,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -10069,11 +10692,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -10091,11 +10716,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -10113,11 +10740,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -10135,11 +10764,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_cRIO_Release_nipkg
                 store_id: cicwin
@@ -10157,11 +10788,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TCP_Serial_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -10179,6 +10812,7 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage
   TranslationStage.lvlibp:
     group: PPLs
@@ -10206,6 +10840,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -10216,6 +10851,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -10226,6 +10862,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -10236,6 +10873,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -10246,6 +10884,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_cRIO_Release_nipkg
                 store_id: cicwin
@@ -10256,6 +10895,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: TranslationStage_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -10296,6 +10936,7 @@ pipelines:
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_Windows_32_Release_nipkg
                 store_id: cicwin
@@ -10317,11 +10958,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_32_Debug:
             <<: *job_base_2019_Windows_32_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_Windows_32_Debug_nipkg
                 store_id: cicwin
@@ -10343,11 +10986,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Release:
             <<: *job_base_2019_Windows_64_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_Windows_64_Release_nipkg
                 store_id: cicwin
@@ -10369,11 +11014,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           Windows_64_Debug:
             <<: *job_base_2019_Windows_64_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_Windows_64_Debug_nipkg
                 store_id: cicwin
@@ -10395,11 +11042,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Release:
             <<: *job_base_2019_cRIO_Release
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_cRIO_Release_nipkg
                 store_id: cicwin
@@ -10421,11 +11070,13 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
           cRIO_Debug:
             <<: *job_base_2019_cRIO_Debug
             artifacts:
             - *ppl_build_artifact
             - *nipkg_build_artifact
+            - *crash_dumps_artifact
             - external:
                 id: X-Series-SPI-Comms_cRIO_Debug_nipkg
                 store_id: cicwin
@@ -10447,4 +11098,5 @@ pipelines:
             - *ls_task
             - *gcli_build_task
             - *print_labview_logs_task
+            - *create_crash_dump_dir_task
     - *git_tag_stage

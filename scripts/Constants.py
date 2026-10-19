@@ -254,3 +254,21 @@ print_labview_logs_task = {
         ],
     }
 }
+
+# Print-LabVIEWLogs.ps1 copies crash dumps and logs into LabVIEW-Crash-Dumps, which is uploaded as an artifact.
+# GoCD fails a job whose artifact source matches nothing, so make sure the folder exists (empty) for passing jobs too.
+create_crash_dump_dir_task = {
+    "exec": {
+        "run_if": "any",
+        "command": "powershell",
+        "arguments": [
+            "-Command",
+            "New-Item",
+            "-Force",
+            "-ItemType",
+            "Directory",
+            "-Path",
+            "LabVIEW-Crash-Dumps",
+        ],
+    }
+}

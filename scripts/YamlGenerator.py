@@ -11,6 +11,7 @@ from Constants import (
     expand_builder_task,
     gcli_build_task,
     print_labview_logs_task,
+    create_crash_dump_dir_task,
     fetch_ppl_configuration,
     builderMaterial,
     labviewDir,
@@ -59,6 +60,7 @@ PPLJobTasks_NoDeps = [
     ls_task,
     gcli_build_task,
     print_labview_logs_task,
+    create_crash_dump_dir_task,
 ]
 
 ppl_build_artifact = {
@@ -66,6 +68,11 @@ ppl_build_artifact = {
 }
 
 nipkg_build_artifact = {"build": {"source": "NIPKGs/*", "destination": "#{PPL_Name}"}}
+
+# Empty unless the build failed (see create_crash_dump_dir_task)
+crash_dumps_artifact = {
+    "build": {"source": "LabVIEW-Crash-Dumps", "destination": "#{PPL_Name}/crash-dumps"}
+}
 
 
 def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version):
@@ -104,7 +111,12 @@ def generatePPLJobTasksWithDeps(dependencies, vipkgUrls, targetName, lv_version)
         [fetch_builder_task, expand_builder_task]
         + pplDepTasks
         + vipkgTasks
-        + [ls_task, gcli_build_task, print_labview_logs_task]
+        + [
+            ls_task,
+            gcli_build_task,
+            print_labview_logs_task,
+            create_crash_dump_dir_task,
+        ]
     )
 
 
@@ -147,6 +159,7 @@ def generatePPLJobList(packageRootName, lv_version, dependencies, vipkgUrls):
             "artifacts": [
                 ppl_build_artifact,
                 nipkg_build_artifact,
+                crash_dumps_artifact,
                 {
                     "external": {
                         # This id-value changes per PPL, but could be made into a set of 6 aliases (one per target)
@@ -235,6 +248,7 @@ commonDefinitions = {
     "fetch_ppl_configuration": fetch_ppl_configuration,
     "ppl_build_artifact": ppl_build_artifact,
     "nipkg_build_artifact": nipkg_build_artifact,
+    "crash_dumps_artifact": crash_dumps_artifact,
     "nipkg_store_configuration": nipkgConfigOptions,
     "builder_material": builderMaterial,
 }
@@ -328,6 +342,7 @@ namedAnchors = {
     "ls_task": ls_task,
     "gcli_build_task": gcli_build_task,
     "print_labview_logs_task": print_labview_logs_task,
+    "create_crash_dump_dir_task": create_crash_dump_dir_task,
 }
 for k, v in mklink_tasks.items():
     namedAnchors["mklink_task_" + k] = v
