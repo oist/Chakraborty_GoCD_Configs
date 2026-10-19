@@ -242,9 +242,6 @@ def getCommonSection():
     return commonSection | commonDefinitions
 
 
-dependencyMaterials = {}
-
-
 class PipelineDefinition(yaml.YAMLObject):
     yaml_tag = "!PipelineDefinition"
 
@@ -261,7 +258,7 @@ class PipelineDefinition(yaml.YAMLObject):
 
     def buildData(self, dumper):
         materials = {"builder": builderMaterial} | generateMaterials(
-            self.gitUrl, self.dependencies, dependencyMaterials
+            self.gitUrl, self.dependencies
         )
         if self.dependencies != None:
             dependencyQuotedList = '"' + '" "'.join(self.dependencyPPLNames) + '"'
