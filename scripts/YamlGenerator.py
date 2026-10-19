@@ -11,6 +11,7 @@ from Constants import (
     expand_builder_task,
     gcli_build_task,
     print_labview_logs_task,
+    fetch_ppl_configuration,
     builderMaterial,
     labviewDir,
     profileId,
@@ -212,6 +213,22 @@ git_tag_stage = {
 }
 
 
+# Define shared tasks for reuse across pipelines.
+# Defining here prevents aliasing against the first pipeline that uses the element.
+commonDefinitions = {
+    "create_ppl_dir_task": create_ppl_dir,
+    "ls_current_dir_task": ls_currentDir_task,
+    "fetch_ppl_configuration": fetch_ppl_configuration,
+    "ppl_build_artifact": ppl_build_artifact,
+    "nipkg_build_artifact": nipkg_build_artifact,
+    "nipkg_store_configuration": nipkgConfigOptions,
+    "builder_material": builderMaterial,
+}
+for target in Target:
+    commonDefinitions["environment_" + target.name] = environmentVariables[target]
+commonDefinitions["git_tag_stage"] = git_tag_stage
+
+
 # Defines all of the 'common' parts of the pipeline config file
 def getCommonSection():
     commonSection = {
@@ -222,7 +239,7 @@ def getCommonSection():
     }
     for k, v in mklink_tasks.items():
         commonSection["mklink_task_" + k] = v
-    return commonSection
+    return commonSection | commonDefinitions
 
 
 dependencyMaterials = {}
@@ -284,7 +301,17 @@ class PipelineDefinition(yaml.YAMLObject):
 
 # These tasks are named, not numbered.
 # This allows reduced churn in the output yaml when changing jobs/tasks.
-namedAnchors = {"print_labview_logs_task": print_labview_logs_task}
+namedAnchors = {
+    "ppl_job_tasks_no_deps": PPLJobTasks_NoDeps,
+    "fetch_builder_task": fetch_builder_task,
+    "expand_builder_task": expand_builder_task,
+    "ls_task": ls_task,
+    "gcli_build_task": gcli_build_task,
+    "print_labview_logs_task": print_labview_logs_task,
+}
+for k, v in mklink_tasks.items():
+    namedAnchors["mklink_task_" + k] = v
+namedAnchors |= commonDefinitions
 
 
 class PipelineDumper(yaml.Dumper):
