@@ -7,9 +7,11 @@ definition of pipelines to be used on a GoCD server to build a series
 of Packed Project Libraries (PPLs) with LabVIEW in Docker containers,
 and also the python code (`scripts/*`) to generate those files.
 
-It also contains a Dockerfile and simple Python file to run a webservice
-that provides a mutex - this is necessary for the NIPKG publication from
-Docker containers (because `nipkg feed-add-pkg` is not threadsafe).
+Built NIPKGs are published using a GoCD artifact store (`store_id` in the
+generated YAML), backed by a NIPKG artifact plugin that uploads packages to
+a LabVIEW webservice which manages the feed. Since only the webservice
+modifies the feed, no locking is needed between containers (`nipkg feed-add-pkg`
+is not threadsafe).
 
 ## How to adapt to your own use
 
@@ -90,6 +92,7 @@ the reading of the YamlGenerator.py file.
 [Generate_PPL_Pipelines.py](./scripts/Generate_PPL_Pipelines.py) is the file
 which should be executed using Python to generate the
 [LabVIEW_PPL-Pipelines.gocd.yaml](./LabVIEW_PPL-Pipelines.gocd.yaml) file.\
+Its only third-party dependency is PyYAML (`pip install -r requirements.txt`).\
 It clones a list of repositories (in `repoList.txt`) and then searches for
 the libraries named in that file within the repository that is cloned.\
 It also parses a `<libraryName>.mk` file to build a list of dependencies.
